@@ -1,0 +1,1588 @@
+{
+  "S13_without_desk_unrateable": {
+    "P1": {
+      "gate_met": true,
+      "p_holm": 3.2358481441256664e-57,
+      "p_unadjusted": 1.0786160480418888e-57,
+      "rate": {
+        "clopper_pearson_95pct_percent": [
+          36.5,
+          46.9
+        ],
+        "count": 149,
+        "half_width_pp": 5.2,
+        "percent": 41.6,
+        "total": 358
+      },
+      "ref": "14/147"
+    },
+    "P2": {
+      "contrast": {
+        "bootstrap_95pct_delta_pp": [
+          -2.8,
+          17.0
+        ],
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "cluster_sign_flip_p": 0.16476581547964017,
+        "clusters": 358,
+        "group_weighted_delta_pp": 7.3,
+        "leave_one_cluster_out_range_pp": [
+          7.0,
+          7.6
+        ],
+        "nonzero_clusters": 324,
+        "pair_weighted_delta_pp": 7.3,
+        "pairs": 358
+      },
+      "gate_met": true,
+      "p_holm": 0.16476581547964017,
+      "p_unadjusted": 0.16476581547964017
+    },
+    "P3": {
+      "gate_met": true,
+      "p_holm": 2.5277810196323185e-12,
+      "p_unadjusted": 1.2638905098161593e-12,
+      "rate": {
+        "clopper_pearson_95pct_percent": [
+          1.8,
+          10.2
+        ],
+        "count": 6,
+        "half_width_pp": 4.2,
+        "percent": 4.8,
+        "total": 124
+      },
+      "ref": "4/13",
+      "reporting_mode": "confirmatory"
+    },
+    "confirmatory_clusters_past_s0": 358,
+    "confirmatory_pairs_past_s0": 358,
+    "drop_unrateable": true,
+    "execution_checks": {
+      "available": true,
+      "caps": {
+        "cpu_cap": 28,
+        "tick_cap": 72
+      },
+      "fitted_restoration": {
+        "failed": 14,
+        "no_excess": 63,
+        "passed": 47
+      },
+      "o0_o2_o3_agreement": {
+        "agree": 9794,
+        "capped_or_missing": 1294
+      },
+      "positions_with_cap": {
+        "cpu_cap": 3,
+        "tick_cap": 2
+      },
+      "restoration": {
+        "failed": 18,
+        "no_excess": 66,
+        "passed": 54,
+        "unmeasured": 45
+      },
+      "target_vs_sham": {
+        "agree": 7349,
+        "capped_or_missing": 967
+      }
+    },
+    "indeterminate_counts": {
+      "confirmatory_pairs": 2,
+      "confirmatory_reps": 2,
+      "quarantined_pairs": 1
+    },
+    "secondary": {
+      "S10_per_frame": {
+        "Contest": {
+          "P1_exec_yield": {
+            "clopper_pearson_95pct_percent": [
+              36.5,
+              46.9
+            ],
+            "count": 149,
+            "half_width_pp": 5.2,
+            "percent": 41.6,
+            "total": 358
+          },
+          "P3_alerts_per_fitted": {
+            "clopper_pearson_95pct_percent": [
+              1.8,
+              10.2
+            ],
+            "count": 6,
+            "fitted_gate_met": true,
+            "half_width_pp": 4.2,
+            "percent": 4.8,
+            "total": 124
+          },
+          "S14_fixture_stops_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              12.3,
+              23.8
+            ],
+            "count": 32,
+            "half_width_pp": 5.8,
+            "percent": 17.5,
+            "total": 183
+          },
+          "S1_desk_stop": {
+            "clopper_pearson_95pct_percent": [
+              43.6,
+              54.2
+            ],
+            "count": 175,
+            "half_width_pp": 5.3,
+            "percent": 48.9,
+            "total": 358
+          },
+          "S2_alerts_per_selected": {
+            "clopper_pearson_95pct_percent": [
+              0.6,
+              3.6
+            ],
+            "count": 6,
+            "half_width_pp": 1.5,
+            "percent": 1.7,
+            "total": 358
+          },
+          "S3_preprocessing_stops_after_desk": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              2.0
+            ],
+            "count": 0,
+            "half_width_pp": 1.0,
+            "percent": 0.0,
+            "total": 183
+          },
+          "S4_oracle_failures_among_executed": {
+            "clopper_pearson_95pct_percent": [
+              6.8,
+              17.6
+            ],
+            "count": 17,
+            "half_width_pp": 5.4,
+            "percent": 11.4,
+            "total": 149
+          },
+          "clusters_past_s0": 358,
+          "counts_only": false,
+          "gate_met": true,
+          "pairs_past_s0": 358
+        },
+        "Repository": {
+          "P1_exec_yield": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "P3_alerts_per_fitted": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "fitted_gate_met": false,
+            "percent": null,
+            "total": 0
+          },
+          "S14_fixture_stops_after_s1_pass": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S1_desk_stop": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S2_alerts_per_selected": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S3_preprocessing_stops_after_desk": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S4_oracle_failures_among_executed": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "clusters_past_s0": 0,
+          "counts_only": true,
+          "gate_met": false,
+          "pairs_past_s0": 0
+        }
+      },
+      "S12_quarantined": {
+        "cluster_rates": {
+          "P1_exec_yield": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              7.3
+            ],
+            "count": 0,
+            "half_width_pp": 3.6,
+            "percent": 0.0,
+            "total": 49
+          },
+          "P3_alerts_per_fitted": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S14_fixture_stops_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              15.4
+            ],
+            "count": 0,
+            "half_width_pp": 7.7,
+            "percent": 0.0,
+            "total": 22
+          },
+          "S1_desk_stop": {
+            "bucket_counts": {},
+            "clopper_pearson_95pct_percent": [
+              40.2,
+              69.3
+            ],
+            "count": 27,
+            "half_width_pp": 14.6,
+            "percent": 55.1,
+            "total": 49
+          },
+          "S2_alerts_per_selected": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              7.3
+            ],
+            "count": 0,
+            "half_width_pp": 3.6,
+            "percent": 0.0,
+            "total": 49
+          },
+          "not_executed_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              84.6,
+              100.0
+            ],
+            "count": 22,
+            "half_width_pp": 7.7,
+            "percent": 100.0,
+            "total": 22
+          }
+        },
+        "clusters_past_s0": 49,
+        "pair_dispositions": {
+          "desk_blocked": 22,
+          "desk_excluded": 259,
+          "desk_unrateable": 0,
+          "indeterminate": 1,
+          "not_executed": 204
+        },
+        "pair_rates": {
+          "P1_exec_yield": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              0.8
+            ],
+            "count": 0,
+            "half_width_pp": 0.4,
+            "percent": 0.0,
+            "total": 486
+          },
+          "P3_alerts_per_fitted": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S14_fixture_stops_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              1.8
+            ],
+            "count": 0,
+            "half_width_pp": 0.9,
+            "percent": 0.0,
+            "total": 204
+          },
+          "S1_desk_stop": {
+            "bucket_counts": {},
+            "clopper_pearson_95pct_percent": [
+              53.5,
+              62.5
+            ],
+            "count": 282,
+            "half_width_pp": 4.5,
+            "percent": 58.0,
+            "total": 486
+          },
+          "S2_alerts_per_selected": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              0.8
+            ],
+            "count": 0,
+            "half_width_pp": 0.4,
+            "percent": 0.0,
+            "total": 486
+          },
+          "not_executed_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              98.2,
+              100.0
+            ],
+            "count": 204,
+            "half_width_pp": 0.9,
+            "percent": 100.0,
+            "total": 204
+          }
+        },
+        "pairs_past_s0": 486,
+        "rep_dispositions": {
+          "desk_excluded": 27,
+          "desk_unrateable": 0,
+          "not_executed": 22
+        }
+      },
+      "S14_fixture_stops_after_s1_pass": {
+        "attempted_count": 183,
+        "bucket_counts_reps": {
+          "contract": 19,
+          "route": 4,
+          "source": 9
+        },
+        "clopper_pearson_95pct_percent": [
+          12.3,
+          23.8
+        ],
+        "count": 32,
+        "frozen_bounds_pct": [
+          17.5,
+          17.5
+        ],
+        "half_width_pp": 5.8,
+        "not_executed_count": 0,
+        "percent": 17.5,
+        "prefix_conditional": {
+          "clopper_pearson_95pct_percent": [
+            12.3,
+            23.8
+          ],
+          "count": 32,
+          "half_width_pp": 5.8,
+          "percent": 17.5,
+          "total": 183
+        },
+        "reason_counts_reps": {
+          "alignment_boundary": 10,
+          "fixed_contract": 3,
+          "insufficient_workload_ladder": 1,
+          "no_executable_work_delta": 3,
+          "no_isolated_restoration": 2,
+          "original_compile_failure": 4,
+          "source_derived_numeric_oracle_failure": 1,
+          "source_derived_oracle_failure": 3,
+          "source_derived_undefined_behavior": 5
+        },
+        "total": 183,
+        "truncated": false
+      },
+      "S1_desk_stop": {
+        "bucket_counts_pairs": {
+          "contract": 160,
+          "indeterminate": 2,
+          "route": 2,
+          "source": 11
+        },
+        "bucket_counts_reps": {
+          "contract": 160,
+          "indeterminate": 2,
+          "route": 2,
+          "source": 11
+        },
+        "clopper_pearson_95pct_percent": [
+          43.6,
+          54.2
+        ],
+        "count": 175,
+        "half_width_pp": 5.3,
+        "nominal_p_vs_103_147": 6.900144879317187e-17,
+        "percent": 48.9,
+        "ref": "103/147",
+        "total": 358
+      },
+      "S2_alerts_per_selected": {
+        "clopper_pearson_95pct_percent": [
+          0.6,
+          3.6
+        ],
+        "count": 6,
+        "half_width_pp": 1.5,
+        "nominal_p_vs_4_147": 0.32550436475019234,
+        "percent": 1.7,
+        "ref": "4/147",
+        "total": 358
+      },
+      "S3_preprocessing_stops_after_desk": {
+        "clopper_pearson_95pct_percent": [
+          0.0,
+          2.0
+        ],
+        "count": 0,
+        "excluding_not_executed": null,
+        "half_width_pp": 1.0,
+        "nominal_p_vs_12_26": 6.770995402901684e-50,
+        "percent": 0.0,
+        "ref": "12/26",
+        "total": 183
+      },
+      "S4_oracle_failures_among_executed": {
+        "clopper_pearson_95pct_percent": [
+          6.8,
+          17.6
+        ],
+        "count": 17,
+        "half_width_pp": 5.4,
+        "nominal_p_vs_1_14": 0.05412720206247931,
+        "percent": 11.4,
+        "ref": "1/14",
+        "total": 149
+      },
+      "S5_alert_minus_no_alert_among_fits": {
+        "bootstrap_95pct_delta_pp": [
+          -96.8,
+          -82.3
+        ],
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "cluster_sign_flip_p": 4.420164035915105e-28,
+        "clusters": 124,
+        "gate_met": true,
+        "group_weighted_delta_pp": -90.3,
+        "leave_one_cluster_out_range_pp": [
+          -91.9,
+          -90.2
+        ],
+        "nominal_p": 4.420164035915105e-28,
+        "nonzero_clusters": 124,
+        "pair_weighted_delta_pp": -90.3,
+        "pairs": 124,
+        "ref": "-33.3 pp (12 clusters, R8)",
+        "reporting_mode": "exploratory_nominal"
+      },
+      "S6_P1_without_infra": {
+        "clopper_pearson_95pct_percent": [
+          36.7,
+          47.2
+        ],
+        "count": 149,
+        "half_width_pp": 5.2,
+        "percent": 41.9,
+        "total": 356
+      },
+      "S7_any_stream_alerts": {
+        "alerts_per_selected": {
+          "clopper_pearson_95pct_percent": [
+            1.5,
+            5.4
+          ],
+          "count": 11,
+          "half_width_pp": 1.9,
+          "percent": 3.1,
+          "total": 358
+        },
+        "available": true,
+        "clopper_pearson_95pct_percent": [
+          4.5,
+          15.3
+        ],
+        "count": 11,
+        "half_width_pp": 5.4,
+        "percent": 8.9,
+        "total": 124
+      },
+      "S8_drop_largest_refit": {
+        "admitted_contrast": {
+          "bootstrap_95pct_delta_pp": [
+            0.0,
+            2.4
+          ],
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42,
+          "cluster_sign_flip_p": 1.0,
+          "clusters": 123,
+          "group_weighted_delta_pp": 0.8,
+          "leave_one_cluster_out_range_pp": [
+            0.0,
+            0.8
+          ],
+          "nonzero_clusters": 1,
+          "pair_weighted_delta_pp": 0.8,
+          "pairs": 123
+        },
+        "admitted_count": 123,
+        "alerts_among_admitted": {
+          "clopper_pearson_95pct_percent": [
+            1.3,
+            9.2
+          ],
+          "count": 5,
+          "half_width_pp": 3.9,
+          "percent": 4.1,
+          "total": 123
+        },
+        "any_stream_alerts_among_admitted": null,
+        "available": true,
+        "fitted_total": 124,
+        "flipped_all_stream_alerts": 1,
+        "range_limited_all_stream_alerts": 0,
+        "range_limited_count": 1,
+        "retained_all_stream_alerts": 5
+      },
+      "S9_all_pair_equal_cluster": {
+        "P1_equal_cluster": {
+          "bootstrap_95pct_pct": [
+            36.6,
+            46.6
+          ],
+          "clusters": 358,
+          "equal_cluster_pct": 41.6,
+          "pair_level_working_independence_cp": {
+            "clopper_pearson_95pct_percent": [
+              36.5,
+              46.9
+            ],
+            "count": 149,
+            "half_width_pp": 5.2,
+            "percent": 41.6,
+            "total": 358
+          },
+          "pair_weighted_pct": 41.6,
+          "pairs": 358
+        },
+        "P3_equal_cluster": {
+          "bootstrap_95pct_pct": [
+            1.6,
+            8.9
+          ],
+          "clusters": 124,
+          "equal_cluster_pct": 4.8,
+          "pair_level_working_independence_cp": {
+            "clopper_pearson_95pct_percent": [
+              1.8,
+              10.2
+            ],
+            "count": 6,
+            "half_width_pp": 4.2,
+            "percent": 4.8,
+            "total": 124
+          },
+          "pair_weighted_pct": 4.8,
+          "pairs": 124
+        }
+      }
+    },
+    "section_11_sensitivity": {
+      "available": true,
+      "cpu_cap_exit137_fitted_no_alert_reps": 2,
+      "cpu_cap_exit137_pairs": 2,
+      "cpu_cap_exit137_reps": 2,
+      "superseded_alignment_as_fixture_stop": {
+        "P1": {
+          "clopper_pearson_95pct_percent": [
+            35.4,
+            45.8
+          ],
+          "count": 145,
+          "half_width_pp": 5.2,
+          "percent": 40.5,
+          "total": 358
+        },
+        "P2": {
+          "bootstrap_95pct_delta_pp": [
+            -1.4,
+            17.9
+          ],
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42,
+          "cluster_sign_flip_p": 0.10483820914461653,
+          "clusters": 358,
+          "group_weighted_delta_pp": 8.4,
+          "leave_one_cluster_out_range_pp": [
+            8.1,
+            8.7
+          ],
+          "nonzero_clusters": 320,
+          "pair_weighted_delta_pp": 8.4,
+          "pairs": 358
+        },
+        "S14": {
+          "clopper_pearson_95pct_percent": [
+            14.2,
+            26.2
+          ],
+          "count": 36,
+          "half_width_pp": 6.0,
+          "percent": 19.7,
+          "total": 183
+        },
+        "S4": {
+          "clopper_pearson_95pct_percent": [
+            4.9,
+            14.8
+          ],
+          "count": 13,
+          "half_width_pp": 5.0,
+          "percent": 9.0,
+          "total": 145
+        }
+      },
+      "unpatched_cpu_cap_as_not_executed": {
+        "P1": {
+          "clopper_pearson_95pct_percent": [
+            35.9,
+            46.4
+          ],
+          "count": 147,
+          "half_width_pp": 5.2,
+          "percent": 41.1,
+          "total": 358
+        },
+        "P2": {
+          "bootstrap_95pct_delta_pp": [
+            -2.2,
+            17.6
+          ],
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42,
+          "cluster_sign_flip_p": 0.13228725863201574,
+          "clusters": 358,
+          "group_weighted_delta_pp": 7.8,
+          "leave_one_cluster_out_range_pp": [
+            7.6,
+            8.1
+          ],
+          "nonzero_clusters": 322,
+          "pair_weighted_delta_pp": 7.8,
+          "pairs": 358
+        },
+        "P3": {
+          "clopper_pearson_95pct_percent": [
+            1.8,
+            10.4
+          ],
+          "count": 6,
+          "half_width_pp": 4.3,
+          "percent": 4.9,
+          "total": 122
+        }
+      },
+      "wave2_alignment_rebuilds_reps": 4,
+      "wave2_alignment_rebuilds_to_oracle_fail": 4
+    },
+    "truncation_sensitivity": {
+      "attempted_s1_pass_reps": 183,
+      "not_executed_pairs": 0,
+      "not_executed_reps": 0,
+      "s1_pass_reps": 183,
+      "truncated": false
+    },
+    "wp_p1": {
+      "E_cp_lower_pct": 36.5,
+      "R_repo_route_plus_prep": 0,
+      "X_repo_executed": 0,
+      "decision": "NO-GO, single-TU adequate",
+      "repo_clusters": 0
+    }
+  },
+  "amendment_sha256": "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+  "author_check": {
+    "bootstrap_method": {
+      "draws": 10000,
+      "resampling": "rng.choices(sorted clusters, k=n_clusters), whole clusters; reset RNG for each statistic",
+      "seed": 42,
+      "undefined_bootstrap_kappas": 0,
+      "zero_based_percentile_ranks": [
+        249,
+        9749
+      ]
+    },
+    "bucket": {
+      "cluster_bootstrap_95pct_kappa": [
+        -0.031,
+        0.326
+      ],
+      "cohens_kappa": 0.154,
+      "descriptive_only": true,
+      "n_clusters": 38,
+      "n_pairs": 50,
+      "raw_agreement_count": 24,
+      "raw_agreement_pct": 48.0,
+      "unblinded_count": 0
+    },
+    "bucket_confusion_matrix_primary_x_author": {
+      "contract": {
+        "contract": 19,
+        "indeterminate": 0,
+        "pass": 3,
+        "route": 0,
+        "source": 4
+      },
+      "indeterminate": {
+        "contract": 0,
+        "indeterminate": 0,
+        "pass": 0,
+        "route": 0,
+        "source": 0
+      },
+      "pass": {
+        "contract": 12,
+        "indeterminate": 0,
+        "pass": 3,
+        "route": 0,
+        "source": 7
+      },
+      "route": {
+        "contract": 0,
+        "indeterminate": 0,
+        "pass": 0,
+        "route": 0,
+        "source": 0
+      },
+      "source": {
+        "contract": 0,
+        "indeterminate": 0,
+        "pass": 0,
+        "route": 0,
+        "source": 2
+      }
+    },
+    "exact": {
+      "cluster_bootstrap_95pct_kappa": [
+        0.046,
+        0.277
+      ],
+      "cohens_kappa": 0.163,
+      "descriptive_only": true,
+      "n_clusters": 38,
+      "n_pairs": 50,
+      "raw_agreement_count": 13,
+      "raw_agreement_pct": 26.0,
+      "unblinded_count": 0
+    }
+  },
+  "execution_complete": true,
+  "fixture_inventory": {
+    "s1_status_counts": {
+      "desk_blocked": 43,
+      "desk_excluded": 411,
+      "indeterminate": 3,
+      "pass": 387
+    },
+    "total_rateable": 844
+  },
+  "flow_table": {
+    "Contest": {
+      "drawn": 956,
+      "not_executed": 204,
+      "s0_intake_duplicate": 12,
+      "s0_intake_stop": 12,
+      "s0_intake_unretrievable": 0,
+      "s1_desk_blocked": 43,
+      "s1_desk_excluded": 411,
+      "s1_desk_stop_total": 557,
+      "s1_desk_unrateable": 100,
+      "s1_indeterminate": 3,
+      "s2_fixture_stop": 32,
+      "s2_preprocessing_stop": 0,
+      "s3_infra_failure": 2,
+      "s3_oracle_failure": 17,
+      "s4_no_fit": 8,
+      "s5_alert": 6,
+      "s5_no_alert": 118
+    },
+    "Repository": {
+      "drawn": 44,
+      "not_executed": 0,
+      "s0_intake_duplicate": 0,
+      "s0_intake_stop": 11,
+      "s0_intake_unretrievable": 11,
+      "s1_desk_blocked": 0,
+      "s1_desk_excluded": 0,
+      "s1_desk_stop_total": 33,
+      "s1_desk_unrateable": 33,
+      "s1_indeterminate": 0,
+      "s2_fixture_stop": 0,
+      "s2_preprocessing_stop": 0,
+      "s3_infra_failure": 0,
+      "s3_oracle_failure": 0,
+      "s4_no_fit": 0,
+      "s5_alert": 0,
+      "s5_no_alert": 0
+    },
+    "Union": {
+      "drawn": 1000,
+      "not_executed": 204,
+      "s0_intake_duplicate": 12,
+      "s0_intake_stop": 23,
+      "s0_intake_unretrievable": 11,
+      "s1_desk_blocked": 43,
+      "s1_desk_excluded": 411,
+      "s1_desk_stop_total": 590,
+      "s1_desk_unrateable": 133,
+      "s1_indeterminate": 3,
+      "s2_fixture_stop": 32,
+      "s2_preprocessing_stop": 0,
+      "s3_infra_failure": 2,
+      "s3_oracle_failure": 17,
+      "s4_no_fit": 8,
+      "s5_alert": 6,
+      "s5_no_alert": 118
+    }
+  },
+  "held_list_sha256": "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+  "held_out_used": false,
+  "manifest_sha256": "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+  "overlap_summary": {
+    "cross_frame_shared_pairs": 0,
+    "cross_frame_shared_problem_keys": 0
+  },
+  "primary_all_post_s0": {
+    "P1": {
+      "gate_met": true,
+      "p_holm": 1.9682846633421538e-39,
+      "p_unadjusted": 6.5609488778071794e-40,
+      "rate": {
+        "clopper_pearson_95pct_percent": [
+          27.2,
+          35.7
+        ],
+        "count": 149,
+        "half_width_pp": 4.3,
+        "percent": 31.3,
+        "total": 476
+      },
+      "ref": "14/147"
+    },
+    "P2": {
+      "contrast": {
+        "bootstrap_95pct_delta_pp": [
+          22.1,
+          38.4
+        ],
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "cluster_sign_flip_p": 6.781784422585894e-12,
+        "clusters": 476,
+        "group_weighted_delta_pp": 30.3,
+        "leave_one_cluster_out_range_pp": [
+          30.1,
+          30.5
+        ],
+        "nonzero_clusters": 442,
+        "pair_weighted_delta_pp": 30.4,
+        "pairs": 477
+      },
+      "gate_met": true,
+      "p_holm": 6.781784422585894e-12,
+      "p_unadjusted": 6.781784422585894e-12
+    },
+    "P3": {
+      "gate_met": true,
+      "p_holm": 2.5277810196323185e-12,
+      "p_unadjusted": 1.2638905098161593e-12,
+      "rate": {
+        "clopper_pearson_95pct_percent": [
+          1.8,
+          10.2
+        ],
+        "count": 6,
+        "half_width_pp": 4.2,
+        "percent": 4.8,
+        "total": 124
+      },
+      "ref": "4/13",
+      "reporting_mode": "confirmatory"
+    },
+    "confirmatory_clusters_past_s0": 476,
+    "confirmatory_pairs_past_s0": 477,
+    "drop_unrateable": false,
+    "execution_checks": {
+      "available": true,
+      "caps": {
+        "cpu_cap": 28,
+        "tick_cap": 72
+      },
+      "fitted_restoration": {
+        "failed": 14,
+        "no_excess": 63,
+        "passed": 47
+      },
+      "o0_o2_o3_agreement": {
+        "agree": 9794,
+        "capped_or_missing": 1294
+      },
+      "positions_with_cap": {
+        "cpu_cap": 3,
+        "tick_cap": 2
+      },
+      "restoration": {
+        "failed": 18,
+        "no_excess": 66,
+        "passed": 54,
+        "unmeasured": 45
+      },
+      "target_vs_sham": {
+        "agree": 7349,
+        "capped_or_missing": 967
+      }
+    },
+    "indeterminate_counts": {
+      "confirmatory_pairs": 2,
+      "confirmatory_reps": 2,
+      "quarantined_pairs": 1
+    },
+    "secondary": {
+      "S10_per_frame": {
+        "Contest": {
+          "P1_exec_yield": {
+            "clopper_pearson_95pct_percent": [
+              29.2,
+              38.2
+            ],
+            "count": 149,
+            "half_width_pp": 4.5,
+            "percent": 33.6,
+            "total": 444
+          },
+          "P3_alerts_per_fitted": {
+            "clopper_pearson_95pct_percent": [
+              1.8,
+              10.2
+            ],
+            "count": 6,
+            "fitted_gate_met": true,
+            "half_width_pp": 4.2,
+            "percent": 4.8,
+            "total": 124
+          },
+          "S14_fixture_stops_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              12.3,
+              23.8
+            ],
+            "count": 32,
+            "half_width_pp": 5.8,
+            "percent": 17.5,
+            "total": 183
+          },
+          "S1_desk_stop": {
+            "clopper_pearson_95pct_percent": [
+              54.0,
+              63.4
+            ],
+            "count": 261,
+            "half_width_pp": 4.7,
+            "percent": 58.8,
+            "total": 444
+          },
+          "S2_alerts_per_selected": {
+            "clopper_pearson_95pct_percent": [
+              0.5,
+              2.9
+            ],
+            "count": 6,
+            "half_width_pp": 1.2,
+            "percent": 1.4,
+            "total": 444
+          },
+          "S3_preprocessing_stops_after_desk": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              2.0
+            ],
+            "count": 0,
+            "half_width_pp": 1.0,
+            "percent": 0.0,
+            "total": 183
+          },
+          "S4_oracle_failures_among_executed": {
+            "clopper_pearson_95pct_percent": [
+              6.8,
+              17.6
+            ],
+            "count": 17,
+            "half_width_pp": 5.4,
+            "percent": 11.4,
+            "total": 149
+          },
+          "clusters_past_s0": 444,
+          "counts_only": false,
+          "gate_met": true,
+          "pairs_past_s0": 444
+        },
+        "Repository": {
+          "P1_exec_yield": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              10.9
+            ],
+            "count": 0,
+            "half_width_pp": 5.4,
+            "percent": 0.0,
+            "total": 32
+          },
+          "P3_alerts_per_fitted": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "fitted_gate_met": false,
+            "percent": null,
+            "total": 0
+          },
+          "S14_fixture_stops_after_s1_pass": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S1_desk_stop": {
+            "clopper_pearson_95pct_percent": [
+              89.1,
+              100.0
+            ],
+            "count": 32,
+            "half_width_pp": 5.4,
+            "percent": 100.0,
+            "total": 32
+          },
+          "S2_alerts_per_selected": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              10.9
+            ],
+            "count": 0,
+            "half_width_pp": 5.4,
+            "percent": 0.0,
+            "total": 32
+          },
+          "S3_preprocessing_stops_after_desk": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S4_oracle_failures_among_executed": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "clusters_past_s0": 32,
+          "counts_only": true,
+          "gate_met": true,
+          "pairs_past_s0": 33
+        }
+      },
+      "S12_quarantined": {
+        "cluster_rates": {
+          "P1_exec_yield": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              6.6
+            ],
+            "count": 0,
+            "half_width_pp": 3.3,
+            "percent": 0.0,
+            "total": 54
+          },
+          "P3_alerts_per_fitted": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S14_fixture_stops_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              15.4
+            ],
+            "count": 0,
+            "half_width_pp": 7.7,
+            "percent": 0.0,
+            "total": 22
+          },
+          "S1_desk_stop": {
+            "bucket_counts": {},
+            "clopper_pearson_95pct_percent": [
+              45.0,
+              72.4
+            ],
+            "count": 32,
+            "half_width_pp": 13.7,
+            "percent": 59.3,
+            "total": 54
+          },
+          "S2_alerts_per_selected": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              6.6
+            ],
+            "count": 0,
+            "half_width_pp": 3.3,
+            "percent": 0.0,
+            "total": 54
+          },
+          "not_executed_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              84.6,
+              100.0
+            ],
+            "count": 22,
+            "half_width_pp": 7.7,
+            "percent": 100.0,
+            "total": 22
+          }
+        },
+        "clusters_past_s0": 54,
+        "pair_dispositions": {
+          "desk_blocked": 22,
+          "desk_excluded": 259,
+          "desk_unrateable": 14,
+          "indeterminate": 1,
+          "not_executed": 204
+        },
+        "pair_rates": {
+          "P1_exec_yield": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              0.7
+            ],
+            "count": 0,
+            "half_width_pp": 0.4,
+            "percent": 0.0,
+            "total": 500
+          },
+          "P3_alerts_per_fitted": {
+            "clopper_pearson_95pct_percent": null,
+            "count": 0,
+            "percent": null,
+            "total": 0
+          },
+          "S14_fixture_stops_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              1.8
+            ],
+            "count": 0,
+            "half_width_pp": 0.9,
+            "percent": 0.0,
+            "total": 204
+          },
+          "S1_desk_stop": {
+            "bucket_counts": {},
+            "clopper_pearson_95pct_percent": [
+              54.7,
+              63.5
+            ],
+            "count": 296,
+            "half_width_pp": 4.4,
+            "percent": 59.2,
+            "total": 500
+          },
+          "S2_alerts_per_selected": {
+            "clopper_pearson_95pct_percent": [
+              0.0,
+              0.7
+            ],
+            "count": 0,
+            "half_width_pp": 0.4,
+            "percent": 0.0,
+            "total": 500
+          },
+          "not_executed_after_s1_pass": {
+            "clopper_pearson_95pct_percent": [
+              98.2,
+              100.0
+            ],
+            "count": 204,
+            "half_width_pp": 0.9,
+            "percent": 100.0,
+            "total": 204
+          }
+        },
+        "pairs_past_s0": 500,
+        "rep_dispositions": {
+          "desk_excluded": 27,
+          "desk_unrateable": 5,
+          "not_executed": 22
+        }
+      },
+      "S14_fixture_stops_after_s1_pass": {
+        "attempted_count": 183,
+        "bucket_counts_reps": {
+          "contract": 19,
+          "route": 4,
+          "source": 9
+        },
+        "clopper_pearson_95pct_percent": [
+          12.3,
+          23.8
+        ],
+        "count": 32,
+        "frozen_bounds_pct": [
+          17.5,
+          17.5
+        ],
+        "half_width_pp": 5.8,
+        "not_executed_count": 0,
+        "percent": 17.5,
+        "prefix_conditional": {
+          "clopper_pearson_95pct_percent": [
+            12.3,
+            23.8
+          ],
+          "count": 32,
+          "half_width_pp": 5.8,
+          "percent": 17.5,
+          "total": 183
+        },
+        "reason_counts_reps": {
+          "alignment_boundary": 10,
+          "fixed_contract": 3,
+          "insufficient_workload_ladder": 1,
+          "no_executable_work_delta": 3,
+          "no_isolated_restoration": 2,
+          "original_compile_failure": 4,
+          "source_derived_numeric_oracle_failure": 1,
+          "source_derived_oracle_failure": 3,
+          "source_derived_undefined_behavior": 5
+        },
+        "total": 183,
+        "truncated": false
+      },
+      "S1_desk_stop": {
+        "bucket_counts_pairs": {
+          "contract": 160,
+          "desk_unrateable": 119,
+          "indeterminate": 2,
+          "route": 2,
+          "source": 11
+        },
+        "bucket_counts_reps": {
+          "contract": 160,
+          "desk_unrateable": 118,
+          "indeterminate": 2,
+          "route": 2,
+          "source": 11
+        },
+        "clopper_pearson_95pct_percent": [
+          57.0,
+          65.9
+        ],
+        "count": 293,
+        "half_width_pp": 4.5,
+        "nominal_p_vs_103_147": 7.389285830150724e-05,
+        "percent": 61.6,
+        "ref": "103/147",
+        "total": 476
+      },
+      "S2_alerts_per_selected": {
+        "clopper_pearson_95pct_percent": [
+          0.5,
+          2.7
+        ],
+        "count": 6,
+        "half_width_pp": 1.1,
+        "nominal_p_vs_4_147": 0.04769516927375274,
+        "percent": 1.3,
+        "ref": "4/147",
+        "total": 476
+      },
+      "S3_preprocessing_stops_after_desk": {
+        "clopper_pearson_95pct_percent": [
+          0.0,
+          2.0
+        ],
+        "count": 0,
+        "excluding_not_executed": null,
+        "half_width_pp": 1.0,
+        "nominal_p_vs_12_26": 6.770995402901684e-50,
+        "percent": 0.0,
+        "ref": "12/26",
+        "total": 183
+      },
+      "S4_oracle_failures_among_executed": {
+        "clopper_pearson_95pct_percent": [
+          6.8,
+          17.6
+        ],
+        "count": 17,
+        "half_width_pp": 5.4,
+        "nominal_p_vs_1_14": 0.05412720206247931,
+        "percent": 11.4,
+        "ref": "1/14",
+        "total": 149
+      },
+      "S5_alert_minus_no_alert_among_fits": {
+        "bootstrap_95pct_delta_pp": [
+          -96.8,
+          -82.3
+        ],
+        "bootstrap_draws": 10000,
+        "bootstrap_seed": 42,
+        "cluster_sign_flip_p": 4.420164035915105e-28,
+        "clusters": 124,
+        "gate_met": true,
+        "group_weighted_delta_pp": -90.3,
+        "leave_one_cluster_out_range_pp": [
+          -91.9,
+          -90.2
+        ],
+        "nominal_p": 4.420164035915105e-28,
+        "nonzero_clusters": 124,
+        "pair_weighted_delta_pp": -90.3,
+        "pairs": 124,
+        "ref": "-33.3 pp (12 clusters, R8)",
+        "reporting_mode": "exploratory_nominal"
+      },
+      "S6_P1_without_infra": {
+        "clopper_pearson_95pct_percent": [
+          27.3,
+          35.8
+        ],
+        "count": 149,
+        "half_width_pp": 4.3,
+        "percent": 31.4,
+        "total": 474
+      },
+      "S7_any_stream_alerts": {
+        "alerts_per_selected": {
+          "clopper_pearson_95pct_percent": [
+            1.2,
+            4.1
+          ],
+          "count": 11,
+          "half_width_pp": 1.5,
+          "percent": 2.3,
+          "total": 476
+        },
+        "available": true,
+        "clopper_pearson_95pct_percent": [
+          4.5,
+          15.3
+        ],
+        "count": 11,
+        "half_width_pp": 5.4,
+        "percent": 8.9,
+        "total": 124
+      },
+      "S8_drop_largest_refit": {
+        "admitted_contrast": {
+          "bootstrap_95pct_delta_pp": [
+            0.0,
+            2.4
+          ],
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42,
+          "cluster_sign_flip_p": 1.0,
+          "clusters": 123,
+          "group_weighted_delta_pp": 0.8,
+          "leave_one_cluster_out_range_pp": [
+            0.0,
+            0.8
+          ],
+          "nonzero_clusters": 1,
+          "pair_weighted_delta_pp": 0.8,
+          "pairs": 123
+        },
+        "admitted_count": 123,
+        "alerts_among_admitted": {
+          "clopper_pearson_95pct_percent": [
+            1.3,
+            9.2
+          ],
+          "count": 5,
+          "half_width_pp": 3.9,
+          "percent": 4.1,
+          "total": 123
+        },
+        "any_stream_alerts_among_admitted": null,
+        "available": true,
+        "fitted_total": 124,
+        "flipped_all_stream_alerts": 1,
+        "range_limited_all_stream_alerts": 0,
+        "range_limited_count": 1,
+        "retained_all_stream_alerts": 5
+      },
+      "S9_all_pair_equal_cluster": {
+        "P1_equal_cluster": {
+          "bootstrap_95pct_pct": [
+            27.1,
+            35.5
+          ],
+          "clusters": 476,
+          "equal_cluster_pct": 31.3,
+          "pair_level_working_independence_cp": {
+            "clopper_pearson_95pct_percent": [
+              27.1,
+              35.6
+            ],
+            "count": 149,
+            "half_width_pp": 4.3,
+            "percent": 31.2,
+            "total": 477
+          },
+          "pair_weighted_pct": 31.2,
+          "pairs": 477
+        },
+        "P3_equal_cluster": {
+          "bootstrap_95pct_pct": [
+            1.6,
+            8.9
+          ],
+          "clusters": 124,
+          "equal_cluster_pct": 4.8,
+          "pair_level_working_independence_cp": {
+            "clopper_pearson_95pct_percent": [
+              1.8,
+              10.2
+            ],
+            "count": 6,
+            "half_width_pp": 4.2,
+            "percent": 4.8,
+            "total": 124
+          },
+          "pair_weighted_pct": 4.8,
+          "pairs": 124
+        }
+      }
+    },
+    "section_11_sensitivity": {
+      "available": true,
+      "cpu_cap_exit137_fitted_no_alert_reps": 2,
+      "cpu_cap_exit137_pairs": 2,
+      "cpu_cap_exit137_reps": 2,
+      "superseded_alignment_as_fixture_stop": {
+        "P1": {
+          "clopper_pearson_95pct_percent": [
+            26.4,
+            34.8
+          ],
+          "count": 145,
+          "half_width_pp": 4.2,
+          "percent": 30.5,
+          "total": 476
+        },
+        "P2": {
+          "bootstrap_95pct_delta_pp": [
+            22.9,
+            39.1
+          ],
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42,
+          "cluster_sign_flip_p": 1.3284790746284403e-12,
+          "clusters": 476,
+          "group_weighted_delta_pp": 31.1,
+          "leave_one_cluster_out_range_pp": [
+            30.9,
+            31.4
+          ],
+          "nonzero_clusters": 438,
+          "pair_weighted_delta_pp": 31.2,
+          "pairs": 477
+        },
+        "S14": {
+          "clopper_pearson_95pct_percent": [
+            14.2,
+            26.2
+          ],
+          "count": 36,
+          "half_width_pp": 6.0,
+          "percent": 19.7,
+          "total": 183
+        },
+        "S4": {
+          "clopper_pearson_95pct_percent": [
+            4.9,
+            14.8
+          ],
+          "count": 13,
+          "half_width_pp": 5.0,
+          "percent": 9.0,
+          "total": 145
+        }
+      },
+      "unpatched_cpu_cap_as_not_executed": {
+        "P1": {
+          "clopper_pearson_95pct_percent": [
+            26.8,
+            35.2
+          ],
+          "count": 147,
+          "half_width_pp": 4.2,
+          "percent": 30.9,
+          "total": 476
+        },
+        "P2": {
+          "bootstrap_95pct_delta_pp": [
+            22.5,
+            38.9
+          ],
+          "bootstrap_draws": 10000,
+          "bootstrap_seed": 42,
+          "cluster_sign_flip_p": 3.028520270583217e-12,
+          "clusters": 476,
+          "group_weighted_delta_pp": 30.7,
+          "leave_one_cluster_out_range_pp": [
+            30.5,
+            30.9
+          ],
+          "nonzero_clusters": 440,
+          "pair_weighted_delta_pp": 30.8,
+          "pairs": 477
+        },
+        "P3": {
+          "clopper_pearson_95pct_percent": [
+            1.8,
+            10.4
+          ],
+          "count": 6,
+          "half_width_pp": 4.3,
+          "percent": 4.9,
+          "total": 122
+        }
+      },
+      "wave2_alignment_rebuilds_reps": 4,
+      "wave2_alignment_rebuilds_to_oracle_fail": 4
+    },
+    "truncation_sensitivity": {
+      "attempted_s1_pass_reps": 183,
+      "not_executed_pairs": 0,
+      "not_executed_reps": 0,
+      "s1_pass_reps": 183,
+      "truncated": false
+    },
+    "wp_p1": {
+      "E_cp_lower_pct": 27.2,
+      "R_repo_route_plus_prep": 0,
+      "X_repo_executed": 0,
+      "decision": "NO-GO, single-TU adequate",
+      "repo_clusters": 32
+    }
+  },
+  "s1_batches": 96,
+  "schema": "eapg.expansion.analysis.v1"
+}

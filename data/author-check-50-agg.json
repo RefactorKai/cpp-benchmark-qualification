@@ -1,0 +1,297 @@
+{
+  "author_check": {
+    "bootstrap_method": {
+      "draws": 10000,
+      "resampling": "rng.choices(sorted clusters, k=n_clusters), whole clusters; reset RNG for each statistic",
+      "seed": 42,
+      "undefined_bootstrap_kappas": 0,
+      "zero_based_percentile_ranks": [
+        249,
+        9749
+      ]
+    },
+    "bucket": {
+      "cluster_bootstrap_95pct_kappa": [
+        -0.031,
+        0.326
+      ],
+      "cohens_kappa": 0.154,
+      "descriptive_only": true,
+      "n_clusters": 38,
+      "n_pairs": 50,
+      "raw_agreement_count": 24,
+      "raw_agreement_pct": 48.0,
+      "unblinded_count": 0
+    },
+    "bucket_confusion_matrix_primary_x_author": {
+      "contract": {
+        "contract": 19,
+        "indeterminate": 0,
+        "pass": 3,
+        "route": 0,
+        "source": 4
+      },
+      "indeterminate": {
+        "contract": 0,
+        "indeterminate": 0,
+        "pass": 0,
+        "route": 0,
+        "source": 0
+      },
+      "pass": {
+        "contract": 12,
+        "indeterminate": 0,
+        "pass": 3,
+        "route": 0,
+        "source": 7
+      },
+      "route": {
+        "contract": 0,
+        "indeterminate": 0,
+        "pass": 0,
+        "route": 0,
+        "source": 0
+      },
+      "source": {
+        "contract": 0,
+        "indeterminate": 0,
+        "pass": 0,
+        "route": 0,
+        "source": 2
+      }
+    },
+    "exact": {
+      "cluster_bootstrap_95pct_kappa": [
+        0.046,
+        0.277
+      ],
+      "cohens_kappa": 0.163,
+      "descriptive_only": true,
+      "n_clusters": 38,
+      "n_pairs": 50,
+      "raw_agreement_count": 13,
+      "raw_agreement_pct": 26.0,
+      "unblinded_count": 0
+    }
+  },
+  "camera_ready_checks": {
+    "agreement": {
+      "O0_O2_O3": {
+        "agree": 9794,
+        "capped_or_missing": 1294,
+        "disagree": 0,
+        "mismatch_with_owner_cited": false,
+        "owner_cited": {
+          "agree": 9794,
+          "capped_or_missing": 1294
+        }
+      },
+      "target_vs_sham": {
+        "agree": 7349,
+        "capped_or_missing": 967,
+        "disagree": 0,
+        "mismatch_with_owner_cited": false,
+        "owner_cited": {
+          "agree": 7349,
+          "capped_or_missing": 967
+        }
+      }
+    },
+    "alert_restoration": {
+      "all_183_definition": {
+        "fail": 0,
+        "no_measurable_excess": 0,
+        "pass": 6,
+        "unmeasured": 0
+      },
+      "n_all_stream_alerts": 6,
+      "protocol_common_uncapped_fitted_restoration": {
+        "fail": 0,
+        "no_measurable_excess": 0,
+        "pass": 6,
+        "unmeasured": 0
+      }
+    },
+    "cpu_cap_attribution": {
+      "events_by_wave": {
+        "1": 0,
+        "2": 24,
+        "3": 4
+      },
+      "more_than_one_position_outside_wave2": false,
+      "outside_wave2": [
+        {
+          "cpu_cap_events": 4,
+          "final_terminal": "no_alert",
+          "position": 139,
+          "wave": 3
+        }
+      ],
+      "total_cpu_cap_events": 28,
+      "wave3_mapping_rollback": {
+        "P1_numerator_changes": true,
+        "P1_numerator_current": 149,
+        "P1_numerator_reverted": 148,
+        "P3_numerator_changes": false,
+        "P3_numerator_current": 6,
+        "P3_numerator_reverted": 6,
+        "affected_positions": [
+          139
+        ],
+        "completion_note": "Rollback produces a terminal-null position with no authorized sidecar; it is not a complete alternative analysis. P1 counts here treat null as not executed; primary results remain unchanged.",
+        "method": "Classification-only in-memory replay of original observation() and unchanged patched disposition(); CPU-only exit-137 events become process_failure. No C++ execution.",
+        "reverted_observed_terminals": [
+          null
+        ]
+      }
+    },
+    "wave1_stderr_sensitivity": {
+      "baseline": {
+        "P1": {
+          "clopper_pearson_95pct_percent": [
+            27.2,
+            35.7
+          ],
+          "count": 149,
+          "percent": 31.3,
+          "total": 476,
+          "unit": "representative clusters"
+        },
+        "P2": {
+          "cluster_bootstrap_95pct_delta_pp": [
+            22.1,
+            38.4
+          ],
+          "equal_cluster_delta_pp": 30.3,
+          "n_clusters": 476,
+          "n_pairs": 477
+        },
+        "S14": {
+          "conditional_execution_yield": {
+            "clopper_pearson_95pct_percent": [
+              75.0,
+              86.8
+            ],
+            "count": 149,
+            "percent": 81.4,
+            "total": 183,
+            "unit": "S1-pass pairs"
+          },
+          "fixture_stop_per_S1_pass_pairs": {
+            "clopper_pearson_95pct_percent": [
+              12.3,
+              23.8
+            ],
+            "count": 32,
+            "percent": 17.5,
+            "total": 183,
+            "unit": "S1-pass pairs"
+          }
+        },
+        "S4": {
+          "clopper_pearson_95pct_percent": [
+            6.8,
+            17.6
+          ],
+          "count": 17,
+          "percent": 11.4,
+          "total": 149,
+          "unit": "representative clusters"
+        }
+      },
+      "changed_wave1_positions_count": 6,
+      "method": "Pinned final-statistics rate_result() and contrast_result(), unchanged predicates and representative plan; CP 95% rate intervals and equal-cluster percentile bootstrap for P2 (rng.choices, seed 42, 10000 draws, ranks 249/9749).",
+      "oracle_failure_as_fixture_stop": {
+        "P1": {
+          "clopper_pearson_95pct_percent": [
+            26.0,
+            34.4
+          ],
+          "count": 143,
+          "percent": 30.0,
+          "total": 476,
+          "unit": "representative clusters"
+        },
+        "P2": {
+          "cluster_bootstrap_95pct_delta_pp": [
+            23.3,
+            39.7
+          ],
+          "equal_cluster_delta_pp": 31.5,
+          "n_clusters": 476,
+          "n_pairs": 477
+        },
+        "S14": {
+          "conditional_execution_yield": {
+            "clopper_pearson_95pct_percent": [
+              71.4,
+              83.9
+            ],
+            "count": 143,
+            "percent": 78.1,
+            "total": 183,
+            "unit": "S1-pass pairs"
+          },
+          "fixture_stop_per_S1_pass_pairs": {
+            "clopper_pearson_95pct_percent": [
+              15.1,
+              27.4
+            ],
+            "count": 38,
+            "percent": 20.8,
+            "total": 183,
+            "unit": "S1-pass pairs"
+          }
+        },
+        "S4": {
+          "clopper_pearson_95pct_percent": [
+            3.9,
+            13.3
+          ],
+          "count": 11,
+          "percent": 7.7,
+          "total": 143,
+          "unit": "representative clusters"
+        }
+      },
+      "primary_unchanged": true
+    }
+  },
+  "provenance": {
+    "archive_members_sha256": {
+      "SHA256SUMS": "61a446fd960efd598544dd9f45997d48fef8ea56b282a025868ceb35e9d401b7",
+      "analysis-ledger.json": "59dcfaf389dc925819e777f1d7cb0e27412ad883d947d401edf5d4db39899493",
+      "anonymous-measurements.json": "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+      "final-a5-stats-agg.json": "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+      "implementation/collect.py": "94d50e95380e12d2bb60d433c295895660f3dfd7d33108a5a609f1b7c50648d1",
+      "implementation/shared-wave3/runner/development/paired_study/expansion_run.py": "04f1a1b294fa662c1d76dc7aece93b0b7fa6e0f71e39d3b3e3bc95fcb06200e2",
+      "implementation/shared-wave3/runner/development/paired_study/path_b_run.py": "281d793c9098e1e1724a03f6b8656bac6c8b26c7cf3348a50b3bd4710a173537",
+      "implementation/shared-wave3/runner/development/paired_study/predict.py": "e695e1dd959f749c92dd5efb3ec9743fe1459888972e17d2f330f8c2fdc60512",
+      "implementation/shared/runner/development/paired_study/expansion_run.py": "1c926287e8c24a0ba12d238aa6a18d88ba4dba4d5618ac32c8c0b9ebe6098ce0",
+      "implementation/statistics/replay_grouped_statistics.py": "0f2101ca3b8d78951842fcdb69ea09e9ad5d9fb2da21740330c38edf28338f90",
+      "implementation/statistics/replay_pilot_contrast.py": "a4807dcbbe707cde3a5e30171237193a47d176562834fb723085d741aaab6131",
+      "implementation/step3_artifacts.py": "675e44347de4617665765ab4567f1ebb84ff80d315c3f4458641d485253cf1c6",
+      "representative-plan.json": "99c0b42521ca2fc01177fc1e25082fab166f1a434a06792975284c87b62e476e"
+    },
+    "archived_ledger_matches_external_pin": true,
+    "baseline_statistics_recomputed_and_matched": true,
+    "files_sha256": {
+      "analysis-ledger.json": "59dcfaf389dc925819e777f1d7cb0e27412ad883d947d401edf5d4db39899493",
+      "author_check_50.json": "1d868127cd54981c6105f29c4ac6843169be97554a39e479d58cbccb18c05488",
+      "compute_agg.py": "f2e8b9b1eba9e01c1d5bc4b262420944206f634a02a984cbf74a97e5a3a675f7",
+      "final-a5-complete.tar": "54214aadbde5815d22b6f53c666d5780ee4b28845e35e628829b51e09f8897e3",
+      "manifest-expanded.json": "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+      "mapping.json": "6603f30aa8af450bdad469cc4bf5a8240fdc9f8368169bc4d493403ea5a9f44b",
+      "pre-unblinding-seal.json": "d94f2e9ca18ecef899c10c7f6bdb538061741398c73e81ed95c1a05c6ceca8fd",
+      "primary_sealed.json": "270e78aa514be5841e3b6220996dbb26a5cac90a7900f3c075e6faeb836af6eb",
+      "s1-author-blind-packet-50.zip": "9c2ee57d80f17f27ddb3072c4f0916a4ded60f9214a6c76a678afe214830449b",
+      "s1_author_check_draw.json": "70a52d37793ecadea5c927ce61b6f1d3b7c5174adc4ae342bf0f680dd775cc44",
+      "wave1-archive-notes.md": "4e21f03d15fb98576c72dc74479540fc48c6efb28aee2ef2f2e5aaa01b7c7dd3"
+    },
+    "leak_check": {
+      "identifier_matches": 0,
+      "per_case_label_records": 0
+    },
+    "seal_and_author_packet_verified_before_mapping": true
+  }
+}

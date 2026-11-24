@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cpp-benchmark-qualification"
+version = "1.0.0"
+description = "When Can a C++ Performance Pair Support a Growth Claim? Manuscript, frozen protocol, and offline verification suite."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+ast = ["tree-sitter==0.26.0", "tree-sitter-cpp==0.23.4"]
+figures = ["matplotlib>=3.8", "numpy>=1.26"]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+addopts = "-p no:cacheprovider"
+pythonpath = ["."]
+testpaths = ["tests"]

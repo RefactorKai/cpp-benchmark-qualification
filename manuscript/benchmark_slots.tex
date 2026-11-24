@@ -1,0 +1,74 @@
+% Auto-generated from verified expansion analysis receipt (do not hand-edit).
+% Manifest SHA-256: 5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346
+% Amendment 5 SHA-256: 17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469
+\newcommand{\BenchPairs}{1{,}000}
+\newcommand{\BenchPIE}{728}
+\newcommand{\BenchVal}{500}
+\newcommand{\BenchTrain}{228}
+\newcommand{\BenchCodeNet}{228}
+\newcommand{\BenchGitHub}{44}
+\newcommand{\BenchContestPairs}{956}
+\newcommand{\BenchGCC}{15.2.0}
+\newcommand{\BenchMinClusters}{200}
+\newcommand{\BenchMinFits}{30}
+\newcommand{\BenchMinSizes}{4}
+\newcommand{\BenchMinSpan}{8}
+\newcommand{\BenchMinSlope}{0.50}
+\newcommand{\BenchMinRatio}{1.50}
+\newcommand{\BenchRecovery}{80\%}
+\newcommand{\BenchAuthorSample}{50}
+\newcommand{\BenchSlot}[1]{\textnormal{[\emph{#1}:~\rule{1.3em}{0.35pt}]}}
+\newcommand{\BenchCell}{\textnormal{[\rule{1.3em}{0.35pt}]}}
+\newcommand{\BenchExecRate}{149/476 = 31.3\% (95\% CP 27.2--35.7\%)}
+\newcommand{\BenchDeskContrast}{+30.3~pp across 476 clusters (95\% cluster bootstrap +22.1 to +38.4~pp, Holm $p = 6.78 \times 10^{-12}$)}
+\newcommand{\BenchFitAlertRate}{6/124 = 4.8\% (95\% CP 1.8--10.2\%)}
+\newcommand{\BenchIntakeAlertRate}{6/476 = 1.3\% (95\% CP 0.5--2.7\%)}
+\newcommand{\BenchAbstractTakeaway}{Qualification stopped at desk screening significantly more often than it reached isolated execution (P2 equal-cluster contrast +30.3~pp, Holm $p = 6.78 \times 10^{-12}$). Execution yield differed from the 147-pair 9.5\% reference (above; Holm $p = 1.97 \times 10^{-39}$). Among fitted clusters, all-stream alerts differed from the 30.8\% reference (below; Holm $p = 2.53 \times 10^{-12}$). All 33 post-intake Repository pairs were held \texttt{desk\_unrateable} (0 executed; all executed and fitted pairs are Contest pairs), and excluding the 118 held \texttt{desk\_unrateable} clusters attenuates P2 to +7.3~pp (95\% cluster bootstrap -2.8 to +17.0~pp, exact sign-flip $p = 0.165$). (P1--P3 are \emph{replay-only} under Amendment~3.)}
+\newcommand{\BenchIntroTakeaway}{that qualification stopped at desk screening more often than reaching execution (P2 +30.3~pp, Holm $p = 6.78 \times 10^{-12}$), execution yield above the 9.5\% reference (Holm $p = 1.97 \times 10^{-39}$), and fitted-case alerts below 30.8\% (Holm $p = 2.53 \times 10^{-12}$) (P1--P3 \emph{replay-only} under Amendment~3)}
+\newcommand{\BenchConclusionTakeaway}{Qualification stops concentrated before isolated measurement (desk stops exceeded isolated execution by +30.3~pp, Holm $p = 6.78 \times 10^{-12}$), while fitted-case alerts fell below the 30.8\% reference (Holm $p = 2.53 \times 10^{-12}$). All 33 post-intake Repository pairs were held \texttt{desk\_unrateable} (0 executed; all executed and fitted pairs are Contest pairs), and excluding the 118 held \texttt{desk\_unrateable} clusters attenuates P2 to +7.3~pp (95\% cluster bootstrap -2.8 to +17.0~pp, exact sign-flip $p = 0.165$). (P1--P3 \emph{replay-only} under Amendment~3.)}
+\newcommand{\BenchDeskMethods}{S1 labels were assigned across 96 frozen batches (844 desk-rateable pairs; 133 held as \texttt{desk\_unrateable}) by one Devin built-in agent workflow (Lite child sessions) whose backend routing is not disclosed by the vendor (Amendments~1--4 for S1 labeling; Amendment~5 \texttt{17de6626} for S2--S5 scope; P1--P3 \emph{replay-only}).}
+\newcommand{\BenchModelAgreement}{dropped under Amendment~2; no second model rated any pair}
+\newcommand{\BenchDeskReasons}{across 844 rateable pairs: 387 pass, 411 \texttt{desk\_excluded}, 43 \texttt{desk\_blocked}, and 3 \texttt{indeterminate} (Amendment~4), plus 133 held \texttt{desk\_unrateable} (100 Contest unbundled images, 33 Repository lacking independent specification); confirmatory representative rated stops: 160 contract, 11 source, 2 route, 2 \texttt{indeterminate} (175 rated stops plus 118 held \texttt{desk\_unrateable} = 293 total)}
+\newcommand{\BenchIntakeStops}{23/1{,}000 pairs stopped at S0 (12 \texttt{intake\_duplicate}, 11 \texttt{intake\_unretrievable}), leaving 977 S0-pass pairs}
+\newcommand{\BenchGates}{476 confirmatory clusters past S0 (P1/P2 $\ge 200$ gate met; P3 $\ge 30$ gate met with 124 fitted clusters; S13 without \texttt{desk\_unrateable}: 358 clusters)}
+\newcommand{\BenchAuthorCheck}{descriptive blind check on 50 pairs (38 clusters; 0 unblinded): exact agreement 13/50 = 26.0\% ($\kappa = 0.163$, 95\% cluster bootstrap [0.046, 0.277]), bucket agreement 24/50 = 48.0\% ($\kappa = 0.154$, 95\% cluster bootstrap [-0.031, 0.326]); descriptive only}
+\newcommand{\BenchOverlap}{500 development-exposed S0-pass pairs across 54 quarantined clusters (0 confirmatory overlaps with the archived development audit; all 500 quarantined pairs are Contest pairs, checked across PIE problem ID, CppPerf project, alias, and template hash with 0 Repository overlaps)}
+\newcommand{\BenchRunStops}{Sec.~S14 post-S1 \texttt{fixture\_stop} 32/183 = 17.5\% (95\% CP 12.3--23.8\%) (19 contract, 4 route (4 \texttt{original\_compile\_failure}), 9 source), Sec.~S3 Stage~S2 single-TU preprocessing stops 0/183 = 0.0\% (95\% CP 0.0--2.0\%), 2 infrastructure failures, 0 confirmatory clusters and 204 quarantined pairs \texttt{not\_executed} at closure, Sec.~S4 oracle failures 17/149 = 11.4\% (95\% CP 6.8--17.6\%), and 8 confirmatory \texttt{insufficient\_fit} clusters}
+\newcommand{\BenchTests}{P1 vs.\ 14/147 (unadjusted $p = 6.56 \times 10^{-40}$, Holm $p = 1.97 \times 10^{-39}$); P2 sign-flip (unadjusted $p = 6.78 \times 10^{-12}$, Holm $p = 6.78 \times 10^{-12}$); P3 vs.\ 4/13 (unadjusted $p = 1.26 \times 10^{-12}$, Holm $p = 2.53 \times 10^{-12}$); exploratory nominal tests: S1 desk stops 293/476 = 61.6\% (95\% CP 57.0--65.9\%) vs.\ 103/147 ($p = 7.39 \times 10^{-5}$), S2 alerts/selected vs.\ 4/147 ($p = 0.048$), S3 preprocessing vs.\ 12/26 ($p = 6.77 \times 10^{-50}$), S4 oracle failures vs.\ 1/14 ($p = 0.054$), and S5 fitted contrast -90.3~pp (95\% bootstrap -96.8 to -82.3~pp, nominal $p = 4.42 \times 10^{-28}$)}
+\newcommand{\BenchFrames}{Contest (444 clusters past S0, $\ge 30$ gate met): P1 149/444 = 33.6\% (95\% CP 29.2--38.2\%), S1 desk stops 261/444 = 58.8\% (95\% CP 54.0--63.4\%), P3 fitted alerts 6/124 = 4.8\% (95\% CP 1.8--10.2\%); Repository (32 clusters / 33 pairs, counts only because all S0-pass pairs are held \texttt{desk\_unrateable}): 0 rated, 0 executed (Union equals Contest for all rated and executed outcomes)}
+\newcommand{\BenchFitSensitivity}{S7 any-stream alerts 11/124 = 8.9\% (95\% CP 4.5--15.3\%) (11/476 = 2.3\% (95\% CP 1.2--4.1\%) of selected); S8 drop-largest refit: 123/124 admitted (1 range-limited, not negative), alerts among admitted 5/123 = 4.1\% (95\% CP 1.3--9.2\%) (5 all-stream alerts retained, 1 failed after drop, 0 range-limited)}
+\newcommand{\BenchVariantChecks}{cap coverage (\texttt{cpu\_cap}: 28 events across 3 positions, \texttt{tick\_cap}: 72 events across 2 positions); -O0/-O2/-O3 stability and sham preservation enforced on all completed observations; restoration ($\ge 80\%$ recovery) across all 183 confirmatory S1 passes: 54 passed, 66 no excess, 18 failed, 45 unmeasured (among 124 admitted fits: 47 passed, 63 no measurable excess, 14 failed)}
+\newcommand{\BenchPairSensitivity}{S6 P1 without infrastructure failures 149/474 = 31.4\% (95\% CP 27.3--35.8\%); S9 all-pair equal-cluster P1 31.3\% (95\% bootstrap 27.1--35.5\%, pair-level 149/477 = 31.2\% (95\% CP 27.1--35.6\%)) and P3 4.8\% (95\% bootstrap 1.6--8.9\%, pair-level 6/124 = 4.8\% (95\% CP 1.8--10.2\%)); S13 excluding \texttt{desk\_unrateable} (358 clusters): P1 149/358 = 41.6\% (95\% CP 36.5--46.9\%), P2 +7.3~pp (95\% cluster bootstrap -2.8 to +17.0~pp, nominal exact sign-flip $p = 0.165$; outside primary Holm family), P3 6/124 = 4.8\% (95\% CP 1.8--10.2\%); protocol Section~11 sensitivity: exit-137 \texttt{cpu\_cap} (2 pairs: unpatched P1 147/476 = 30.9\% (95\% CP 26.8--35.2\%), P2 +30.7~pp, P3 6/122 = 4.9\% (95\% CP 1.8--10.4\%)); superseded \texttt{alignment\_boundary} (4 pairs: P1 145/476 = 30.5\% (95\% CP 26.4--34.8\%), P2 +31.1~pp, S14 36/183 = 19.7\% (95\% CP 14.2--26.2\%), S4 13/145 = 9.0\% (95\% CP 4.9--14.8\%))}
+\newcommand{\BenchExposedResults}{S12 quarantined stratum (500 S0-pass pairs across 54 clusters): cluster S1 desk stops 32/54 = 59.3\% (95\% CP 45.0--72.4\%), pair S1 desk stops 296/500 = 59.2\% (95\% CP 54.7--63.5\%), and 204 quarantined S1 passes recorded as \texttt{not\_executed} under Amendment~5 (cluster P1 0/54 = 0.0\% (95\% CP 0.0--6.6\%), pair P1 0/500 = 0.0\% (95\% CP 0.0--0.7\%))}
+\newcommand{\BenchBuildDecision}{\textbf{NO-GO (native build not triggered)} (P1 CP lower limit $E = 27.2\%$ vs.\ $15.5\%$ anchor; Repository route+preprocessing stops $R = 0$, Repository executed $X = 0$ across 32 clusters---single-TU preprocessing was exercised only on Contest pairs because all 32 Repository clusters stopped as \texttt{desk\_unrateable})}
+\newcommand{\BenchAvailability}{that inputs are pinned to manifest \texttt{5b432d82}, protocol \texttt{8a969245}, hold list \texttt{6bc97dea}, and Amendment~5 \texttt{17de6626}; P1--P3 and all S1-dependent secondary rates (Sec.~S1--S14, including S6, S7 alerts/selected, S9, S10, and S12) are \emph{replay-only} (Amendment~3 undisclosed S1 workflow routing), Stages~S2--S5 Gate~1 runs conditional on fixed S1-pass fixtures are \emph{re-executable}, and raw S1 prompts, responses, packets, and source payloads remain non-public custody}
+\newcommand{\BenchFlowIntakeC}{12}
+\newcommand{\BenchFlowIntakeR}{11}
+\newcommand{\BenchFlowIntakeU}{23}
+\newcommand{\BenchFlowDeskC}{557}
+\newcommand{\BenchFlowDeskR}{33}
+\newcommand{\BenchFlowDeskU}{590}
+\newcommand{\BenchFlowFixtureC}{32}
+\newcommand{\BenchFlowFixtureR}{0}
+\newcommand{\BenchFlowFixtureU}{32}
+\newcommand{\BenchFlowPrepC}{0}
+\newcommand{\BenchFlowPrepR}{0}
+\newcommand{\BenchFlowPrepU}{0}
+\newcommand{\BenchFlowInfraC}{2}
+\newcommand{\BenchFlowInfraR}{0}
+\newcommand{\BenchFlowInfraU}{2}
+\newcommand{\BenchFlowUnrunC}{204}
+\newcommand{\BenchFlowUnrunR}{0}
+\newcommand{\BenchFlowUnrunU}{204}
+\newcommand{\BenchFlowOracleC}{17}
+\newcommand{\BenchFlowOracleR}{0}
+\newcommand{\BenchFlowOracleU}{17}
+\newcommand{\BenchFlowNoFitC}{8}
+\newcommand{\BenchFlowNoFitR}{0}
+\newcommand{\BenchFlowNoFitU}{8}
+\newcommand{\BenchFlowNoAlertC}{118}
+\newcommand{\BenchFlowNoAlertR}{0}
+\newcommand{\BenchFlowNoAlertU}{118}
+\newcommand{\BenchFlowAlertC}{6}
+\newcommand{\BenchFlowAlertR}{0}
+\newcommand{\BenchFlowAlertU}{6}
