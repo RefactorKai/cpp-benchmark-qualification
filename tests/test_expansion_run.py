@@ -1,3 +1,5 @@
+"""Unit tests for Gate 1 input loading, protocol amendment policies, trace validation, and checkpoint replay."""
+
 import base64
 from copy import deepcopy
 from io import BytesIO, StringIO

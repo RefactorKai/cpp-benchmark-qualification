@@ -1,3 +1,5 @@
+"""Unit tests for fixture bundle assembly, recipe coverage validation, and SHA-256 pinning."""
+
 from io import BytesIO
 
 import pytest

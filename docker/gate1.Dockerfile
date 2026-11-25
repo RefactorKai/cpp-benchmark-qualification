@@ -13,10 +13,8 @@ RUN sed -i -E 's#http://(archive|security)\.ubuntu\.com/ubuntu/#https://snapshot
     && ln -s gcc-15 /usr/bin/gcc && ln -s g++-15 /usr/bin/g++ \
     && test "$(g++ -dumpfullversion)" = 15.2.0
 
-COPY requirements-ast.txt /tmp/requirements-ast.txt
 RUN python3.14 -m venv /opt/eapg \
-    && /opt/eapg/bin/python -m pip install --no-cache-dir -r /tmp/requirements-ast.txt pytest==9.0.2 \
-    && rm /tmp/requirements-ast.txt \
+    && /opt/eapg/bin/python -m pip install --no-cache-dir matplotlib==3.10.1 numpy==2.2.4 pytest==9.0.2 \
     && useradd --create-home --shell /bin/bash eapg \
     && install -d -o eapg -g eapg /workspace \
     && systemctl mask systemd-sysctl.service \

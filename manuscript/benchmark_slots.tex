@@ -17,44 +17,597 @@
 \newcommand{\BenchMinRatio}{1.50}
 \newcommand{\BenchRecovery}{80\%}
 \newcommand{\BenchAuthorSample}{50}
+\newcommand{\BenchPilotPairs}{147}
+\newcommand{\BenchPilotDeskN}{103}
+\newcommand{\BenchPilotDeskPct}{70.1\%}
+\newcommand{\BenchPilotExecN}{14}
+\newcommand{\BenchPilotExecPct}{9.5\%}
+\newcommand{\BenchPilotFitN}{13}
+\newcommand{\BenchPilotAlertN}{4}
+\newcommand{\BenchPilotAlertPct}{30.8\%}
+\newcommand{\BenchPilotIntakeAlertPct}{2.7\%}
+\newcommand{\BenchPilotPrepN}{12}
+\newcommand{\BenchPilotPrepDenom}{26}
+\newcommand{\BenchPilotPrepPct}{46.2\%}
+\newcommand{\BenchPilotOracleN}{1}
+\newcommand{\BenchPilotOraclePct}{7.1\%}
+\newcommand{\BenchPilotSAFiveDelta}{$-33.3$~pp}
+\newcommand{\BenchCpuCapSec}{8\,s}
+\newcommand{\BenchStackCapMB}{8\,\text{MiB}}
+\newcommand{\BenchFileCapMB}{8\,\text{MiB}}
+\newcommand{\BenchTickCeiling}{$\max(2\times 10^{6},\,5N^{2})$}
+\newcommand{\BenchCpuFloorMs}{10\,\text{ms}}
+\newcommand{\BenchSpawnFloorMs}{0.5\,\text{ms}}
+\newcommand{\BenchCensorTolPct}{10\%}
+\newcommand{\BenchBwrapVer}{0.11.1}
+\newcommand{\BenchPilotFitClustersN}{12}
+\newcommand{\BenchPilotFitClustersFrac}{4/12}
+\newcommand{\BenchPilotConservFrac}{3/12}
+\newcommand{\BenchPilotNeffThirty}{30}
+\newcommand{\BenchPilotNeffFifty}{50}
+\newcommand{\BenchPilotNeffRange}{30\text{--}75}
+\newcommand{\BenchPosSevenOne}{71}
+\newcommand{\BenchPosNineNine}{99}
+\newcommand{\BenchPosOneZeroSeven}{107}
+\newcommand{\BenchPosOneOneSix}{116}
+\newcommand{\BenchPosOneThreeNine}{139}
+\newcommand{\BenchPosOneFourOne}{141}
+\newcommand{\BenchPosOneSixSeven}{167}
+\newcommand{\BenchNumVariants}{4}
+\newcommand{\BenchNumModes}{5}
+\newcommand{\BenchNumStreams}{3}
+\newcommand{\BenchFDWire}{3}
+\newcommand{\BenchUbuntuVer}{26.04}
+\newcommand{\BenchMemCapMiB}{768\,\text{MiB}}
+\newcommand{\BenchTasksCap}{24}
+\newcommand{\BenchAsCapMiB}{512\,\text{MiB}}
+\newcommand{\BenchWallCapSec}{12\,\text{s}}
+\newcommand{\BenchCompileTimeoutSec}{25\,\text{s}}
+\newcommand{\BenchTickExitCode}{85}
+\newcommand{\BenchPilotExecUpperPct}{15.5\%}
+\newcommand{\BenchOLSMinRSq}{0.6584}
+\newcommand{\BenchRestTwoSidedBand}{80--120\%}
+\newcommand{\BenchCensorSlopeMin}{0.45}
+\newcommand{\BenchWaveOnePin}{\texttt{04f1a1b2}}
+\newcommand{\BenchWaveTwoPin}{\texttt{b598ea21}}
+\newcommand{\BenchBetaGridMin}{0.20}
+\newcommand{\BenchBetaGridDrop}{0.10}
+\newcommand{\BenchRestSurgicalBand}{80--105\%}
+\newcommand{\BenchRestMildBand}{105--120\%}
+\newcommand{\BenchRestHighBand}{$>120\%$}
+\newcommand{\BenchPinManifest}{\texttt{5b432d82}}
+\newcommand{\BenchPinProtocol}{\texttt{8a969245}}
+\newcommand{\BenchPinHolds}{\texttt{6bc97dea}}
+\newcommand{\BenchPinAmendFive}{\texttt{17de6626}}
+\newcommand{\BenchPinAnon}{\texttt{c2ba8209}}
+\newcommand{\BenchPinForensics}{\texttt{b8ea9b8c}}
 \newcommand{\BenchSlot}[1]{\textnormal{[\emph{#1}:~\rule{1.3em}{0.35pt}]}}
 \newcommand{\BenchCell}{\textnormal{[\rule{1.3em}{0.35pt}]}}
+\newcommand{\BenchIntakeStopsN}{23}
+\newcommand{\BenchIntakeDupN}{12}
+\newcommand{\BenchIntakeUnretN}{11}
+\newcommand{\BenchIntakeContestN}{12}
+\newcommand{\BenchIntakeRepoN}{11}
+\newcommand{\BenchSOPassN}{977}
+\newcommand{\BenchQuarPairsN}{500}
+\newcommand{\BenchQuarClustersN}{54}
+\newcommand{\BenchConfPairsN}{477}
+\newcommand{\BenchConfClustersN}{476}
+\newcommand{\BenchConfContestClustersN}{444}
+\newcommand{\BenchConfRepoClustersN}{32}
+\newcommand{\BenchConfRepoPairsN}{33}
+\newcommand{\BenchConfSingletonN}{475}
+\newcommand{\BenchConfRepoSingletonN}{31}
+\newcommand{\BenchHeldUnratAllN}{133}
+\newcommand{\BenchRepoDeskUnratN}{33}
+\newcommand{\BenchContestUnbundledConfN}{86}
+\newcommand{\BenchHeldUnratConfClustN}{118}
+\newcommand{\BenchHeldConfPairsN}{119}
+\newcommand{\BenchRateablePairsN}{844}
+\newcommand{\BenchSOneBatchesN}{96}
+\newcommand{\BenchSOneAttemptsN}{102}
+\newcommand{\BenchSOneRetriesN}{6}
+\newcommand{\BenchSOneDateWindow}{2026-11-23, 04:09--10:09~UTC}
 \newcommand{\BenchFittedClusters}{124}
 \newcommand{\BenchExecRate}{149/476 = 31.3\% (95\% CP 27.2--35.7\%)}
-\newcommand{\BenchDeskContrast}{+30.3~pp across 476 clusters (95\% cluster bootstrap +22.1 to +38.4~pp, Holm $p = 6.78 \times 10^{-12}$)}
-\newcommand{\BenchFitAlertRate}{6/124 = 4.8\% (95\% CP 1.8--10.2\%)}
-\newcommand{\BenchIntakeAlertRate}{6/476 = 1.3\% (95\% CP 0.5--2.7\%)}
-\newcommand{\BenchAbstractTakeaway}{Across all confirmatory clusters, qualification stopped at desk screening more often than it reached isolated execution (P2 equal-cluster contrast +30.3~pp, Holm $p = 6.78 \times 10^{-12}$). Hash-ordered execution yield lay above the fixed 147-pair 9.5\% pilot anchor (Holm $p = 1.97 \times 10^{-39}$, reflecting deferral removal rather than a population null). Among fitted clusters, all-stream alerts lay below the outcome-selected 30.8\% pilot anchor (Holm $p = 2.53 \times 10^{-12}$). All 33 post-intake Repository pairs were held \texttt{desk\_unrateable} (0 executed; all executed and fitted pairs are Contest pairs); excluding the 118 held \texttt{desk\_unrateable} clusters yields 149/358 = 41.6\% (95\% CP 36.5--46.9\%) rateable Contest execution and attenuates P2 to +7.3~pp (95\% cluster bootstrap $-2.8$ to +17.0~pp, nominal exact sign-flip $p = 0.165$). Stage-boundary rates (P1, P2, Sec.~S13) reflect one undisclosed-routing S1 workflow whose 50-pair blind author check showed low agreement (exact 26.0\%, $\kappa = 0.163$; bucket 48.0\%, $\kappa = 0.154$). (P1--P3 are \emph{replay-only} under Amendment~3.)}
-\newcommand{\BenchIntroTakeaway}{that desk stops exceeded isolated execution across all confirmatory clusters (P2 +30.3~pp, Holm $p = 6.78 \times 10^{-12}$), that execution yield lay above the 9.5\% pilot anchor (Holm $p = 1.97 \times 10^{-39}$), and that fitted-case alerts lay below the 30.8\% pilot anchor (Holm $p = 2.53 \times 10^{-12}$), while excluding held \texttt{desk\_unrateable} clusters attenuated P2 to +7.3~pp (nominal $p = 0.165$) (P1--P3 \emph{replay-only} under Amendment~3)}
-\newcommand{\BenchConclusionTakeaway}{Qualification stops concentrated before isolated measurement (desk stops exceeded isolated execution by +30.3~pp, Holm $p = 6.78 \times 10^{-12}$), while fitted-case alerts fell below the 30.8\% reference (Holm $p = 2.53 \times 10^{-12}$; diagnosing pilot outcome-selection distortion). All 33 post-intake Repository pairs were held \texttt{desk\_unrateable} (0 executed; all executed and fitted pairs are Contest pairs); excluding the 118 held \texttt{desk\_unrateable} clusters yields 149/358 = 41.6\% (95\% CP 36.5--46.9\%) rateable Contest execution and attenuates P2 to +7.3~pp (95\% cluster bootstrap $-2.8$ to +17.0~pp, nominal exact sign-flip $p = 0.165$). Stage-boundary rates (P1, P2, Sec.~S13) reflect one undisclosed-routing S1 workflow whose 50-pair blind author check showed low agreement (exact 26.0\%, $\kappa = 0.163$; bucket 48.0\%, $\kappa = 0.154$). (P1--P3 \emph{replay-only} under Amendment~3.)}
-\newcommand{\BenchDeskMethods}{S1 labels were assigned across 96 frozen batches (844 desk-rateable pairs; 133 held as \texttt{desk\_unrateable}) on 2026-11-23 (04:09--10:09~UTC; 96 sealed valid batches across 102 attempts, 6 retried; workflow mode unlogged in \texttt{batch\_log.json}, and the 102 attempt session identifiers are retained in private custody \texttt{batch\_log.json} alongside \texttt{primary\_sealed.json}) by one Devin built-in agent workflow whose backend routing is not disclosed by the vendor (Amendments~1--4 for S1 labeling; Amendment~5 \texttt{17de6626} for S2--S5 scope; P1--P3 \emph{replay-only}).}
-\newcommand{\BenchModelAgreement}{dropped under Amendment~2; no second model rated any pair}
-\newcommand{\BenchDeskReasons}{across 844 rateable pairs: 387 pass, 411 \texttt{desk\_excluded}, 43 \texttt{desk\_blocked}, and 3 \texttt{indeterminate} (Amendment~4), plus 133 held \texttt{desk\_unrateable} (100 Contest unbundled images, 33 Repository lacking independent specification); confirmatory representative rated stops: 160 contract, 11 source, 2 route, 2 \texttt{indeterminate} (175 rated stops plus 118 held \texttt{desk\_unrateable} = 293 total)}
-\newcommand{\BenchIntakeStops}{23/1{,}000 pairs stopped at S0 (12 \texttt{intake\_duplicate}, 11 \texttt{intake\_unretrievable}), leaving 977 S0-pass pairs}
-\newcommand{\BenchGates}{476 confirmatory clusters past S0 (P1/P2 $\ge 200$ gate met; P3 $\ge 30$ gate met with 124 fitted clusters; S13 without \texttt{desk\_unrateable}: 358 clusters)}
-\newcommand{\BenchAuthorCheck}{descriptive blind check on 50 pairs (38 clusters; 0 unblinded): exact agreement 13/50 = 26.0\% ($\kappa = 0.163$, 95\% cluster bootstrap [0.046, 0.277]), bucket agreement 24/50 = 48.0\% ($\kappa = 0.154$, 95\% cluster bootstrap [$-0.031$, 0.326]); descriptive only}
-\newcommand{\BenchOverlap}{500 development-exposed S0-pass pairs across 54 quarantined clusters (0 confirmatory overlaps with the archived development audit; all 500 quarantined pairs are Contest pairs, checked across PIE problem ID, CppPerf project, alias, and template hash with 0 Repository overlaps)}
-\newcommand{\BenchRunStops}{Sec.~S14 post-S1 \texttt{fixture\_stop} 32/183 = 17.5\% (95\% CP 12.3--23.8\%) (19 contract, 4 route (4 \texttt{original\_compile\_failure}), 9 source), Sec.~S3 Stage~S2 single-TU preprocessing stops 0/183 = 0.0\% (95\% CP 0.0--2.0\%), 2 infrastructure failures, 0 confirmatory clusters and 204 quarantined pairs \texttt{not\_executed} at closure, Sec.~S4 oracle failures 17/149 = 11.4\% (95\% CP 6.8--17.6\%), and 8 confirmatory \texttt{insufficient\_fit} clusters}
-\newcommand{\BenchTests}{P1 vs.\ 14/147 (unadjusted $p = 6.56 \times 10^{-40}$, Holm $p = 1.97 \times 10^{-39}$); P2 sign-flip (unadjusted $p = 6.78 \times 10^{-12}$, Holm $p = 6.78 \times 10^{-12}$); P3 vs.\ 4/13 (unadjusted $p = 1.26 \times 10^{-12}$, Holm $p = 2.53 \times 10^{-12}$); exploratory nominal tests: S1 desk stops 293/476 = 61.6\% (95\% CP 57.0--65.9\%) vs.\ 103/147 ($p = 7.39 \times 10^{-5}$), S2 alerts/selected vs.\ 4/147 ($p = 0.048$), S3 preprocessing vs.\ 12/26 ($p = 6.77 \times 10^{-50}$), S4 oracle failures vs.\ 1/14 ($p = 0.054$), and S5 fitted contrast $-90.3$~pp (95\% bootstrap $-96.8$ to $-82.3$~pp, nominal $p = 4.42 \times 10^{-28}$)}
-\newcommand{\BenchFrames}{Contest (444 clusters past S0, $\ge 30$ gate met): P1 149/444 = 33.6\% (95\% CP 29.2--38.2\%), S1 desk stops 261/444 = 58.8\% (95\% CP 54.0--63.4\%), P3 fitted alerts 6/124 = 4.8\% (95\% CP 1.8--10.2\%); Repository (32 clusters / 33 pairs, counts only because all S0-pass pairs are held \texttt{desk\_unrateable}): 0 rated, 0 executed (Union equals Contest for all rated and executed outcomes)}
-\newcommand{\BenchFitSensitivity}{S7 any-stream alerts 11/124 = 8.9\% (95\% CP 4.5--15.3\%) (11/476 = 2.3\% (95\% CP 1.2--4.1\%) of selected); S8 drop-largest refit: 123/124 admitted (1 range-limited, not negative), alerts among admitted 5/123 = 4.1\% (95\% CP 1.3--9.2\%) (5 all-stream alerts retained, 1 failed after drop, 0 range-limited)}
-\newcommand{\BenchVariantChecks}{cap coverage (\texttt{cpu\_cap}: 28 events across 3 positions, \texttt{tick\_cap}: 72 events across 2 positions); -O0/-O2/-O3 stability and sham preservation enforced on all completed observations; restoration ($\ge 80\%$ recovery) across all 183 confirmatory S1 passes: 54 passed, 66 no excess, 18 failed, 45 unmeasured (among 124 admitted fits: 47 passed, 63 no measurable excess, 14 failed)}
-\newcommand{\BenchPairSensitivity}{S6 P1 without infrastructure failures 149/474 = 31.4\% (95\% CP 27.3--35.8\%); S9 all-pair equal-cluster P1 31.3\% (95\% bootstrap 27.1--35.5\%, pair-level 149/477 = 31.2\% (95\% CP 27.1--35.6\%)) and P3 4.8\% (95\% bootstrap 1.6--8.9\%, pair-level 6/124 = 4.8\% (95\% CP 1.8--10.2\%)); S13 excluding \texttt{desk\_unrateable} (358 clusters): P1 149/358 = 41.6\% (95\% CP 36.5--46.9\%), P2 +7.3~pp (95\% cluster bootstrap $-2.8$ to +17.0~pp, nominal exact sign-flip $p = 0.165$; outside primary Holm family), P3 6/124 = 4.8\% (95\% CP 1.8--10.2\%); protocol Section~11 sensitivity: exit-137 \texttt{cpu\_cap} (2 pairs: unpatched P1 147/476 = 30.9\% (95\% CP 26.8--35.2\%), P2 +30.7~pp, P3 6/122 = 4.9\% (95\% CP 1.8--10.4\%)); superseded \texttt{alignment\_boundary} (4 pairs: P1 145/476 = 30.5\% (95\% CP 26.4--34.8\%), P2 +31.1~pp, S14 36/183 = 19.7\% (95\% CP 14.2--26.2\%), S4 13/145 = 9.0\% (95\% CP 4.9--14.8\%))}
-\newcommand{\BenchExposedResults}{S12 quarantined stratum (500 S0-pass pairs across 54 clusters): cluster S1 desk stops 32/54 = 59.3\% (95\% CP 45.0--72.4\%), pair S1 desk stops 296/500 = 59.2\% (95\% CP 54.7--63.5\%), and 204 quarantined S1 passes recorded as \texttt{not\_executed} under Amendment~5 (cluster P1 0/54 = 0.0\% (95\% CP 0.0--6.6\%), pair P1 0/500 = 0.0\% (95\% CP 0.0--0.7\%))}
-\newcommand{\BenchBuildDecision}{\textbf{NO-GO (native build not triggered)} (P1 CP lower limit $E = 27.2\%$ vs.\ $15.5\%$ anchor; Repository route+preprocessing stops $R = 0$, Repository executed $X = 0$ across 32 clusters---single-TU preprocessing was exercised only on Contest pairs because all 32 Repository clusters stopped as \texttt{desk\_unrateable})}
-\newcommand{\BenchAvailability}{inputs are pinned to manifest \texttt{5b432d82}, protocol \texttt{8a969245}, hold list \texttt{6bc97dea}, and Amendment~5 \texttt{17de6626}; P1--P3 and all S1-dependent secondary and forensic rates (Sec.~S1--S14, Table~\ref{tab:alerts}, and baseline screens) are \emph{replay-only} (Amendment~3 undisclosed S1 workflow routing), identifier-free ordinal-indexed counter traces (\texttt{data/\allowbreak anonymous-\allowbreak measurements.json}, \texttt{c2ba8209}, joinable to the public manifest via frozen \texttt{rank(row)} order), alert/screen forensics (\texttt{data/\allowbreak alert-\allowbreak and-\allowbreak fit-\allowbreak forensics-\allowbreak agg.json}, \texttt{b8ea9b8c}), and \texttt{data/\allowbreak paper\_\allowbreak claims.json} support public statistical and per-point fit replay, Stages~S2--S5 Gate~1 runs conditional on fixed S1-pass fixtures are \emph{re-executable} when private custody fixtures are present (no public C++ re-execution is possible without upstream source/oracle custody), and raw S1 prompts, responses, packets, session logs, source payloads, and individual author ballots remain non-public custody}
-\newcommand{\BenchTableFlowCaption}{Terminal outcomes as pair counts, including development-exposed rows. S1 desk stops comprise \texttt{desk\_excluded}, \texttt{desk\_blocked}, held \texttt{desk\_unrateable} (100~Contest unbundled-image pairs and all 33~Repository pairs lacking independent specification), and terminal \texttt{indeterminate} (3~Contest pairs under Amendment~4); pre-S3 \texttt{fixture\_stop} cases (Amendment~5) remain in post-S0 denominators as not executed in P1/S9 (keeping $\text{desk stop}=0$ and $\text{executed}=0$ in P2) and outside P3. A case appears in one disposition per applicable frame and once in the union. The confirmatory analysis excludes intake stops and reports the development-exposed stratum separately.}
-\newcommand{\BenchFigOneCaption}{Verified S1 qualification outcomes across all 977 S0-pass pairs (96/96 batches sealed; 844 rateable---including 3 terminal \texttt{indeterminate} judgments under Amendment~4---plus 133 held \texttt{desk\_unrateable}). Panel~A shows shares per stratum; Panel~B shows the 590 total S1 stops split by confirmatory pairs ($n=294$, spanning 293 representative clusters) vs.\ development-exposed quarantined pairs ($n=296$).}
-\newcommand{\BenchFigTwoCaption}{Confirmatory qualification rates and exact two-sided 95\% Clopper--Pearson intervals versus the fixed 147-pair development anchors (diamonds). P1, P3, and all S1-dependent secondary rates (Sec.~S1, S2, S13) are \emph{replay-only} under Amendment~3 because S1 labels derive from one vendor workflow with undisclosed routing; P3 satisfies its $\ge 30$ confirmatory fitted-cluster gate ($n=124$).}
-\newcommand{\BenchAmendmentFiveDisclosures}{Prior to confirmatory S3 execution, Amendment~5 (\texttt{17de6626}, 2026-11-23) refined S2--S5 handling from disjoint development evidence (183/183 confirmatory S2 preprocessing passes under GCC~\BenchGCC{} and 3/5 fixture-authoring stops in a 5-pair quarantined diagnostic): (i)~an S1 pass failing constructive fixture verification before S3 receives terminal \texttt{fixture\_stop} with a bucket, reason, and SHA-256-pinned proof, staying in post-S0 denominators as not executed in P1 and S9, keeping $\text{desk stop}=0$ and $\text{executed}=0$ in P2, remaining outside P3, and reporting as S14; and (ii)~confirmatory-only quota-gated execution runs the 183 confirmatory S1 passes in frozen hash order across waves (target $\le 75\%$, hard cap $80\%$ weekly quota) while recording the 204 quarantined S12 passes and any unattempted confirmatory tail as \texttt{not\_executed}. Under protocol Section~11, Wave~1--3 operational disclosures are documented alongside sensitivity toggles: \texttt{gate1\_sandbox.py} enforces \texttt{prlimit --cpu=8:8}, emitting \texttt{SIGKILL} (exit~137) rather than \texttt{SIGXCPU}; Wave~2's two 8\,s CPU kills (\texttt{oom\_kill = 0}) halted at \texttt{terminal = None} until \texttt{expansion\_run.py} was patched (\texttt{04f1a1b2}; Wave~1 baseline \texttt{1c926287} replayed identically with zero exit-137 rows) to record non-OOM exit~137/$-9$ at \texttt{cpu.stat.usage\_usec} $\ge 8\times 10^{6}$ as right-censored \texttt{cpu\_cap} and emit \texttt{insufficient\_fit} when $<4$ uncapped sizes remain. Both Wave~2 pairs re-executed to admissible \texttt{no\_alert} fits (20 and 4 \texttt{cpu\_cap} events; treating both as infrastructure failure yields P1 147/476 = 30.9\% (95\% CP 26.8--35.2\%), P2 +30.7~pp, P3 6/122 = 4.9\% (95\% CP 1.8--10.4\%)). Across all waves, \texttt{cpu\_cap} fired 28 times across 3 positions: 24 on those two Wave~2 pairs plus 4 on Wave~3 position~139 (\texttt{no\_alert}; rollback shifts P1 from 149 to 148 and leaves P3 at 6, bounding unpatched P1 at 146/476 = 30.7\% (95\% CP 26.6--35.0\%) and P3 at 6/121 = 5.0\% (95\% CP 1.8--10.5\%)). Five \texttt{raw\_terminal\_null} runs were resolved via central overlay \texttt{b598ea21} (3 in Wave~2, 2 in Wave~3): two Wave~2 pairs crashed only under UBSan (\texttt{rc = 139}) from Gate~1's 8\,MB \texttt{RLIMIT\_STACK} overhead and were classified as \texttt{execution\_infrastructure\_failure} (as \texttt{fixture\_stop}: P1--P3 unchanged, Sec.~S14 34/183); one Wave~2 overlay pair (alongside one pre-overlay Wave~1 pair, forming a 2-pair \texttt{stderr} sensitivity toggle) wrote timing to \texttt{stderr} with oracle-matching \texttt{stdout} and was recorded as \texttt{fixture\_stop} (counting both \texttt{stderr} pairs as executed: P1 151/476 = 31.7\% (95\% CP 27.6--36.1\%), P2 +29.8~pp, Sec.~S14 30/183); and two Wave~3 UB/assertion pairs (\texttt{rc = 134}) were recorded as \texttt{fixture\_stop} (as infrastructure: P1--P3 unchanged, Sec.~S14 30/183). Wave~3 also logged one capped-quality sensitivity pair (P3 6/123 = 4.9\% (95\% CP 1.8--10.3\%) if \texttt{insufficient\_fit}) and 6 SPEC-quoting \texttt{alignment\_boundary} stops (unverified by per-step timestamp). Coordinator audits restored 6 Wave~1 \texttt{execution\_oracle\_failure} terminals from worker \texttt{fixture\_stop} proposals (plus 5 pre-run non-geometric ladder fixes) and rebuilt 4 Wave~2 precision-only \texttt{alignment\_boundary} stops that executed to \texttt{execution\_oracle\_failure}, accounting for 10/17 (58.8\%) of Sec.~S4 oracle failures; counting Wave~1's 6 restored failures as \texttt{fixture\_stop} yields P1 143/476 = 30.0\% (95\% CP 26.0--34.4\%), P2 +31.5~pp (95\% bootstrap +23.3 to +39.7~pp), Sec.~S4 11/143 = 7.7\% (95\% CP 3.9--13.3\%), and Sec.~S14 38/183 = 20.8\% (95\% CP 15.1--27.4\%) (143/183 = 78.1\% (95\% CP 71.4--83.9\%) conditional yield), while treating all 10 coordinator-audited oracle failures jointly as \texttt{fixture\_stop} yields P1 139/476 = 29.2\% (95\% CP 25.2--33.5\%), Sec.~S4 7/139 = 5.0\% (95\% CP 2.0--10.1\%), and Sec.~S14 42/183 = 23.0\% (95\% CP 17.1--29.7\%). Four S1 passes (4/183) stopped in \texttt{fixture\_stop} with \texttt{original\_compile\_failure} despite passing Stage~S2 single-TU preprocessing (Sec.~S3 0/183 = 0.0\% (95\% CP 0.0--2.0\%); 0/154 = 0.0\%, $p = 4.25 \times 10^{-42}$ across the 154 S1 passes entering \texttt{expansion\_run.py} after 29 pre-runner \texttt{fixture\_stop}s and before 3 overlay \texttt{fixture\_stop} reclassifications). Pre-analysis ledger \texttt{59dcfaf3} and representative plan \texttt{99c0b425} were SHA-256-locked before computing P1--P3.}
-\newcommand{\BenchAlertForensicsRows}{3 (CodeNet) & 32--1{,}024 (3/3) & 0.65--2.24 (0.061) & 193--1{,}119$\times$ & 0.69--2.24 / 193--1{,}119$\times$ & Flip / 0.99--1.04$\times$ \\ 13 (CodeNet) & 50--1{,}600 (1/3) & 2.01 (1.000) & $2.56\times 10^{6}\times$ & 1.02 / 3{,}193$\times$ & Retain / 2.00--3.69$\times$ \\ 94 (PIE) & 250--8{,}000 (1/3) & 1.00 (1.000) & 4{,}000$\times$ & 1.01 / 3{,}066--3{,}983$\times$ & Retain / 0.79--1.48$\times$ \\ 97 (PIE) & 1--32 (3/3) & 1.86--1.93 (0.946) & 394--413$\times$ & 1.87--1.96 / 408--426$\times$ & Retain / 1.10--1.15$\times$ \\ 164 (PIE) & 625--20{,}000 (1/3) & 1.00 (1.000) & 20{,}001$\times$ & 0.00 / 2.00$\times$ (scoped) & Retain / 2.10--2.20$\times$ \\ 175 (CodeNet) & 300--9{,}600 (3/3) & 0.99--1.05 (0.999) & 1{,}221--2{,}763$\times$ & 0.99--1.04 / 611--1{,}382$\times$ & Retain / 3.07--22.65$\times$ \\}
-\newcommand{\BenchAlertTableCaption}{Ordinal-indexed forensics for all 6 confirmatory all-stream alerts (positions in frozen 1--183 confirmatory hash order; all 6/6 passed $\ge 80\%$ causal restoration). ``str.'' gives distinct $(n, T(n), Q(n))$ trajectories across the 3 streams. Positions~13 and~164 have constant reference $c_0$; Position~164 is strictly event-scoped ($c_0$ slope 1.00 vs.\ combined $c_0{+}c_1$ slope 0.00 and $2.00\times$ total-tick ratio because auxiliary $c_1$ performs identical linear work on both sides). Position~3 exhibits low log-linear fit quality ($R^2_{\min} = 0.061$) and flips to \texttt{no\_alert} on drop-largest refit; under a descriptive post-hoc diagnostic filter requiring primary $c_0$, total-tick $c_0{+}c_1$, $R^2 \ge 0.94$, drop-largest retention, and $\ge 80\%$ restoration simultaneously, 4/124 (3.2\%) fits remain (Positions~13, 94, 97, and~175). Single-process \texttt{plain} CPU ratios include $\approx 15$--$22$\,ms sandbox startup overhead, masking sub-millisecond workloads on Positions~3, 94, and~97.}
-\newcommand{\BenchStreamAndFitForensics}{Across all 124 admitted fits, 70/124 (56.5\%) produced 3/3 distinct $(n, T(n), Q(n))$ stream trajectories, 9/124 (7.3\%) produced 2/3, and 45/124 (36.3\%) had input-value-invariant counts identical across all 3 streams (3/6 distinct vs.\ 3/6 size-determined among alerts). Log-ratio $R^2$ across the 18 alerting streams had median 0.9999 (range 0.061--1.0000, with $R^2 \ge 0.946$ on all 15 streams outside Position~3), whereas across all 372 fitted streams 171 had exact zero log-ratio variance and the remaining 201 had median $R^2 = 0.864$. Drop-largest refit admissibility held for both outcomes: 6/6 alerts (5 retained, 1 flipped) and 117/118 (99.2\%) non-alerts (117 remained \texttt{no\_alert}, 0 flipped, 1 range-limited).}
-\newcommand{\BenchBaselineScreens}{Evaluating alternative baseline screens on the same 124 admitted fits quantifies each safeguard's selectivity: (i)~a largest-size ratio-only screen ($T/Q \ge 1.50$ on all streams, no slope cutoff) alerts on 32/124 = 25.8\% (95\% CP 18.4--34.4\%), admitting 26 non-alerts failing the all-stream slope floor (12 flat $|\text{slope}| \le 0.05$ constant-factor ratios, 6 positive sub-0.50 slopes, 5 negative-slope precomputation cases whose ratio shrinks with $n$, and 3 stream-selective Sec.~S7 cases; $5.3\times$ over-alerting); (ii)~a slope-only screen ($\ge 0.50$, no ratio floor) yields 7/124 = 5.6\% (95\% CP 2.3--11.3\%) (1 sub-$1.50\times$ case); (iii)~requiring dual-cutoff growth on combined primary-plus-auxiliary total ticks ($c_0{+}c_1$) yields 5/124 = 4.0\% (95\% CP 1.3--9.2\%) (5 of 6 primary alerts retained, 0 additional alerts, filtering event-scoped Position~164); and (iv)~naive single-process \texttt{plain} CPU-time screens (\texttt{cpu.stat.usage\_usec} at $\ge 10$\,ms) yield 0/124 = 0.0\% (95\% CP 0.0--2.9\%) under the 4-size dual rule (process-startup overhead flattens small-$n$ slopes) and 17/124 = 13.7\% (95\% CP 8.2--21.0\%) under largest-size CPU ratio $\ge 1.50$ (recovering 3/6 primary alerts---Positions~13, 164, and~175---while flagging 14 non-alerts failing the all-stream logical-slope screen). Under a descriptive post-hoc diagnostic filter combining total-tick growth, drop-largest retention, $R^2 \ge 0.94$, and $\ge 80\%$ restoration, 4/124 = 3.2\% (95\% CP 0.9--8.1\%) remain (Positions~13, 94, 97, and~175).}
-\newcommand{\BenchAuthorConfusionProse}{Across the three non-empty primary buckets, the primary rater's 22 \texttt{pass} decisions split under blind author review into 3 \texttt{pass}, 12 \texttt{contract} stops, and 7 \texttt{source} stops; its 26 \texttt{contract} stops split into 19 \texttt{contract}, 3 \texttt{pass}, and 4 \texttt{source}; and both \texttt{source} stops agreed (2/2). Disagreement stemmed predominantly from stricter author screening on contract and source eligibility rather than arbitrary noise, alongside the 32/183 = 17.5\% (95\% CP 12.3--23.8\%) constructive pre-S3 \texttt{fixture\_stop} rate.}
-\newcommand{\BenchAuthorDownstream}{Stratifying the 50-pair blind draw by cohort (20 confirmatory, 30 quarantined) reveals both directions of the S1 disagreement: of the 9 confirmatory pairs rated \texttt{pass} by primary S1 (all 9 cluster representatives), the 1 author-\texttt{pass} pair executed to \texttt{no\_alert}, all 3 author-\texttt{contract}-stop pairs executed to \texttt{no\_alert}, and the 5 author-\texttt{source}-stop pairs ended at 1 \texttt{fixture\_stop}, 1 \texttt{insufficient\_fit}, and 3 \texttt{no\_alert}---so 7/8 (87.5\%) author-rejected S1 passes constructively cleared fixture authoring, optimization/sham invariance, and Gate~1 execution with 0/8 false growth alerts, whereas 3/26 (11.5\%) sampled workflow \texttt{contract} stops were rated \texttt{pass} by the blind author and remain unexecuted in P1/P2/Sec.~S13.}
-\newcommand{\BenchDiscussionSynthesis}{Comparing P2 across all 476 post-intake clusters (+30.3~pp, Holm $p = 6.78 \times 10^{-12}$) against Sec.~S13 excluding the 118 held \texttt{desk\_unrateable} clusters (+7.3~pp across 358 rateable Contest clusters, 95\% cluster bootstrap $-2.8$ to +17.0~pp, nominal exact sign-flip $p = 0.165$ outside the primary Holm family) shows that overall desk-stop dominance is driven by missing self-contained specifications (86 unbundled contest-image clusters and all 32 Repository clusters lacking an independent spec), whereas among rateable Contest clusters desk stops (48.9\%) and isolated execution (41.6\%) occur at comparable scales; across completed observations, count invariance held with zero disagreements across optimization levels (9{,}794 \texttt{-O0}/\texttt{-O2}/\texttt{-O3} agreements, 0 disagreements, 1{,}294 capped or missing) and sham edits (7{,}349 target--sham agreements, 0 disagreements, 967 capped or missing), and all 6 all-stream alerts (6/6) passed $\ge 80\%$ causal restoration (0 failed), yet fitted-case all-stream alerts remained rare (6/124 = 4.8\% (95\% CP 1.8--10.2\%)).}
-\newcommand{\BenchRepoExecSummary}{(0/32 Repository clusters executed; Repository is reported as counts only under Amendment~1)}
+\newcommand{\BenchDeskContrast}{+30.3~pp across 476 clusters (95\% cluster bootstrap +22.1 to +38.4~pp, Holm $p_H = 2.03 \times 10^{-11}$)}
+\newcommand{\BenchPOneCount}{149}
+\newcommand{\BenchPOnePct}{31.3\%}
+\newcommand{\BenchPOneCI}{[27.2, 35.7]\%}
+\newcommand{\BenchPOneHolmP}{$p = 1.97 \times 10^{-39}$}
+\newcommand{\BenchPOneFisherP}{$p = 2.73 \times 10^{-8}$}
+\newcommand{\BenchPTwoDelta}{+30.3~pp}
+\newcommand{\BenchPTwoHolmP}{$p = 6.78 \times 10^{-12}$}
+\newcommand{\BenchPTwoHoldsPP}{+24.8~pp}
+\newcommand{\BenchPTwoHoldsShare}{81.9\%}
+\newcommand{\BenchPTwoRateableContribPP}{+5.5~pp}
+\newcommand{\BenchPThreeCount}{6}
+\newcommand{\BenchPThreePct}{4.8\%}
+\newcommand{\BenchPThreeCI}{[1.8, 10.2]\%}
+\newcommand{\BenchPThreeHolmP}{$p = 2.53 \times 10^{-12}$}
+\newcommand{\BenchPThreeFisherP}{$p = 0.0076$}
+\newcommand{\BenchSAFiveSignP}{$p = 4.42 \times 10^{-28}$}
+\newcommand{\BenchSATwoPct}{1.3\%}
+\newcommand{\BenchSATwoCI}{[0.5, 2.7]\%}
+\newcommand{\BenchSATwoFisherP}{$p = 0.257$}
+\newcommand{\BenchRateableClustersN}{358}
+\newcommand{\BenchRateableExecPct}{41.6\%}
+\newcommand{\BenchRateableExecCI}{[36.5, 46.9]\%}
+\newcommand{\BenchRateableDeskPct}{48.9\%}
+\newcommand{\BenchSAThirteenDelta}{+7.3~pp}
+\newcommand{\BenchSAThirteenBootCI}{[$-2.8$, +17.0]~pp}
+\newcommand{\BenchSAThirteenP}{$p = 0.165$}
+\newcommand{\BenchConfSTwoPassN}{183}
+\newcommand{\BenchRatedDeskStopRepsN}{175}
+\newcommand{\BenchTotalDeskStopRepsN}{293}
+\newcommand{\BenchConfContractStopRepsN}{160}
+\newcommand{\BenchConfSourceStopRepsN}{11}
+\newcommand{\BenchConfRouteStopRepsN}{2}
+\newcommand{\BenchConfIndetRepsN}{2}
+\newcommand{\BenchFixtureStopN}{32}
+\newcommand{\BenchFixtureStopPct}{17.5\%}
+\newcommand{\BenchFixtureStopCI}{[12.3, 23.8]\%}
+\newcommand{\BenchCondExecPct}{81.4\%}
+\newcommand{\BenchOrigCompileFailN}{4}
+\newcommand{\BenchOrigCompileFailPct}{2.2\%}
+\newcommand{\BenchOrigCompileFailCI}{[0.6, 5.5]\%}
+\newcommand{\BenchRunnerSOnePassN}{154}
+\newcommand{\BenchRunnerPreFixtureN}{29}
+\newcommand{\BenchRunnerOverlayFixtureN}{3}
+\newcommand{\BenchOracleFailN}{17}
+\newcommand{\BenchOracleFailPct}{11.4\%}
+\newcommand{\BenchOracleFailCI}{[6.8, 17.6]\%}
+\newcommand{\BenchNoFitN}{8}
+\newcommand{\BenchNoAlertN}{118}
+\newcommand{\BenchInfraFailN}{2}
+\newcommand{\BenchQuarUnrunN}{204}
+\newcommand{\BenchPinLedger}{\texttt{59dcfaf3}}
+\newcommand{\BenchPinRepPlan}{\texttt{99c0b425}}
+\newcommand{\BenchConfContestDrawn}{456}
+\newcommand{\BenchConfContestIntake}{12}
+\newcommand{\BenchQuarIntakeN}{0}
+\newcommand{\BenchQuarPostSOneZeroN}{0}
+\newcommand{\BenchConfContestDesk}{261}
+\newcommand{\BenchConfContestFix}{32}
+\newcommand{\BenchConfContestPrep}{0}
+\newcommand{\BenchConfContestInfra}{2}
+\newcommand{\BenchConfContestUnrun}{0}
+\newcommand{\BenchConfContestOracle}{17}
+\newcommand{\BenchConfContestNoFit}{8}
+\newcommand{\BenchConfContestNoAlert}{118}
+\newcommand{\BenchConfContestAlert}{6}
+\newcommand{\BenchQuarContestDesk}{296}
+\newcommand{\BenchBwrapOverheadMs}{14--22\,\text{ms}}
+\newcommand{\BenchWaveOneOverrideN}{6}
+\newcommand{\BenchPinWaveTwoCap}{\texttt{1c926287}}
+\newcommand{\BenchPosNineFourPlainUpperNs}{0.35}
+\newcommand{\BenchPosTwoNine}{29}
+\newcommand{\BenchPosNineZeroOZeroOnlyPts}{2}
+\newcommand{\BenchPosNineSevenOtwoStreamsN}{1}
+\newcommand{\BenchPosNineSevenPlainStreamsN}{0}
+\newcommand{\BenchPosThirteenPlainStreamsFrac}{2/3}
+\newcommand{\BenchPosThirteenOtwoStreamsFrac}{3/3}
+\newcommand{\BenchPosOneSevenFivePlainStreamsFrac}{3/3}
+\newcommand{\BenchPosOneSevenFiveOtwoStreamsFrac}{3/3}
+\newcommand{\BenchPosOneSixFourPlainStreamsFrac}{0/3}
+\newcommand{\BenchPosOneSixFourOtwoStreamsFrac}{0/3}
+\newcommand{\BenchPosNineFourPlainStreamsFrac}{0/3}
+\newcommand{\BenchPosNineFourOtwoStreamsFrac}{0/3}
+\newcommand{\BenchPosNineSevenPlainStreamsFrac}{0/3}
+\newcommand{\BenchMaxCounterVal}{$2.50 \times 10^{9}$}
+\newcommand{\BenchUnconfRestoredOracleN}{0}
+\newcommand{\BenchFittedMaskedFailN}{0}
+\newcommand{\BenchPosOneSixFourTotSlopeTwoDec}{0.00}
+\newcommand{\BenchPosThreeWorstTS}{0.00}
+\newcommand{\BenchAllPtMaxBoundFailN}{0}
+\newcommand{\BenchMinRefPlainCoreN}{2}
+\newcommand{\BenchMinRefOtwoCoreN}{2}
+\newcommand{\BenchMedRefPlainCoreN}{1}
+\newcommand{\BenchMedRefOtwoCoreN}{2}
+\newcommand{\BenchAddCpuOneThreeSlopeRange}{6.45--9.97}
+\newcommand{\BenchAddCpuOneSevenFiveSlopeRange}{17.45--118.25}
+\newcommand{\BenchAddCpuOneSixFourSlopeRange}{7.01--7.54}
+\newcommand{\BenchAddCpuNineFourSlopeRange}{$-1.31$ to 0.84}
+\newcommand{\BenchAddCpuNineSevenSlopeRange}{0.08--1.77}
+\newcommand{\BenchOtwoMinusPlainSZeroMs}{0.75\,\text{ms} median, IQR 0.36--1.52\,\text{ms}}
+\newcommand{\BenchRestNonExSATwoN}{2}
+\newcommand{\BenchRestNonExSubN}{1}
+\newcommand{\BenchRestNonExFlatN}{5}
+\newcommand{\BenchRestNonExNegN}{4}
+\newcommand{\BenchRestNonExMixN}{2}
+\newcommand{\BenchAllPtExcessFailN}{0}
+\newcommand{\BenchAllPtRoneInflN}{0}
+\newcommand{\BenchAllPtNonRegFailN}{2}
+\newcommand{\BenchPosEighteen}{18}
+\newcommand{\BenchPosFourFour}{44}
+\newcommand{\BenchPOnePilotNeffTipN}{19}
+\newcommand{\BenchOZeroAgree}{9{,}794}
+\newcommand{\BenchOZeroMiss}{1{,}294}
+\newcommand{\BenchOZeroTotalTriples}{11{,}088}
+\newcommand{\BenchOZeroCapped}{40}
+\newcommand{\BenchOZeroOracleAbort}{1{,}138}
+\newcommand{\BenchOZeroOverlayFix}{112}
+\newcommand{\BenchOZeroInfraMiss}{4}
+\newcommand{\BenchOZeroCapOtwoAgree}{12}
+\newcommand{\BenchShamAgree}{7{,}349}
+\newcommand{\BenchShamMiss}{967}
+\newcommand{\BenchShamTotalPairs}{8{,}316}
+\newcommand{\BenchShamCapped}{35}
+\newcommand{\BenchShamOracleAbort}{855}
+\newcommand{\BenchShamOverlayFix}{75}
+\newcommand{\BenchShamInfraMiss}{2}
+\newcommand{\BenchCpuCapEvents}{28}
+\newcommand{\BenchCpuCapPos}{3}
+\newcommand{\BenchTickCapEvents}{72}
+\newcommand{\BenchTickCapPos}{2}
+\newcommand{\BenchCpuCapOZeroOnlyPts}{5}
+\newcommand{\BenchCpuCapTotalPts}{7}
+\newcommand{\BenchOracleUpstreamN}{16}
+\newcommand{\BenchOracleUpstreamPct}{10.7\%}
+\newcommand{\BenchOracleUpstreamCI}{[6.3, 16.9]\%}
+\newcommand{\BenchOracleUpstreamTgtN}{10}
+\newcommand{\BenchOracleUpstreamRefN}{6}
+\newcommand{\BenchOraclePlainN}{12}
+\newcommand{\BenchOraclePlainUpstreamN}{11}
+\newcommand{\BenchOraclePlainTgtN}{8}
+\newcommand{\BenchOraclePlainRefN}{3}
+\newcommand{\BenchOracleUBAllN}{5}
+\newcommand{\BenchOracleUBSanOnlyN}{4}
+\newcommand{\BenchOracleUBTgtN}{2}
+\newcommand{\BenchOracleUBRefN}{3}
+\newcommand{\BenchOraclePlainSegvUBN}{1}
+\newcommand{\BenchOracleRestoredN}{1}
+\newcommand{\BenchOracleShamN}{0}
+\newcommand{\BenchOracleMultiEvtN}{2}
+\newcommand{\BenchOracleCoordN}{6}
+\newcommand{\BenchOracleCoordPct}{35.3\%}
+\newcommand{\BenchFitQZeroN}{2}
+\newcommand{\BenchFitBothZeroN}{4}
+\newcommand{\BenchFitTickCapN}{2}
+\newcommand{\BenchCensorCondN}{7}
+\newcommand{\BenchCensorDenom}{126}
+\newcommand{\BenchCensorCondPct}{5.6\%}
+\newcommand{\BenchCensorCondCI}{[2.3, 11.1]\%}
+\newcommand{\BenchCensorWorstN}{8}
+\newcommand{\BenchCensorWorstPct}{6.3\%}
+\newcommand{\BenchCensorWorstCI}{[2.8, 12.1]\%}
+\newcommand{\BenchCensorWorstFisherP}{$p = 0.015$}
+\newcommand{\BenchCensorWorstFisherFourTwelveP}{$p = 0.011$}
+\newcommand{\BenchCensorWorstFisherConservP}{$p = 0.056$}
+\newcommand{\BenchCensorCpuCapExclFlatN}{9}
+\newcommand{\BenchCensorCpuCapExclFlatPct}{7.1\%}
+\newcommand{\BenchCensorCpuCapExclFlatP}{$p = 0.021$}
+\newcommand{\BenchCensorCpuCapExclFlatConservP}{$p = 0.071$}
+\newcommand{\BenchCensorCpuCapTotalN}{11}
+\newcommand{\BenchCensorCpuCapPct}{8.7\%}
+\newcommand{\BenchCensorCpuCapFourTwelveP}{$p = 0.027$}
+\newcommand{\BenchCensorCpuCapConservP}{$p = 0.106$}
+\newcommand{\BenchJointConservHolmPOne}{$p_H = 0.026$}
+\newcommand{\BenchJointConservHolmPThree}{$p_H = 0.033$}
+\newcommand{\BenchDistinctThreeN}{70}
+\newcommand{\BenchDistinctThreePct}{56.5\%}
+\newcommand{\BenchDistinctTwoN}{9}
+\newcommand{\BenchDistinctTwoPct}{7.3\%}
+\newcommand{\BenchDistinctOneN}{45}
+\newcommand{\BenchDistinctOnePct}{36.3\%}
+\newcommand{\BenchDistinctOneCOneVarN}{12}
+\newcommand{\BenchDistinctOneOblivN}{33}
+\newcommand{\BenchZeroVarStreamsN}{171}
+\newcommand{\BenchDefinedRTwoStreamsN}{201}
+\newcommand{\BenchTotalFittedStreamsN}{372}
+\newcommand{\BenchAllStreamsMedianRTwo}{0.864}
+\newcommand{\BenchAlertMedianRTwo}{0.9999}
+\newcommand{\BenchZeroVarPairsN}{52}
+\newcommand{\BenchDefinedRTwoPairsN}{72}
+\newcommand{\BenchPairMedianRTwo}{0.738}
+\newcommand{\BenchAlertPairMedianRTwo}{0.9994}
+\newcommand{\BenchPThreePilotClustFisherP}{$p = 0.0056$}
+\newcommand{\BenchPThreePilotClustConservP}{$p = 0.033$}
+\newcommand{\BenchPOnePilotNeffThirtyP}{$p = 0.013$}
+\newcommand{\BenchPOnePilotNeffFiftyP}{$p = 9.70 \times 10^{-4}$}
+\newcommand{\BenchSAOnePilotNeffRangeP}{$p = 0.157\text{--}0.439$}
+\newcommand{\BenchSAThreeInclCompileN}{4}
+\newcommand{\BenchSAThreeInclCompilePct}{2.2\%}
+\newcommand{\BenchSAThreeInclCompileP}{$p = 1.27 \times 10^{-9}$}
+\newcommand{\BenchSAThreeCrossFrameP}{$p = 5.82 \times 10^{-12}$}
+\newcommand{\BenchConstZeroVarPairsN}{6}
+\newcommand{\BenchCensorCpuCapFisherP}{$p = 0.035$}
+\newcommand{\BenchRestCOneMaskN}{2}
+\newcommand{\BenchSANinePThreeCI}{[1.6, 8.9]\%}
+\newcommand{\BenchOZeroRelaxCapPtsN}{5}
+\newcommand{\BenchOZeroRelaxPairsN}{3}
+\newcommand{\BenchOZeroRelaxDeltaN}{0}
+\newcommand{\BenchRealizedCpuCoreN}{2}
+\newcommand{\BenchPlainSubCoreN}{1}
+\newcommand{\BenchOtwoSubCoreN}{2}
+\newcommand{\BenchFDWrapOverheadMs}{0.78\,\text{ms} median, IQR $-0.04$ to 1.81\,\text{ms}}
+\newcommand{\BenchPosOneSixFourCpuRatio}{2.10--2.20$\times$}
+\newcommand{\BenchSubCpuOneSevenFiveSlopeRange}{0.97--1.93}
+\newcommand{\BenchSubCpuOneThreeSlopeRange}{0.48--1.02}
+\newcommand{\BenchPosThirteenPlainZeroSubRange}{0.61--0.96}
+\newcommand{\BenchPosThirteenOtwoSubSlopeRange}{0.72--1.50}
+\newcommand{\BenchPosOneSevenFiveOtwoSubSlopeRange}{1.12--1.80}
+\newcommand{\BenchPosThirteenPlainDeltaMsRange}{26.5--44.4\,\text{ms}}
+\newcommand{\BenchPosOneSevenFivePlainDeltaMsRange}{52.6--490.4\,\text{ms}}
+\newcommand{\BenchSubCpuOneSixFourSlopeRange}{$-0.05$ to 0.13}
+\newcommand{\BenchSubCpuNineFourSlopeRange}{$-0.55$ to 0.37}
+\newcommand{\BenchSubCpuNineSevenSlopeRange}{0.03--0.21}
+\newcommand{\BenchSASevenCount}{11}
+\newcommand{\BenchSASevenPct}{8.9\%}
+\newcommand{\BenchSASevenCI}{[4.5, 15.3]\%}
+\newcommand{\BenchSASevenOnlyN}{5}
+\newcommand{\BenchSAEightAdmittedN}{123}
+\newcommand{\BenchSAEightAlertsN}{5}
+\newcommand{\BenchSAEightPct}{4.1\%}
+\newcommand{\BenchSAEightCI}{[1.3, 9.2]\%}
+\newcommand{\BenchSAEightAnyAlertsN}{10}
+\newcommand{\BenchSAEightAnyPct}{8.1\%}
+\newcommand{\BenchSAEightAnyCI}{[4.0, 14.4]\%}
+\newcommand{\BenchCoreFourN}{4}
+\newcommand{\BenchCoreFourPct}{3.2\%}
+\newcommand{\BenchCoreFourCI}{[0.9, 8.1]\%}
+\newcommand{\BenchCoreMinCILo}{0.97}
+\newcommand{\BenchBOneAlertsN}{32}
+\newcommand{\BenchBOnePct}{25.8\%}
+\newcommand{\BenchBOneCI}{[18.4, 34.4]\%}
+\newcommand{\BenchBOneFPN}{26}
+\newcommand{\BenchBOneFlatN}{12}
+\newcommand{\BenchBOneSubN}{6}
+\newcommand{\BenchBOneNegN}{5}
+\newcommand{\BenchBOneSelN}{3}
+\newcommand{\BenchBOneMcNemarP}{$p = 2.98 \times 10^{-8}$}
+\newcommand{\BenchBOneHolmP}{$p = 1.49 \times 10^{-7}$}
+\newcommand{\BenchBTwoAlertsN}{7}
+\newcommand{\BenchBTwoPct}{5.6\%}
+\newcommand{\BenchBTwoCI}{[2.3, 11.3]\%}
+\newcommand{\BenchBThreeAlertsN}{5}
+\newcommand{\BenchBThreePct}{4.0\%}
+\newcommand{\BenchBThreeCI}{[1.3, 9.2]\%}
+\newcommand{\BenchBThreeAllExecN}{5}
+\newcommand{\BenchBThreeAllExecDenom}{132}
+\newcommand{\BenchBThreeAllExecPct}{3.8\%}
+\newcommand{\BenchBFourAlertsN}{0}
+\newcommand{\BenchBFourPct}{0.0\%}
+\newcommand{\BenchBFourCI}{[0.0, 2.9]\%}
+\newcommand{\BenchBFourMcNemarP}{$p = 0.031$}
+\newcommand{\BenchBFourHolmP}{$p = 0.094$}
+\newcommand{\BenchBFiveAlertsN}{17}
+\newcommand{\BenchBFivePct}{13.7\%}
+\newcommand{\BenchBFiveCI}{[8.2, 21.0]\%}
+\newcommand{\BenchBFiveTPN}{3}
+\newcommand{\BenchBFiveFPN}{14}
+\newcommand{\BenchBFiveMcNemarP}{$p = 0.013$}
+\newcommand{\BenchBFiveHolmP}{$p = 0.051$}
+\newcommand{\BenchBFiveCoreTPN}{2}
+\newcommand{\BenchBFiveCorePrecPct}{11.8\%}
+\newcommand{\BenchBFiveCoreRecPct}{50.0\%}
+\newcommand{\BenchRestPassAllN}{54}
+\newcommand{\BenchRestNoExAllN}{66}
+\newcommand{\BenchRestFailAllN}{18}
+\newcommand{\BenchRestUnmeasAllN}{45}
+\newcommand{\BenchRestExecPassN}{51}
+\newcommand{\BenchRestExecNoExN}{65}
+\newcommand{\BenchRestExecFailN}{18}
+\newcommand{\BenchRestExecUnmeasN}{15}
+\newcommand{\BenchRestFitPassN}{47}
+\newcommand{\BenchRestFitNoExN}{63}
+\newcommand{\BenchRestFitFailN}{14}
+\newcommand{\BenchRestFitExcessN}{61}
+\newcommand{\BenchRestFitFailPct}{23.0\%}
+\newcommand{\BenchRestFitFailCI}{[13.2, 35.5]\%}
+\newcommand{\BenchRestExactCopyN}{33}
+\newcommand{\BenchRestExactCopyPct}{70.2\%}
+\newcommand{\BenchRestNonExactPassN}{14}
+\newcommand{\BenchRestSurgicalN}{9}
+\newcommand{\BenchRestMildOverN}{3}
+\newcommand{\BenchRestHighOverN}{2}
+\newcommand{\BenchRestTotPassN}{62}
+\newcommand{\BenchRestTotNoExN}{49}
+\newcommand{\BenchRestTotFailN}{13}
+\newcommand{\BenchRestTotExcessN}{75}
+\newcommand{\BenchRestTotFailPct}{17.3\%}
+\newcommand{\BenchRestTotFailCI}{[9.6, 27.8]\%}
+\newcommand{\BenchRestTotNewTestN}{14}
+\newcommand{\BenchConfDeskPairsN}{294}
+\newcommand{\BenchFinHolmPOne}{$p_H = 5.45 \times 10^{-8}$}
+\newcommand{\BenchFinHolmPThree}{$p_H = 0.0076$}
+\newcommand{\BenchCOneOnlyCount}{2}
+\newcommand{\BenchPosEleven}{11}
+\newcommand{\BenchPosElevenCOneStream}{\texttt{W3}}
+\newcommand{\BenchPosFourSevenCOneStream}{\texttt{W2}}
+\newcommand{\BenchPosElevenCOneRatio}{13.8$\times$}
+\newcommand{\BenchQOneZeroCount}{10}
+\newcommand{\BenchPosThreeLev}{0.524}
+\newcommand{\BenchPosThreeCooksD}{2.20}
+\newcommand{\BenchPosThreeCooksDSThree}{0.52}
+\newcommand{\BenchPosThreeCooksDSThreeMax}{0.73}
+\newcommand{\BenchPosThreeSOneLOO}{0.00}
+\newcommand{\BenchPosThreeSThreeLOO}{$-0.43$}
+\newcommand{\BenchPosThreeSOneCI}{[-0.65, 2.82]}
+\newcommand{\BenchPosThreeSThreeCI}{[-2.90, 4.21]}
+\newcommand{\BenchPosThirteenCZeroSlope}{2.01}
+\newcommand{\BenchPosThirteenTotSlope}{1.02}
+\newcommand{\BenchPosNineFourOtwoNsRange}{0.03--0.06}
+\newcommand{\BenchPosNineFourPlainNsRange}{$-0.20$ to +0.34}
+\newcommand{\BenchPosNineFourOtwoMsRange}{1.1--1.9\,\text{ms}}
+\newcommand{\BenchPosOneSevenFiveOtwoNsRange}{7.5--23.7}
+\newcommand{\BenchPosOneSevenFivePlainNsRange}{4.5--19.6}
+\newcommand{\BenchEnvPOneRange}{30.0--31.7\%}
+\newcommand{\BenchEnvPThreeRange}{4.8--5.0\%}
+\newcommand{\BenchEnvSAFourRange}{7.7--11.6\%}
+\newcommand{\BenchEnvSAThirteenRange}{+6.7~pp ($p = 0.203$) to +8.9~pp ($p = 0.082$)}
+\newcommand{\BenchEnvSAThirteenShort}{+6.7 to +8.9~pp, $p = 0.082\text{--}0.203$}
+\newcommand{\BenchPfStderrN}{1}
+\newcommand{\BenchPfSigabrtN}{2}
+\newcommand{\BenchPfSigsegvN}{4}
+\newcommand{\BenchRegimeExactEqN}{46}
+\newcommand{\BenchRegimeFlatLowN}{24}
+\newcommand{\BenchRegimeFlatHighN}{12}
+\newcommand{\BenchRegimeZeroFlatSumN}{82}
+\newcommand{\BenchRegimeNegAllN}{13}
+\newcommand{\BenchRegimeMixedN}{10}
+\newcommand{\BenchRegimeSubPosN}{8}
+\newcommand{\BenchRegimeRevSubSumN}{31}
+\newcommand{\BenchBetaGridDropAlerts}{10}
+\newcommand{\BenchCorpusPieAlertFrac}{3/69}
+\newcommand{\BenchCorpusCodeAlertFrac}{3/55}
+\newcommand{\BenchCorpusAlertFisherP}{$p = 1.000$}
+\newcommand{\BenchCorpusPieExecFrac}{84/228 = 36.8\%}
+\newcommand{\BenchCorpusCodeExecFrac}{65/216 = 30.1\%}
+\newcommand{\BenchCorpusExecFisherP}{$p = 0.159$}
+\newcommand{\BenchContestExecPct}{33.6\%}
+\newcommand{\BenchContestExecCI}{[29.2, 38.2]\%}
+\newcommand{\BenchContestExecLo}{29.2\%}
+\newcommand{\BenchSAFourFisherP}{$p = 1.000$}
+\newcommand{\BenchSAThreeDenom}{154}
+\newcommand{\BenchSAThreeAllSPass}{0/183 = 0.0\%}
+\newcommand{\BenchSAThreeAllSPassCI}{[0.0, 2.0]\%}
+\newcommand{\BenchPosThreeRSq}{0.061}
+\newcommand{\BenchPosSevenSevenLogRSq}{1.000}
+\newcommand{\BenchPosOneSixFourRatio}{20{,}001$\times$}
+\newcommand{\BenchPosOneSixFourTotP}{$p = 0.013$}
+\newcommand{\BenchPosOneSixFourTotSlope}{0.0002}
+\newcommand{\BenchPosOneSixFourTotRSq}{0.821}
+\newcommand{\BenchPosSevenNine}{79}
+\newcommand{\BenchPosSevenNineSlopeRange}{0.97--0.99}
+\newcommand{\BenchPosSevenNineRatioRange}{0.79--0.91$\times$}
+\newcommand{\BenchQuarSourceN}{25}
+\newcommand{\BenchQuarHeldN}{14}
+\newcommand{\BenchQuarIndetN}{1}
+\newcommand{\BenchRestCOneInflN}{0}
+\newcommand{\BenchPosThree}{3}
+\newcommand{\BenchPosThirteen}{13}
+\newcommand{\BenchPosTwoSeven}{27}
+\newcommand{\BenchPosFourSeven}{47}
+\newcommand{\BenchPosFiveFive}{55}
+\newcommand{\BenchPosFiveNine}{59}
+\newcommand{\BenchPosSevenSeven}{77}
+\newcommand{\BenchPosNineZero}{90}
+\newcommand{\BenchPosNineOne}{91}
+\newcommand{\BenchPosNineFour}{94}
+\newcommand{\BenchPosNineSeven}{97}
+\newcommand{\BenchPosOneZeroZero}{100}
+\newcommand{\BenchPosOneZeroSix}{106}
+\newcommand{\BenchPosOneTwoNine}{129}
+\newcommand{\BenchPosOneThreeOne}{131}
+\newcommand{\BenchPosOneFourZero}{140}
+\newcommand{\BenchPosOneFourFive}{145}
+\newcommand{\BenchPosOneFiveEight}{158}
+\newcommand{\BenchPosOneSixZero}{160}
+\newcommand{\BenchPosOneSixFour}{164}
+\newcommand{\BenchPosOneSevenFour}{174}
+\newcommand{\BenchPosOneSevenFive}{175}
+\newcommand{\BenchPosSevenSevenRatio}{7.86$\times$}
+\newcommand{\BenchPosNineZeroRatio}{23{,}899$\times$}
+\newcommand{\BenchPosOneFourFiveRatio}{134$\times$}
+\newcommand{\BenchPosFourSevenCOneRatio}{492$\times$}
+\newcommand{\BenchPosNineFourTicksM}{32.0}
+\newcommand{\BenchPosOneSixFourTotRatio}{2.00$\times$}
+\newcommand{\BenchPosOneZeroZeroMaxSlope}{0.075}
+\newcommand{\BenchPosBothZeroMaxSlope}{0.013}
+\newcommand{\BenchRestOverNineOneRange}{121--146\%}
+\newcommand{\BenchRestOverOneTwoNineRange}{103--315\%}
+\newcommand{\BenchQuarStopPct}{59.2\%}
+\newcommand{\BenchQuarStopCI}{[54.7, 63.5]\%}
+\newcommand{\BenchQuarClustStopFrac}{32/54 = 59.3\%}
+\newcommand{\BenchQuarClustStopCI}{[45.0, 72.4]\%}
+\newcommand{\BenchAuthExactPct}{26.0\%}
+\newcommand{\BenchAuthExactK}{0.163}
+\newcommand{\BenchAuthExactCI}{[0.046, 0.277]}
+\newcommand{\BenchAuthBucketPct}{48.0\%}
+\newcommand{\BenchAuthBucketK}{0.154}
+\newcommand{\BenchAuthBucketCI}{[$-0.031$, 0.326]}
+\newcommand{\BenchAuthBucketKappaMax}{0.479}
+\newcommand{\BenchAuthBucketACOne}{0.271}
+\newcommand{\BenchAuthBinPct}{56.0\%}
+\newcommand{\BenchAuthBinK}{0.032}
+\newcommand{\BenchAuthBinPABAK}{0.120}
+\newcommand{\BenchAuthBinACOne}{0.263}
+\newcommand{\BenchAuthBinBI}{0.32}
+\newcommand{\BenchAuthBinPI}{0.44}
+\newcommand{\BenchAuthBowkerQ}{16.40}
+\newcommand{\BenchAuthMcNemarP}{$p = 8.55 \times 10^{-4}$}
+\newcommand{\BenchAuthBowkerP}{$p = 9.39 \times 10^{-4}$}
+\newcommand{\BenchAuthAllBowkerExactP}{$p = 1.55 \times 10^{-4}$}
+\newcommand{\BenchAuthConfN}{20}
+\newcommand{\BenchAuthQuarN}{30}
+\newcommand{\BenchAuthQuarClustersN}{18}
+\newcommand{\BenchAuthTotalClustersN}{38}
+\newcommand{\BenchAuthLLMPassFrac}{22/50 = 44.0\%}
+\newcommand{\BenchAuthAuthorPassFrac}{6/50 = 12.0\%}
+\newcommand{\BenchAuthConfPct}{30.0\%}
+\newcommand{\BenchAuthConfKappa}{0.018}
+\newcommand{\BenchAuthConfBinK}{$-0.170$}
+\newcommand{\BenchAuthConfBucketKCI}{[$-0.231$, 0.265]}
+\newcommand{\BenchAuthConfBinKCI}{[$-0.500$, 0.186]}
+\newcommand{\BenchAuthConfPABAKCI}{[$-0.500$, 0.300]}
+\newcommand{\BenchAuthConfACOneCI}{[$-0.467$, 0.483]}
+\newcommand{\BenchAuthConfAllStopRev}{3/11 = 27.3\%}
+\newcommand{\BenchAuthConfAllStopRevCI}{[6.0, 61.0]\%}
+\newcommand{\BenchAuthConfPassStopN}{8}
+\newcommand{\BenchAuthConfStopPassN}{3}
+\newcommand{\BenchAuthConfMcNemarP}{$p = 0.227$}
+\newcommand{\BenchAuthConfBowkerQ}{8.00}
+\newcommand{\BenchAuthConfBowkerP}{$p = 0.046$}
+\newcommand{\BenchAuthConfBowkerExactP}{$p = 0.041$}
+\newcommand{\BenchAuthQuarPct}{60.0\%}
+\newcommand{\BenchAuthQuarKappa}{0.259}
+\newcommand{\BenchAuthQuarBinK}{0.171}
+\newcommand{\BenchAuthQuarRev}{0/16 = 0.0\%}
+\newcommand{\BenchAuthCohortFisherP}{$p = 0.048$}
+\newcommand{\BenchCohortClustSensP}{$p = 0.101\text{--}0.188$}
+\newcommand{\BenchAuthConfContractRev}{3/10 = 30.0\%}
+\newcommand{\BenchAuthConfContractRevCI}{[6.7, 65.2]\%}
+\newcommand{\BenchAuthRejExec}{7/8~=~87.5\%}
+\newcommand{\BenchAuthRejExecCI}{[47.3, 99.7]\%}
+\newcommand{\BenchAuthPassStopN}{19}
+\newcommand{\BenchAuthStopPassN}{3}
+\newcommand{\BenchAuthRejTotalN}{8}
+\newcommand{\BenchManskiTipNum}{13}
+\newcommand{\BenchManskiTipRate}{7.4\%}
+\newcommand{\BenchManskiPlugInTheta}{22.2\%}
+\newcommand{\BenchManskiPlugInThetaCI}{[4.9, 49.6]\%}
+\newcommand{\BenchManskiPlugJointRectCI}{[4.5, 52.9]\%}
+\newcommand{\BenchManskiPlugJointJeffCI}{[6.8, 46.1]\%}
+\newcommand{\BenchManskiPlugInSAThirteen}{$-14.4$~pp}
+\newcommand{\BenchManskiPlugInTwoStepSAThirteen}{$-16.9$~pp}
+\newcommand{\BenchManskiPlugInPOne}{52.5\%}
+\newcommand{\BenchManskiFullFlipTheta}{41.1\%}
+\newcommand{\BenchManskiTwoStepTipTheta}{6.7\%}
+\newcommand{\BenchManskiTwoStepTipPfn}{8.2\%}
+\newcommand{\BenchManskiYOneStepHalfPP}{1.6~pp}
+\newcommand{\BenchManskiYTwoStepHalfPP}{0.8~pp}
+\newcommand{\BenchManskiYDeltaSEDiffPP}{0.03~pp}
+\newcommand{\BenchPThreeOracleTipN}{9}
+\newcommand{\BenchPThreeOracleTipPct}{52.9\%}
+\newcommand{\BenchPThreeOracleTipResultPct}{10.6\%}
+\newcommand{\BenchPThreeOracleTipConservN}{3}
+\newcommand{\BenchPThreeOracleTipConservPct}{17.6\%}
+\newcommand{\BenchPThreeOracleAdvTipN}{8}
+\newcommand{\BenchPThreeOracleAdvTipPct}{47.1\%}
+\newcommand{\BenchPThreeOracleAdvTipConservN}{2}
+\newcommand{\BenchPThreeOracleAdvTipConservPct}{11.8\%}
+\newcommand{\BenchPThreeSOneTipN}{8}
+\newcommand{\BenchPThreeSOneTipPct}{4.6\%}
+\newcommand{\BenchPThreeSOneTipResultPct}{10.6\%}
+\newcommand{\BenchPThreeSOneTipConservN}{2}
+\newcommand{\BenchPThreeSOneTipConservPct}{1.1\%}
+\newcommand{\BenchSAThirteenFpTipN}{6}
+\newcommand{\BenchSAThirteenFpTipPct}{4.0\%}
+\newcommand{\BenchSAThirteenFpTipDelta}{+10.6~pp}
+\newcommand{\BenchSAThirteenFpTipP}{$p = 0.040$}
+\newcommand{\BenchAuthConfFitRejFrac}{6/7 = 85.7\%}
+\newcommand{\BenchPThreeFpTipConservN}{20}
+\newcommand{\BenchPThreeFpTipConservPct}{16.9\%}
+\newcommand{\BenchPThreeFpTipConservP}{$p = 0.050$}
+\newcommand{\BenchPThreeFpTipFullN}{57}
+\newcommand{\BenchPThreeFpTipFullPct}{48.3\%}
+\newcommand{\BenchPThreeFpTipFullP}{$p = 0.052$}
+\newcommand{\BenchTableTwoRows}{\textbf{P1}\,$^{\ddagger}$ & Execution yield (conf.\ reps) & 149/476 (31.3\%) & [27.2, 35.7]\% & Holm & $5.45 \times 10^{-8}$ & 1-S $1.97 \times 10^{-39}$ \\ \textbf{P2} & Desk stop $-$ execution & +30.3~pp (476 cl.) & [+22.1, +38.4]~pp & Holm & $2.03 \times 10^{-11}$ & exact sign; hold+WF \\ \quad $\hookrightarrow$ & Unrateable holds share & +24.8~pp (81.9\%) & --- & --- & --- & --- \\ \quad $\hookrightarrow$ & Rateable Contest contrib. & +5.5~pp (18.1\%) & --- & --- & --- & --- \\ \textbf{P3} & All-stream alerts / fits & 6/124 (4.8\%) & [1.8, 10.2]\% & Holm & $0.0076$ & 1-S $2.53 \times 10^{-12}$ \\ \midrule \textbf{SA1} & Desk stops (conf.\ reps) & 293/476 (61.6\%) & [57.0, 65.9]\% & Fisher\,$^\dagger$ & $0.063$ & 1-S $7.39 \times 10^{-5}$ \\ \textbf{SA2} & Alerts / post-S0 conf.\ reps & 6/476 (1.3\%) & [0.5, 2.7]\% & Fisher\,$^\dagger$ & $0.257$ & 1-S $0.048$ \\ \textbf{SA3}\,$^{\ddagger}$ & S2 preprocessing stops & 0/154 (0.0\%) & [0.0, 2.4]\% & --- & --- & x-frame (4/183 comp.) \\ \textbf{SA4} & Oracle / UBSan failures & 17/149 (11.4\%) & [6.8, 17.6]\% & Fisher\,$^\dagger$ & $1.000$ & env.\ 7.7--11.6\% \\ \textbf{SA5} & Alert $-$ no-alert (vs.\ 50\%) & $-90.3$~pp (124 fits) & [$-96.8$, $-82.3$]~pp & Sign & $4.42 \times 10^{-28}$ & vs.\ $-33.3$~pp pilot \\ \textbf{SA6} & P1 excl.\ infra stops & 149/474 (31.4\%) & [27.3, 35.8]\% & --- & --- & 2 infra excl. \\ \textbf{SA7} & Any-stream alerts / fits & 11/124 (8.9\%) & [4.5, 15.3]\% & --- & --- & any-stream \\ \textbf{SA8} & Drop-largest all-stream & 5/123 (4.1\%) & [1.3, 9.2]\% & --- & --- & 1 range-lim. \\ \textbf{SA9} & Equal-cluster P1 (all pairs) & 31.3\% (476 cl.) & [27.1, 35.5]\% & --- & --- & boot.; P3 [1.6, 8.9]\% \\ \textbf{SA10} & Contest P1 (within-Contest) & 149/444 (33.6\%) & [29.2, 38.2]\% & --- & --- & 32 Repo held at S1 \\ \textbf{SA12} & Quarantined S1 stops (cl.) & 32/54 (59.3\%) & [45.0, 72.4]\% & --- & --- & 59.2\% pairs; 204 unrun \\ \textbf{SA13a} & Rateable Contest P1 & 149/358 (41.6\%) & [36.5, 46.9]\% & --- & --- & excl.\ 118 holds \\ \textbf{SA13b} & Rateable Contest P2 & +7.3~pp (358 cl.) & [$-2.8$, +17.0]~pp & Sign & $0.165$ & toggles 0.082--0.203 \\ \textbf{SA14} & Pre-S3 fixture stops & 32/183 (17.5\%) & [12.3, 23.8]\% & --- & --- & cond.\ 81.4\% \\}
+\newcommand{\BenchAlertForensicsRows}{3 (CodeNet) & 32--1{,}024 (3/3) & 0.65--2.24 & $-2.90$/0.00 & 193--1{,}119$\times$ & 0.69--2.24 & 193--1{,}119$\times$ & Flip & 0.99--1.04$\times$ & $\times$ & $\times$ \\ 13 (CodeNet) & 50--1{,}600 (1/3) & 2.01 & 2.00/2.01 & 2.56\text{M}$\times$ & 1.02 & 3{,}193$\times$ & Retain & 2.00--3.69$\times$ & \checkmark & \checkmark \\ 94 (PIE) & 250--8{,}000 (1/3) & 1.00 & 1.00/1.00 & 4{,}000$\times$ & 1.01 & 3{,}066--3{,}983$\times$ & Retain & 0.79--1.48$\times$ & \checkmark & $\times$ \\ 97 (PIE) & 1--32 (3/3) & 1.86--1.93 & 1.29/1.91 & 394--413$\times$ & 1.87--1.96 & 408--426$\times$ & Retain & 1.10--1.15$\times$ & \checkmark & $\times$ \\ 164 (PIE) & 625--20{,}000 (1/3) & 1.00 & 1.00/1.00 & 20{,}001$\times$ & 0.00 & 2.00$\times$ & Retain & 2.10--2.20$\times$ & $\times$ & \checkmark \\ 175 (CodeNet) & 300--9{,}600 (3/3) & 0.99--1.05 & 0.97/0.99 & 1{,}221--2{,}763$\times$ & 0.99--1.04 & 611--1{,}382$\times$ & Retain & 3.07--22.65$\times$ & \checkmark & \checkmark \\}
+\newcommand{\BenchTableFourRows}{Overall (38 cl.) & 50 & 48.0\% (0.154; [$-0.031$, 0.326]) & 56.0\% (0.032) & 0.120 & 0.263 & 3/19/3/25 & 3/26 & ($8.55 \times 10^{-4}$)\,$^\dagger$ \\ Conf.\ (sing.) & 20 & 30.0\% (0.018; [$-0.231$, 0.265]) & 45.0\% ($-0.170$) & $-0.100$ & 0.020 & 1/8/3/8 & 3/10 & $0.227$\phantom{$\,^\dagger$} \\ Quar.\ (18 cl.) & 30 & 60.0\% (0.259; ---) & 63.3\% (0.171) & 0.267 & 0.413 & 2/11/0/17 & 0/16 & ($9.77 \times 10^{-4}$)\,$^\dagger$ \\}
+\newcommand{\BenchTableCorpusRows}{PIE-train (Contest) & 228 & 228 & 46 & 83 & 99 & 15 & 0 & 84 & 9 & 6 & 69 & 3 \\ CodeNet (Contest) & 228 & 216 & 40 & 92 & 84 & 17 & 2 & 65 & 8 & 2 & 55 & 3 \\ GitHub (Repository) & 44 & 33 & 33 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \midrule \textbf{Total} & 500 & 477 & 119 & 175 & 183 & 32 & 2 & 149 & 17 & 8 & 124 & 6 \\}
+\newcommand{\BenchTableAppRows}{Primary protocol baseline (SHA \texttt{59dcfaf3}) & 31.3\% & +30.3~pp & +7.3~pp ($0.165$) & 4.8\% & 11.4\% & 17.5\% \\ Pre-patch \texttt{cpu\_cap} exit-137 (2 pairs; \texttt{1c926287}) & 30.9\% & +30.7~pp & +7.8~pp ($0.132$) & 4.9\% & 11.6\% & 17.5\% \\ All \texttt{cpu\_cap} exit-137 unpatched (3 pairs; incl.\ Case~139) & 30.7\% & +30.9~pp & +8.1~pp ($0.118$) & 5.0\% & 11.6\% & 17.5\% \\ 8\,MiB stack policy (2 pairs, \texttt{rc=139}) as \texttt{fixture\_stop} & 31.3\% & +30.3~pp & +7.3~pp ($0.165$) & 4.8\% & 11.4\% & 18.6\% \\ Non-empty \texttt{stderr} diagnostic pairs (2 pairs) as executed & 31.7\% & +29.8~pp & +6.7~pp ($0.203$) & 4.8\% & 11.3\% & 16.4\% \\ Residual UB/crash traps (2 pairs, \texttt{rc=134/139}) as infra & 31.3\% & +30.3~pp & +7.3~pp ($0.165$) & 4.8\% & 11.4\% & 16.4\% \\ Capped-point quality toggle (1 pair as \texttt{insufficient\_fit}) & 31.3\% & +30.3~pp & +7.3~pp ($0.165$) & 4.9\% & 11.4\% & 17.5\% \\ Initial-batch oracle overrides (6 pairs) as \texttt{fixture\_stop} & 30.0\% & +31.5~pp & +8.9~pp ($0.082$) & 4.8\% & 7.7\% & 20.8\% \\}
 \newcommand{\BenchFlowIntakeC}{12}
 \newcommand{\BenchFlowIntakeR}{11}
 \newcommand{\BenchFlowIntakeU}{23}

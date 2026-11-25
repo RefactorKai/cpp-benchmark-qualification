@@ -44,7 +44,7 @@ def _make_manifest(n_conf: int = 205, n_quar: int = 4) -> tuple[dict, list[dict]
             holds.append({"corpus": corpus, "pair_id": f"id_{i}", "reason": "no_independent_repository_spec"})
     for j in range(n_quar):
         pairs.append({
-            "corpus": "pie-validation", "id": f"q_{j}", "cluster_id": "cl_p02346", "problem_id": "p02346",
+            "corpus": "pie-validation", "id": f"q_{j}", "cluster_id": "cl_q_synth", "problem_id": "prob_q_synth",
             "frame": "Contest", "quarantined": True,
             "slow": {"files": [{"path": "s.cpp"}]}, "fast": {"files": [{"path": "f.cpp"}]},
         })
@@ -125,7 +125,10 @@ def test_amendment4_indeterminate_and_below_gate_p3():
     assert s13["indeterminate_counts"]["confirmatory_reps"] == 1
 
 
-def test_author_check_kappa_and_fixture_inventory():
+def test_author_check_kappa_and_fixture_inventory(monkeypatch: pytest.MonkeyPatch):
+    synth_h = ea.digest(b"prob_q_synth")[:16]
+    monkeypatch.setattr(ea, "PATH_B_CASE_PY_HASHES", frozenset({synth_h}))
+    monkeypatch.setattr(ea, "PATH_B_EXECUTED_PIE_HASHES", ea.PATH_B_HIST_EXEC_HASHES | {synth_h})
     manifest, holds = _make_manifest(10, 4)
     s1 = {}
     for row in manifest["pairs"]:
@@ -185,13 +188,14 @@ def test_render_benchmark_slots_keeps_unexecuted_fields_pending():
     assert r"\newcommand{\BenchFlowDeskU}{10}" in tex
     assert r"\newcommand{\BenchFlowFixtureU}{\BenchCell}" in tex
     assert r"\newcommand{\BenchFlowAlertU}{\BenchCell}" in tex
-    assert "dropped under Amendment~2" in tex
+    assert r"\newcommand{\BenchSOneBatchesN}{" in tex
     assert f"% Amendment 5 SHA-256: {ea.AMENDMENT_5_SHA}" in tex
     assert "Amendment 4 SHA-256" not in tex
     # Dynamic flow values instead of hardcoded 23/1,000 and 844
-    assert r"1/15 pairs stopped at S0 (1 \texttt{intake\_duplicate}, 0 \texttt{intake\_unretrievable}), leaving 14 S0-pass pairs" in tex
-    assert "across 9 rateable pairs:" in tex
-    assert "0 Contest unbundled images, 5 Repository lacking independent specification" in tex
+    assert r"\newcommand{\BenchIntakeStopsN}{1}" in tex
+    assert r"\newcommand{\BenchSOPassN}{14}" in tex
+    assert r"\newcommand{\BenchRateablePairsN}{9}" in tex
+    assert r"\newcommand{\BenchRepoDeskUnratN}{5}" in tex
 
 
 def test_amendment5_fixture_stop_accounting():
@@ -492,8 +496,9 @@ def test_latex_scientific_p_values_and_macro_completeness(tmp_path: Path):
     slots_tex = ea.render_benchmark_slots(report, s1_complete=True, execution_complete=True, author_check=author)
     assert not re.search(r"\d+e[+-]\d+", slots_tex), "Found raw scientific notation in LaTeX macros"
     assert r"\times 10^{" in slots_tex
-    assert r"\BenchSlot{" not in slots_tex.split("\n", 22)[-1]
-    assert r"\BenchCell" not in slots_tex.split("\n", 22)[-1]
+    body_tex = slots_tex.split(r"\newcommand{\BenchCell}", 1)[1].split("\n", 1)[1]
+    assert r"\BenchSlot{" not in body_tex
+    assert r"\BenchCell" not in body_tex
     assert f"% Amendment 5 SHA-256: {ea.AMENDMENT_5_SHA}" in slots_tex
 
     used_bench = set(re.findall(r"\\(Bench[A-Za-z0-9]+)", tex_src))
@@ -507,12 +512,16 @@ def test_latex_scientific_p_values_and_macro_completeness(tmp_path: Path):
     if shutil.which("pdflatex") and shutil.which("bibtex"):
         tex_tmp = tmp_path / "full_s11_build"
         tex_tmp.mkdir()
-        for fname in ("paired_mechanism.tex", "paired_mechanism.bib", "grouped_statistics_macros.tex", "fig_s1_desk_taxonomy.pdf", "fig_qualification_outcomes.pdf"):
+        for fname in (
+            "paired_mechanism.tex", "paired_mechanism.bib", "grouped_statistics_macros.tex",
+            "fig_pipeline_funnel.pdf", "fig_s1_desk_taxonomy.pdf", "fig_scaling_landscape.pdf", "fig_alert_trajectories.pdf", "fig_manski_tipping.pdf",
+        ):
             shutil.copy2(build_dir / fname, tex_tmp / fname)
         (tex_tmp / "benchmark_slots.tex").write_bytes(slots_tex.encode("utf-8"))
         for cmd in (
             ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "paired_mechanism.tex"],
             ["bibtex", "paired_mechanism"],
+            ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "paired_mechanism.tex"],
             ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "paired_mechanism.tex"],
             ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "paired_mechanism.tex"],
         ):
@@ -521,6 +530,7 @@ def test_latex_scientific_p_values_and_macro_completeness(tmp_path: Path):
         assert "Overfull" not in log
         assert "Undefined" not in log
         assert "Warning" not in log
+        assert ".pk" not in log
 
 
 def test_load_ledger_json_and_jsonl(tmp_path: Path):
@@ -606,26 +616,29 @@ def test_cli_aggregate_json_and_author_check_and_write_slots(tmp_path: Path):
     assert rec["primary_all_post_s0"]["secondary"]["S14_fixture_stops_after_s1_pass"]["count"] == 15
     assert rec["author_check"]["exact"]["cohens_kappa"] == 0.740
     tex = out_tex.read_text(encoding="utf-8")
-    assert r"\newcommand{\BenchFlowFixtureU}{15}" in tex
-    assert r"\kappa = 0.740" in tex
+    assert r"\BenchFlowFixtureU}{15}" in tex
+    assert r"\BenchAuthExactK}{0.740}" in tex
+    assert r"\BenchNoFitN}{5}" in tex
     assert not re.search(r"\d+e[+-]\d+", tex)
-    assert "confirmatory \\texttt{insufficient\\_fit} clusters" in tex
-    assert "cluster S1 desk-stop breakdown omitted without representative counts" in tex
-    conc_line = [ln for ln in tex.splitlines() if r"\BenchConclusionTakeaway" in ln][0]
-    assert "that qualification stopped" not in conc_line
-    assert "while fitted-case alerts fell below" in conc_line
+    assert r"\BenchConclusionTakeaway" not in tex
+    desk_line = [ln for ln in tex.splitlines() if r"\BenchDeskContrast" in ln][0]
+    assert r"6.25 \times 10^{-9}" in desk_line
 
     # Full pdflatex compile smoke check if pdflatex is installed
     if shutil.which("pdflatex") and shutil.which("bibtex"):
         build_src = Path(__file__).resolve().parents[1] / "manuscript"
         tex_tmp = tmp_path / "tex_build"
         tex_tmp.mkdir()
-        for fname in ("paired_mechanism.tex", "paired_mechanism.bib", "grouped_statistics_macros.tex", "fig_s1_desk_taxonomy.pdf", "fig_qualification_outcomes.pdf"):
+        for fname in (
+            "paired_mechanism.tex", "paired_mechanism.bib", "grouped_statistics_macros.tex",
+            "fig_pipeline_funnel.pdf", "fig_s1_desk_taxonomy.pdf", "fig_scaling_landscape.pdf", "fig_alert_trajectories.pdf", "fig_manski_tipping.pdf",
+        ):
             shutil.copy2(build_src / fname, tex_tmp / fname)
         (tex_tmp / "benchmark_slots.tex").write_bytes(tex.encode("utf-8"))
         for cmd in (
             ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "paired_mechanism.tex"],
             ["bibtex", "paired_mechanism"],
+            ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "paired_mechanism.tex"],
             ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "paired_mechanism.tex"],
             ["pdflatex", "-interaction=nonstopmode", "-halt-on-error", "paired_mechanism.tex"],
         ):
@@ -634,6 +647,7 @@ def test_cli_aggregate_json_and_author_check_and_write_slots(tmp_path: Path):
         assert "Overfull" not in log
         assert "Undefined" not in log
         assert "Warning" not in log
+        assert ".pk" not in log
 
 
 def test_cli_manifest_ledger_pretty_and_author_check(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
@@ -709,7 +723,7 @@ def test_cli_manifest_ledger_pretty_and_author_check(tmp_path: Path, monkeypatch
     assert rep["author_check"]["exact"]["cohens_kappa"] == 1.0
     tex = out_slots.read_text(encoding="utf-8")
     assert r"\newcommand{\BenchFlowFixtureU}{1}" in tex
-    assert r"descriptive blind check on 4 pairs" in tex
+    assert r"\newcommand{\BenchAuthExactK}{1.000}" in tex
 
 
 def test_regressions_aggregate_aliases_s12_honesty_and_zero_denominators(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
@@ -735,8 +749,9 @@ def test_regressions_aggregate_aliases_s12_honesty_and_zero_denominators(tmp_pat
         "fixture_inventory": ea.fixture_readiness_inventory(manifest, s1, holds),
     }
     zero_tex = ea.render_benchmark_slots(zero_rep, s1_complete=True, execution_complete=True)
-    assert r"\BenchCell" not in zero_tex.split("\n", 22)[-1]
-    assert "S12 quarantined stratum: 0 development-exposed pairs past S0" in zero_tex
+    zero_body = zero_tex.split(r"\newcommand{\BenchCell}", 1)[1].split("\n", 1)[1]
+    assert r"\BenchCell" not in zero_body
+    assert r"\newcommand{\BenchQuarPairsN}{0}" in zero_tex
 
     # 2. Aggregate aliases (Distinct Union, top-level fallback, analyze_cohort-shaped S8, S10 repo_clusters, S12 missing rep_dispositions)
     agg = {
@@ -872,18 +887,18 @@ def test_regressions_aggregate_aliases_s12_honesty_and_zero_denominators(tmp_pat
     cli_rep = json.loads(out_p.read_text(encoding="utf-8"))
     assert cli_rep["author_check"]["exact"]["cohens_kappa"] == 1.0
 
-    # Verify generate_figures.py plot_outcomes_forest consumes the receipt cleanly
+    # Verify generate_figures.py plot_pipeline_funnel consumes the receipt cleanly
     if importlib.util.find_spec("matplotlib") is not None:
         import generate_figures as gf
-        gf.plot_outcomes_forest(cli_rep, tmp_path / "fig2_test")
-        assert (tmp_path / "fig2_test.pdf").is_file()
-        assert (tmp_path / "fig2_test.png").is_file()
+        gf.plot_pipeline_funnel(cli_rep, tmp_path / "fig1_test")
+        assert (tmp_path / "fig1_test.pdf").is_file()
 
 
 def test_ingest_live_final_a5_stats_agg():
-    """Verify native ingestion of Devin's verified final-a5-stats-agg.json and author-check-50-agg.json."""
-    scratch_dir = Path(__file__).resolve().parents[1] / "data"
-    agg_path = scratch_dir / "final-a5-stats-agg.json"
+    """Verify ingestion of final-a5-stats-agg.json and author-check-50-agg.json."""
+    here = Path(__file__).resolve().parent
+    data_dir = Path(__file__).resolve().parents[1] / "data"
+    agg_path = data_dir / "final-a5-stats-agg.json"
     if not agg_path.is_file():
         pytest.skip("final-a5-stats-agg.json not present")
     raw = json.loads(agg_path.read_text(encoding="utf-8"))
@@ -904,9 +919,12 @@ def test_ingest_live_final_a5_stats_agg():
     assert sec["S8_drop_largest_refit"]["alerts_among_admitted"]["count"] == 5
     assert sec["S14_fixture_stops_after_s1_pass"]["count"] == 32
     assert s13["P2"]["contrast"]["group_weighted_delta_pp"] == 7.3
-    assert prim["wp_p1"]["decision"] == "NO-GO, single-TU adequate"
+    assert "wp_p1" not in prim
+    assert sec["S10_per_frame"]["Repository"]["clusters_past_s0"] == 32
+    assert sec["S10_per_frame"]["Repository"]["pairs_past_s0"] == 33
+    assert sec["S10_per_frame"]["Repository"]["counts_only"] is True
 
-    author_path = scratch_dir / "author-check-50-agg.json"
+    author_path = data_dir / "author-check-50-agg.json"
     if author_path.is_file():
         auth = ea._load_author_check_cli(author_path, draw_path=None, manifest=None, s1_summary=None)
         assert auth["exact"]["raw_agreement_count"] == 13
@@ -914,30 +932,32 @@ def test_ingest_live_final_a5_stats_agg():
         assert auth["bucket"]["raw_agreement_count"] == 24
         assert auth["bucket"]["cohens_kappa"] == 0.154
         slots = ea.render_benchmark_slots(rep, s1_complete=True, execution_complete=True, author_check=auth)
-        body = "\n".join(slots.splitlines()[21:])
+        body = slots.split(r"\newcommand{\BenchCell}", 1)[1].split("\n", 1)[1]
         assert r"\BenchSlot" not in body
         assert r"\BenchCell" not in body
 
 
-def test_forensics_anon_replay_claims_and_literal_guard():
-    """Verify full per-point anonymous-measurements replay, paper_claims.json, and literal guard."""
+def test_forensics_anon_replay_claims_and_literal_guard(tmp_path: Path):
+    """Verify full per-point anonymous-measurements replay, paper_claims.json, and literal/citation guards."""
     repo_root = Path(__file__).resolve().parents[1]
-    sys.path.insert(0, str(repo_root))
-    import verify as vf
+    data_dir = repo_root / "data"
 
-    agg_p = repo_root / "data/final-a5-stats-agg.json"
-    auth_p = repo_root / "data/author-check-50-agg.json"
-    for_p = repo_root / "data/alert-and-fit-forensics-agg.json"
-    anon_p = repo_root / "data/anonymous-measurements.json"
-    assert for_p.is_file() and anon_p.is_file()
+    agg_p = data_dir / "final-a5-stats-agg.json"
+    auth_p = data_dir / "author-check-50-agg.json"
+    for_p = data_dir / "alert-and-fit-forensics-agg.json"
+    anon_p = data_dir / "anonymous-measurements.json"
+    man_p = data_dir / "freeze" / "manifest-expanded.json"
+    assert for_p.is_file() and anon_p.is_file() and man_p.is_file()
 
     rep = ea.analyze_aggregate(json.loads(agg_p.read_bytes()))
     auth = ea._load_author_check_cli(auth_p, draw_path=None, manifest=None, s1_summary=None)
+    man = json.loads(man_p.read_bytes())
     forensics = ea.verify_anon_and_forensics(
         json.loads(for_p.read_bytes()),
         json.loads(anon_p.read_bytes()),
         rep,
         auth,
+        manifest=man,
     )
     assert forensics["verified_from_anon_measurements"] is True
     assert len(forensics["six_alerts"]) == 6
@@ -948,31 +968,251 @@ def test_forensics_anon_replay_claims_and_literal_guard():
         "positive_subthreshold": 6,
         "s7_stream_selective": 3,
     }
+    # Forensic regression assertions: 4-way missing partition, -O0-only caps, SA3, Cook's D, censoring, B1-B5 Holm, IRR direction
+    md_o0 = forensics["missing_decomposition"]["O0_O2_O3"]
+    assert md_o0["capped"] + md_o0["oracle_abort"] + md_o0["overlay_fixture_stop"] + md_o0["infra_failure"] == md_o0["missing_total"] == 1294
+    md_sh = forensics["missing_decomposition"]["target_vs_sham"]
+    assert md_sh["capped"] + md_sh["oracle_abort"] + md_sh["overlay_fixture_stop"] + md_sh["infra_failure"] == md_sh["missing_total"] == 967
+    assert forensics["cap_mode_breakdown"]["cpu_cap_o0_only_points"] == 5
+    assert forensics["cap_mode_breakdown"]["cpu_cap_total_points"] == 7
+    assert rep["primary_all_post_s0"]["secondary"]["S3_preprocessing_stops_after_desk"]["total"] == 154
+    assert rep["primary_all_post_s0"]["secondary"]["S12_quarantined"]["cluster_rates"]["S1_desk_stop"]["clopper_pearson_95pct_percent"] == [45.0, 72.4]
+    assert forensics["insufficient_fit_breakdown"]["censoring_upper_p3"]["total"] == 126
+    assert forensics["insufficient_fit_breakdown"]["censoring_worst_p3"]["count"] == 8
+    assert forensics["insufficient_fit_breakdown"]["b3_all_non_oracle_exec"]["count"] == 5
+    assert forensics["insufficient_fit_breakdown"]["b3_all_non_oracle_exec"]["total"] == 132
+    assert forensics["six_alerts_robust_diagnostics"]["per_position"]["3"]["c0_stream_cooks_d"][0] > 2.0
+    mcn_h5 = forensics["exact_comparisons"]["mcnemar_screens_vs_b0_holm5"]
+    assert mcn_h5["B1"] < 1e-6 and mcn_h5["B5"] > 0.05 and mcn_h5["B4"] > 0.05
+    assert forensics["exact_comparisons"]["fisher_two_sided"]["S3"] == pytest.approx(5.8168199e-12, rel=1e-4)
+    assert forensics["exact_comparisons"]["holm_primary_finite_sample"]["P3"] == pytest.approx(0.00763127, rel=1e-3)
+    cfa = forensics["chronological_failure_audit"]
+    assert cfa["oracle_prior_process_failure_positions"] == [27, 29]
+    assert cfa["other_noncap_failure_positions"] == [71, 107, 116, 141, 167]
+    assert cfa["rc_0_stderr_count"] == 1
+    assert cfa["rc_134_sigabrt_count"] == 2
+    assert cfa["rc_139_sigsegv_count"] == 4
+    assert cfa["counters_ge_2_pow_64"] == 0
+    assert cfa["fitted_masked_failure_count"] == 0
+    assert md_o0["o2_o3_agree_on_o0_capped"] == 12 and md_o0["o2_o3_disagree_on_o0_capped"] == 0
+    pr2 = forensics["fit_124_taxonomy"]["pair_level_r2"]
+    assert pr2["all_zero_var_pairs"] == 52 and pr2["defined_r2_pairs"] == 72
+    assert pr2["worst_stream_median_r2"] == pytest.approx(0.738, abs=0.002)
+    assert pr2["alert_worst_stream_median_r2"] == pytest.approx(0.9994, abs=0.001)
+    assert forensics["exact_comparisons"]["fisher_two_sided"]["P3_pilot_12cl"] == pytest.approx(0.00564, rel=1e-2)
+    assert forensics["exact_comparisons"]["fisher_two_sided"]["P3_pilot_12cl_conserv"] == pytest.approx(0.03291, rel=1e-2)
+    assert forensics["exact_comparisons"]["fisher_two_sided"]["SA3_incl_orig_compile_fail"] == pytest.approx(1.272e-9, rel=1e-2)
+    assert forensics["exact_comparisons"]["pilot_neff_sensitivity"]["n_eff_30"]["p1_p"] == pytest.approx(0.0128, rel=2e-2)
+    assert forensics["insufficient_fit_breakdown"]["cpu_cap_fitted_positions"] == [90, 99, 139]
+    assert forensics["insufficient_fit_breakdown"]["censoring_plus_cpucap_fisher_p"] == pytest.approx(0.03546, rel=1e-2)
+    assert forensics["insufficient_fit_breakdown"]["censoring_worst_fisher_conserv"] == pytest.approx(0.05601, rel=1e-2)
+    assert forensics["insufficient_fit_breakdown"]["censoring_plus_cpucap_excl_flat_n"] == 9
+    assert forensics["insufficient_fit_breakdown"]["censoring_plus_cpucap_fisher_conserv_p"] == pytest.approx(0.10565, rel=1e-2)
+    assert forensics["exact_comparisons"]["joint_conserv_holm_3"]["P1"] == pytest.approx(0.02563, rel=1e-2)
+    assert forensics["exact_comparisons"]["joint_conserv_holm_3"]["P3"] == pytest.approx(0.03291, rel=1e-2)
+    ofb = forensics["oracle_failure_breakdown"]
+    assert ofb["invalid_output_mode_exits"] == {"plain:exit_0": 12, "ubsan:exit_1": 5}
+    assert ofb["plain_reference"] == 3 and ofb["ubsan_only_reference"] == 2 and ofb["ubsan_invalid_reference"] == 3
+    assert ofb["plain_segv_and_ubsan_count"] == 1 and ofb["plain_segv_and_ubsan_pos"] == 29
+    assert ofb["pos27_o0_sigabrt_o2_clean"] is True
+    o0_rlx = forensics["o0_cpu_cap_relaxation"]
+    assert o0_rlx["o0_only_cap_points_n"] == 5 and o0_rlx["affected_pairs_n"] == 3 and o0_rlx["p3_delta"] == 0 and o0_rlx["sa7_delta"] == 0
+    assert o0_rlx["per_position"]["90"]["o0_only_points"] == 2
+    sub_f = forensics["six_alerts_robust_diagnostics"]["spawn_floor_subtracted"]
+    assert forensics["six_alerts_robust_diagnostics"]["realized_cpu_core_n"] == 2
+    assert forensics["six_alerts_robust_diagnostics"]["plain_sub_500_core_n"] == 1
+    assert forensics["six_alerts_robust_diagnostics"]["o2_sub_500_core_n"] == 2
+    assert forensics["six_alerts_robust_diagnostics"]["min_ref_plain_core_n"] == 2
+    assert forensics["six_alerts_robust_diagnostics"]["min_ref_o2_core_n"] == 2
+    assert forensics["six_alerts_robust_diagnostics"]["o2_minus_plain_s0_ms"]["n"] == 18
+    assert sub_f["175"]["all_streams_pass"] is True and sub_f["13"]["all_streams_pass"] is False and sub_f["13"]["streams_dual_pass"] == 2
+    assert sub_f["13"]["o2_all_streams_pass"] is True and sub_f["94"]["all_streams_pass"] is False and sub_f["97"]["o2_streams_dual_pass"] == 1
+    assert forensics["six_alerts_robust_diagnostics"]["fd_wrapper_overhead_ms"]["n"] == 72
+    assert forensics["restoration_forensics_124"]["non_exact_c1_inflation"] == 0
+    assert forensics["restoration_forensics_124"]["all_point_excess_fail_n"] == 0
+    assert forensics["restoration_forensics_124"]["all_point_r1_infl_n"] == 0
+    assert forensics["restoration_forensics_124"]["all_point_nonreg_r0_fail_positions"] == [18, 44]
+    assert sum(forensics["restoration_forensics_124"]["non_exact_pass_regimes"].values()) == 14
+    assert forensics["exact_comparisons"]["pilot_neff_sensitivity"]["p1_tip_neff_ge_05"] == 19
+    rtot = forensics["restoration_total_ticks_124"]
+    assert rtot["pass"] == 62 and rtot["no_excess"] == 49 and rtot["fail"] == 13 and rtot["c0_fail_to_tot_pass"] == 2
+    q1z = forensics["fit_124_taxonomy"]["q1_zero_t0_eq_q0_positions"]
+    assert len(q1z) == 10 and 174 in q1z and 178 in q1z
+    assert 91 in forensics["fit_124_taxonomy"]["t1_lt_q1_positions"] and 175 in forensics["fit_124_taxonomy"]["t1_lt_q1_positions"]
+    c1h = {h["position"]: h for h in forensics["fit_124_taxonomy"]["c1_only_hits"]}
+    assert len(c1h) == 2 and c1h[47]["stream"] == "W2" and c1h[11]["stream"] == "W3"
+    irr_s = forensics["s1_irr_stratified"]
+    assert irr_s["overall"]["binary_matrix"] == [[3, 19], [3, 25]]
+    assert irr_s["confirmatory"]["binary_matrix"] == [[1, 8], [3, 8]]
+    assert irr_s["author_rejected_pass_exec_ci"]["count"] == 7 and irr_s["author_rejected_pass_exec_ci"]["total"] == 8
+    mb = irr_s["manski_bounds"]
+    assert mb["plugin_theta_ci_pct"] == [4.9, 49.6]
+    assert mb["plugin_sa13_y_half_width_pp"] == pytest.approx(1.6, abs=0.1)
+    assert mb["plugin_sa13_two_step_y_half_width_pp"] == pytest.approx(0.8, abs=0.1)
+    assert mb["plugin_theta_delta_se_diff_pp"] < 0.1
+    assert mb["plugin_theta_joint_rect_ci_pct"] == [4.5, 52.9]
+    assert mb["plugin_theta_joint_jeffreys_ci_pct"] == [6.8, 46.1]
+    assert rep["primary_all_post_s0"]["secondary"]["S9_all_pair_equal_cluster"]["P1_equal_cluster"]["bootstrap_95pct_pct"] == [27.1, 35.5]
+    assert forensics["restoration_forensics_124"]["all_point_max_bound_fail_n"] == 0
+    assert mb["p3_tipping"]["oracle_vs_4_13"]["min_k"] == 9 and mb["p3_tipping"]["s1_vs_4_13"]["min_k"] == 8
+    assert mb["p3_tipping"]["oracle_adv_vs_4_13"]["min_k"] == 8 and mb["p3_tipping"]["oracle_adv_vs_3_12_conserv"]["min_k"] == 2
+    deg_irr = ea._irr_from_3x3({"pass": {"pass": 5}})
+    assert deg_irr["bucket_kappa"] == 1.0 and deg_irr["binary_kappa"] == 1.0
 
     slots_tex = ea.render_benchmark_slots(
-        rep, s1_complete=True, execution_complete=True, author_check=auth, forensics=forensics
+        rep, s1_complete=True, execution_complete=True, author_check=auth, forensics=forensics, manifest=man
     )
+    assert "32 Repo held at S1" in slots_tex
+    assert r"\newcommand{\BenchPlainSubCoreN}{1}" in slots_tex
+    assert r"\newcommand{\BenchOtwoSubCoreN}{2}" in slots_tex
+    assert r"\newcommand{\BenchPosFourSevenCOneStream}{\texttt{W2}}" in slots_tex
+    assert r"\newcommand{\BenchPosElevenCOneStream}{\texttt{W3}}" in slots_tex
+    assert r"\newcommand{\BenchPThreeOracleAdvTipN}{8}" in slots_tex
+    assert r"\newcommand{\BenchSAThirteenFpTipN}{6}" in slots_tex
+    assert r"\newcommand{\BenchPThreeFpTipConservN}{20}" in slots_tex
+    assert r"\newcommand{\BenchPThreeFpTipFullN}{57}" in slots_tex
+    assert r"\newcommand{\BenchAuthConfFitRejFrac}{6/7 = 85.7\%}" in slots_tex
+    assert r"\newcommand{\BenchOracleCoordN}{6}" in slots_tex
+    assert r"\BenchWaveTwoAlignN" not in slots_tex
+    assert r"\BenchConclusionTakeaway" not in slots_tex
+    assert r"2.03 \times 10^{-11}" in [ln for ln in slots_tex.splitlines() if r"\BenchDeskContrast" in ln][0]
+    assert r"\newcommand{\BenchAuthPassStopN}{19}" in slots_tex
+    assert r"\newcommand{\BenchAuthStopPassN}{3}" in slots_tex
+    assert r"\newcommand{\BenchAuthQuarRev}{0/16 = 0.0\%}" in slots_tex
+    assert r"\newcommand{\BenchPosSevenSevenLogRSq}{1.000}" in slots_tex
+    assert r"\newcommand{\BenchEnvSAFourRange}{7.7--11.6\%}" in slots_tex
+    assert r"\newcommand{\BenchPosOneSixFourTotSlope}{0.0002}" in slots_tex
+    assert r"\newcommand{\BenchAuthConfBowkerQ}{8.00}" in slots_tex
+    assert r"\newcommand{\BenchAuthConfBowkerExactP}{$p = 0.041$}" in slots_tex
+    assert r"\newcommand{\BenchAuthAllBowkerExactP}{$p = 1.55 \times 10^{-4}$}" in slots_tex
+    assert r"\newcommand{\BenchCensorWorstFisherP}{$p = 0.015$}" in slots_tex
+    assert r"\newcommand{\BenchCorpusAlertFisherP}{$p = 1.000$}" in slots_tex
+    assert r"\newcommand{\BenchRestExactCopyPct}{70.2\%}" in slots_tex
+    assert r"\newcommand{\BenchFileCapMB}{8\,\text{MiB}}" in slots_tex
+    assert r"\newcommand{\BenchOLSMinRSq}{0.6584}" in slots_tex
+    assert r"\newcommand{\BenchSAThreeCrossFrameP}{$p = 5.82 \times 10^{-12}$}" in slots_tex
+    assert r"x-frame (4/183 comp.)" in slots_tex
+    assert r"P3 [1.6, 8.9]\%" in slots_tex
+    assert r"toggles 0.082--0.203" in slots_tex
+    assert r"\textbf{P1}\,$^{\ddagger}$" in slots_tex
+    assert r"\textbf{SA3}\,$^{\ddagger}$" in slots_tex
+    assert r"& 2 & 65 &" in slots_tex
+    assert r"[$-0.031$, 0.326]" in slots_tex
+    assert r"\newcommand{\BenchManskiYOneStepHalfPP}{" in slots_tex
+    assert r"\newcommand{\BenchManskiYTwoStepHalfPP}{" in slots_tex
+    assert r"\newcommand{\BenchPfStderrN}{1}" in slots_tex
+    assert r"\newcommand{\BenchPfSigabrtN}{2}" in slots_tex
+    assert r"\newcommand{\BenchPfSigsegvN}{4}" in slots_tex
+    assert r"\newcommand{\BenchRestTotPassN}{62}" in slots_tex
+    assert r"\newcommand{\BenchFinHolmPThree}{$p_H = 0.0076$}" in slots_tex
+    assert r"2.56\text{M}$\times$" in slots_tex
+    assert r"\checkmark & \checkmark \\" in slots_tex
+    # Zero raw p\d{5}/s\d{9} upstream IDs in analyzer or test suite
+    leak_re = re.compile(r"\b(?:p\d{5}|s\d{9})\b")
+    assert not leak_re.search(Path(ea.__file__).read_text(encoding="utf-8"))
+    assert not leak_re.search(Path(__file__).read_text(encoding="utf-8"))
+    final_rec = json.loads((data_dir / "final_receipt.json").read_bytes())
+    assert "mcnemar_screens_vs_b0_holm5" in (final_rec.get("forensics") or {}).get("exact_comparisons", {})
+    assert final_rec["primary_all_post_s0"]["secondary"]["S8_drop_largest_refit"]["any_stream_alerts_among_admitted"]["count"] == 10
+    assert "execution_policy_checks" in (final_rec.get("author_check") or {})
+    assert "s1_run_window" in (final_rec.get("forensics") or {})
+
+    if importlib.util.find_spec("matplotlib") is not None:
+        import generate_figures as gf
+        gf.plot_scaling_landscape(json.loads(anon_p.read_bytes()), forensics, tmp_path / "fig_scaling_landscape")
+    grouped_p = repo_root / "manuscript" / "grouped_statistics_macros.tex"
     claims = ea.build_paper_claims(
         slots_tex,
         agg_sha=ea.digest(agg_p.read_bytes()),
         author_sha=ea.digest(auth_p.read_bytes()),
         forensics_sha=ea.digest(for_p.read_bytes()),
         anon_sha=ea.digest(anon_p.read_bytes()),
+        grouped_sha=ea.digest(grouped_p.read_bytes()) if grouped_p.is_file() else None,
     )
     claims_by_macro = {c["macro"]: c for c in claims["claims"]}
-    for m_name in ("BenchAlertForensicsRows", "BenchAlertTableCaption", "BenchStreamAndFitForensics", "BenchBaselineScreens"):
+    for m_name in (
+        "BenchAlertForensicsRows", "BenchCoreFourPct", "BenchTableFourRows", "BenchBOneAlertsN",
+        "BenchWaveOnePin", "BenchWaveTwoPin", "BenchPinWaveTwoCap", "BenchFDWrapOverheadMs",
+        "BenchBwrapOverheadMs", "BenchWaveOneOverrideN", "BenchSAThirteenFpTipN", "BenchPThreeFpTipConservN",
+        "BenchPosNineFourPlainUpperNs", "BenchPosTwoNine",
+    ):
         assert claims_by_macro[m_name]["evidence_class"] == "replay-only"
-    assert claims_by_macro["BenchIntakeStops"]["evidence_class"] == "re-executable"
-    tex_raw = (repo_root / "manuscript/paired_mechanism.tex").read_text(encoding="utf-8")
-    grouped_src = (repo_root / "manuscript/grouped_statistics_macros.tex").read_text(encoding="utf-8")
-    assert vf.verify_paper_claims(claims, slots_tex, grouped_src, tex_raw) == claims["claim_count"]
-    vf.verify_tex_literals_and_banned_terms(tex_raw)
+    assert claims_by_macro["BenchIntakeStopsN"]["evidence_class"] == "re-executable"
+    assert claims_by_macro["BenchConfContestDrawn"]["evidence_class"] == "re-executable"
+    assert claims_by_macro["BenchConfContestIntake"]["evidence_class"] == "re-executable"
+    assert claims_by_macro["BenchQuarIntakeN"]["evidence_class"] == "re-executable"
+    assert claims_by_macro["BenchPosThreeLev"]["evidence_class"] == "protocol-constant"
+    assert claims_by_macro["BenchBwrapVer"]["evidence_class"] == "protocol-constant"
+    assert claims_by_macro["BenchRateablePairsN"]["evidence_class"] == "replay-only"
+    assert claims_by_macro["BenchHeldUnratConfClustN"]["evidence_class"] == "replay-only"
+    assert claims_by_macro["BenchMaxCounterVal"]["evidence_class"] == "replay-only"
+    assert claims_by_macro["BenchPosThreeWorstTS"]["evidence_class"] == "replay-only"
+    assert r"\newcommand{\BenchCensorSlopeMin}{0.45}" in slots_tex
+    assert r"\newcommand{\BenchPosOneSevenFiveOtwoSubSlopeRange}{1.12--1.80}" in slots_tex
+    assert r"\newcommand{\BenchPosNineZeroRatio}{23{,}899$\times$}" in slots_tex
+    assert r"vs.\ $-33.3$~pp pilot" in slots_tex
+    assert claims_by_macro["BenchPilotPairs"]["evidence_class"] == "replay-only"
+    assert claims_by_macro["BenchPairMedianRTwo"]["evidence_class"] == "replay-only"
+    assert claims_by_macro["GroupedQuadraticFalse"]["source_sha256"] == [ea.digest(grouped_p.read_bytes())]
+    claims_p = data_dir / "paper_claims.json"
+    assert claims_p.is_file()
+    assert claims == json.loads(claims_p.read_bytes())
 
-    # Injecting a raw empirical digit or banned term must fail closed
-    tampered_digit = tex_raw.replace(r"\BenchFittedClusters{} fits", "124 fits")
-    with pytest.raises(ValueError, match="Unguarded numeric literal"):
-        vf.verify_tex_literals_and_banned_terms(tampered_digit)
+    ms_dir = repo_root / "manuscript"
+    if (ms_dir / "paired_mechanism.tex").is_file() and (ms_dir / "paired_mechanism.bib").is_file():
+        tex_raw = (ms_dir / "paired_mechanism.tex").read_text(encoding="utf-8")
+        bib_raw = (ms_dir / "paired_mechanism.bib").read_text(encoding="utf-8")
+        tex_clean = re.sub(r"(?<!\\)%[^\n]*", "", tex_raw)
+        bib_keys = set(re.findall(r"^@\w+\{([^,]+),", bib_raw, flags=re.M))
+        cited_keys = {k.strip() for m in re.findall(r"\\cite\{([^}]+)\}", tex_clean) for k in m.split(",")}
+        assert bib_keys == cited_keys, f"BibTeX mismatch: uncited={bib_keys - cited_keys}, unknown={cited_keys - bib_keys}"
+        body = tex_clean.split(r"\begin{document}", 1)[1].split(r"\end{document}", 1)[0]
+        assert not re.search(r"\b(?:registered|asymptotic(?:ally)?)\b|github\.com/(?!evalplus\b)", body, re.I)
+        assert "`" not in tex_clean.replace("``", "")
+        assert not re.search(r"\\texttt\{[^}]*--[^}]*\}", tex_clean)
 
-    tampered_banned = tex_raw.replace("frozen protocol", "registered protocol")
-    with pytest.raises(ValueError, match="Banned overclaim"):
-        vf.verify_tex_literals_and_banned_terms(tampered_banned)
+    if (repo_root / "verify.py").is_file():
+        sys.path.insert(0, str(repo_root))
+        import verify as vf
+        tex_raw = (repo_root / "manuscript/paired_mechanism.tex").read_text(encoding="utf-8")
+        grouped_src = (repo_root / "manuscript/grouped_statistics_macros.tex").read_text(encoding="utf-8")
+        assert vf.verify_paper_claims(claims, slots_tex, grouped_src, tex_raw) == claims["claim_count"]
+        vf.verify_tex_literals_and_banned_terms(tex_raw)
+
+        # Injecting a raw empirical digit or banned term must fail closed
+        tampered_digit = tex_raw.replace(r"\BenchFittedClusters{} fits", "124 fits")
+        assert tampered_digit != tex_raw
+        with pytest.raises(ValueError, match="Unguarded numeric literal"):
+            vf.verify_tex_literals_and_banned_terms(tampered_digit)
+
+        tampered_banned = tex_raw.replace("frozen manifest", "registered manifest")
+        assert tampered_banned != tex_raw
+        with pytest.raises(ValueError, match="Banned overclaim"):
+            vf.verify_tex_literals_and_banned_terms(tampered_banned)
+
+
+def test_pinned_predict_library_and_cli_help():
+    """Verify pinned predict.py calculate_fit(), score.validate_committed_draw(), and --help CLI."""
+    import subprocess
+    from development.paired_study import predict as pred_mod
+    from development.paired_study import score as score_mod
+
+    fit = pred_mod.calculate_fit(
+        [(10, 100, 10), (20, 400, 20), (40, 1600, 40), (80, 6400, 80)]
+    )
+    assert fit["slope"] == pytest.approx(1.0, abs=1e-9)
+    assert fit["largest_ratio"] == pytest.approx(80.0, abs=1e-9)
+
+    score_mod.validate_committed_draw({"phase": "confirmatory", "pins": {"methods": "0" * 64}, "cases": ["c1"]})
+    with pytest.raises(ValueError):
+        score_mod.validate_committed_draw({"phase": "confirmatory"})
+
+    repo_root = Path(__file__).resolve().parents[1]
+    res = subprocess.run(
+        [sys.executable, "-B", "-m", "development.paired_study.predict", "--help"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+    )
+    assert res.returncode == 0
+    assert "--traces" in res.stdout

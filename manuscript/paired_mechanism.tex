@@ -1,507 +1,593 @@
 \documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{booktabs}
+\usepackage{caption}
+\usepackage{cite}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
 \usepackage{microtype}
 \usepackage{tabularx}
+\usepackage{xurl}
+\def\UrlNoBreaks{\do\:}
 \usepackage[hidelinks]{hyperref}
+
+\captionsetup[table]{position=top,skip=4pt}
+\captionsetup[figure]{position=bottom,skip=4pt}
 
 \input{grouped_statistics_macros}
 \input{benchmark_slots}
+\newcommand{\CaseRef}[1]{Case~#1}
 
-\title{When Can a C++ Performance Pair Support a Growth Claim?\\
+\title{When Can a Standalone C++ Performance Pair\\
+Support a Growth Claim?\\
 An Empirical Study of Benchmark Qualification}
 \author{Anonymous authors}
 \date{November 2026}
-\hypersetup{pdftitle={When Can a C++ Performance Pair Support a Growth Claim?},
+\hypersetup{pdftitle={When Can a Standalone C++ Performance Pair Support a Growth Claim?},
   pdfauthor={Anonymous authors}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-A faster C++ program is a candidate for a growth benchmark, not evidence
-that the original program's work increases faster with input size.
-We study \BenchPairs{} frozen public slow--fast pairs from PIE, CodeNet, and
-GitHub performance fixes. A frozen protocol follows each pair from intake
-through model-based desk screening, a sandboxed build, an independent output
-oracle, and a fit to the ratio of counts of a shared work event. The
-execution yield was \BenchExecRate, and the all-stream alert rate was
-\BenchFitAlertRate{} among fitted representatives and \BenchIntakeAlertRate{}
-among representatives passing intake. \BenchAbstractTakeaway{} A screen pass
-concerns the named event on the tested inputs, not time complexity or
-elapsed time. Confirmatory inference on fitted-case alerts requires at least
-\BenchMinFits{} independent fitted clusters (satisfied here with
-\BenchFittedClusters{} fits).
+A faster C++ program need not scale better with input size.
+We audit \BenchPairs{} frozen slow--fast C++ pairs from PIE, CodeNet, and \BenchGitHub{} GitHub commits (\BenchIntakeStopsN{} S0 stops, \BenchQuarPairsN{} quarantined pairs in \BenchQuarClustersN{} clusters, \BenchConfPairsN{} confirmatory pairs across \BenchConfClustersN{} clusters) via leakage quarantine, single-LLM desk triage, Bubblewrap isolation, independent oracles, cross-optimization scalar exit-counter parity, and log--log fits.
+Under pinned Stage~S1 triage, \BenchPOneCount{}/\BenchConfClustersN{} (\BenchPOnePct{}) confirmatory clusters reach execution while all \BenchConfRepoClustersN{} Repository clusters stop for lacking standalone specifications.
+Desk stops exceed executions by \BenchPTwoDelta{} (\BenchPTwoHoldsShare{} from \BenchHeldUnratConfClustN{} holds), whereas rateable Contest clusters do not reject parity (\BenchSAThirteenDelta{}, \BenchSAThirteenP{}).
+Only \BenchPThreeCount{}/\BenchFittedClusters{} (\BenchPThreePct{}) fits pass all-stream screening (\BenchSATwoPct{} post-S0), giving an unverified logical-counter upper bound of \BenchCoreFourN{}/\BenchFittedClusters{} (\BenchCoreFourPct{}; all \BenchPThreeCount{} alerts match $(R_0,R_1)=(Q_0,Q_1)$ without AST checks) and a single-invocation container-CPU lower bound of \BenchRealizedCpuCoreN{}/\BenchFittedClusters{} ($\ge \BenchMinRatio{}\times$).
+A blind audit on \BenchAuthConfN{} confirmatory singletons yields $\kappa =$ \BenchAuthConfBinK{}, motivating five qualification rules.
 \end{abstract}
 
-\noindent\textbf{Keywords:} benchmark qualification, software performance,
-empirical growth, program instrumentation, C++.
+\noindent\textbf{Keywords:} benchmark qualification, software performance, empirical scaling, program instrumentation, C++17, inter-rater reliability.
 
 \section{Introduction}
+\label{sec:intro}
 
-Performance-improvement datasets provide program versions ordered by some
-notion of speed. In contest data that ordering can come from timings on a
-judge's fixed tests; in a repository it may come from a developer's claim in a
-commit message. Neither ordering tells us whether the programs perform the same
-task on new inputs, whether they expose the same measurable operation, or
-whether the input range permits a comparison of growth. Even a large decrease
-in work at one size can be a constant-factor change. Conversely, a pair that
-cannot be built in isolation may still be useful in its own project. Treating
-these cases as failed growth tests, or dropping them before reporting a
-denominator, obscures what a benchmark can support.
+Datasets of performance-improving program pairs---such as PIE~\cite{shypula2024pie}, CodeNet~\cite{puri2021codenet}, and repository-mined C++ commits~\cite{ho2026cppperf}---order code revisions using either competitive-programming judge timings on fixed test suites or developer commit messages.
+Neither source ordering tells an evaluator whether the slower and faster programs agree on outputs across new inputs, expose a common countable operation, preserve scalar exit-counter parity across optimization levels, or change scaling exponent rather than shifting a constant factor.
+Pairs stopped before measurement---because problem statements omit external figures or because commits modify large software repositories without standalone harnesses---do not fail a growth hypothesis; dropping them silently from the denominator masks selection bias and inflates apparent benchmark yield.
 
-We ask how many public slow--fast C++ pairs can support a finite-range
-growth claim under one specified execution route. Descriptive qualification
-rates and exact confidence intervals across the funnel lead the reporting;
-pre-specified primary tests additionally record whether confirmatory
-estimates depart from the archived pilot anchors: How often does a comparison
-reach isolated execution (P1)? Is the rate of desk stops higher or lower than
-the rate of reaching execution when problems and projects receive equal
-weight (P2, alongside rateable-only Sec.~S13)? Among comparisons that admit a
-fit, how often does the work ratio pass the growth screen (P3)? Because the
-archived pilot anchors reflect outcome-prioritized execution and deferred
-controls, rejecting them diagnoses pilot selection and deferral distortion
-rather than a population benchmark null. We also report alerts per
-intake-passing representative so the conditional fitted-case rate is not
-mistaken for overall yield. Desk labels are model judgments, not ground
-truth; a blind check by one author is separate. Fewer than \BenchMinFits{}
-fitted clusters permits a descriptive account, not a directional claim about
-fitted-case yield.
+We evaluate \BenchPairs{} frozen public C++ pairs under a deterministic instrumentation and sandbox protocol, reporting 95\% Clopper--Pearson confidence intervals~(CP)~\cite{clopper1934use} and percentage-point differences~(pp).
+The study separates Contest submissions (\BenchPIE{} PIE pairs and \BenchCodeNet{} CodeNet pairs) from Repository patches (\BenchGitHub{} GitHub performance-fix commits) and quarantines development-exposed clusters (\BenchQuarClustersN{} clusters, \BenchQuarPairsN{} pairs) from confirmatory estimates.
+As a historical calibration diagnostic, we compare confirmatory rates against an archived \BenchPilotPairs{}-pair pilot (\BenchPilotDeskN{}/\BenchPilotPairs{} = \BenchPilotDeskPct{} desk stops, \BenchPilotExecN{}/\BenchPilotPairs{} = \BenchPilotExecPct{} executed, \BenchPilotAlertN{}/\BenchPilotFitN{} = \BenchPilotAlertPct{} fitted alerts, \BenchPilotIntakeAlertPct{} intake-to-alert yield, and \BenchPilotOracleN{}/\BenchPilotExecN{} = \BenchPilotOraclePct{} oracle failure) to surface selection and deferral distortion in outcome-prioritized development studies.
+Evidentiary boundaries partition into three zones (Figure~\ref{fig:pipeline-funnel}; SHA-256 digests listed in \emph{Data availability}): (1)~S0 intake, deduplication, and cluster partitioning are publicly \emph{re-executable} from the frozen manifest; (2)~Stage~S1 desk triage used one vendor-routed LLM workflow prior to compilation and is \emph{replay-only}; and (3)~Gate~1 execution ran deterministically offline from private harnesses, while all statistical inference, counter checks, and scaling forensics replay from pinned execution traces.
 
-Our contribution is an accounting of where and why pairs stop, from the
-frozen manifest to a fit or a documented terminal disposition. We separate
-contest submissions from project patches and keep development-exposed
-comparisons out of the confirmatory estimates. The outcome of applying the
-protocol is \BenchIntroTakeaway. A high yield would show that the tested
-route supports measurement for many pairs in these frames; a low yield
-would identify which prerequisites constrain it. Neither outcome establishes
-that the underlying optimizations are or are not worthwhile.
+We investigate four research questions:
+\begin{itemize}
+\item \textbf{RQ1 (Yield, attrition, and repository qualification):} How many frozen pairs survive deduplication, quarantine, desk triage, and fixture preparation to reach isolated execution, how do Contest and Repository frames diverge, and how much of the desk-versus-execution contrast stems from unrateable holds versus rateable triage exclusions?
+\item \textbf{RQ2 (Execution failure, censoring, and fitted scaling regimes):} Conditional on isolated execution, what separates upstream submission defects, sanitizer faults, and missing-counter exclusions from legitimate non-alerts, and what regimes dominate the fitted work-ratio distribution?
+\item \textbf{RQ3 (Screen selectivity, measurement contracts, and restoration fidelity):} How do alternative single-metric and single-invocation container CPU screens compare against multi-stream dual-threshold screening, how sensitive are alerts to auxiliary event leakage, high-leverage endpoints, and compiler optimization, and what do putative restoration edits expose about edit shortfalls, auxiliary bloat, and counter-only identifiability?
+\item \textbf{RQ4 (Reliability of single-workflow LLM desk triage):} How strongly does single-workflow LLM desk triage agree with a blind author audit under multi-class, chance-corrected, and prevalence-adjusted metrics, and how sensitive are downstream qualification contrasts to S1 false negatives and false positives?
+\end{itemize}
 
-\section{Related work}
+Our study makes four primary contributions:
+\begin{enumerate}
+\item \textbf{Complete-denominator qualification accounting:} A leakage-quarantined audit of \BenchPairs{} pairs preserves every intake stop, unrateable hold, fixture exclusion, oracle failure, right-censored run, and fitted non-alert in explicit denominators. It measures \BenchExecRate{} execution yield under the pinned Stage~S1 screen alongside \BenchConfRepoClustersN{} Repository clusters (\BenchConfRepoPairsN{} pairs) held at Stage~S1 for lacking standalone specifications.
+\item \textbf{Forensic measurement-contract decomposition:} Trace replay across \BenchFittedClusters{} fitted pairs and \BenchOZeroAgree{} optimization triples (\texttt{-O0}/\texttt{-O2}/\texttt{-O3}) exposes event-scoped aliasing, auxiliary $c_1$ setup leakage, compiler loop folding, container spawn floors, and restoration shortfalls in \BenchRestFitFailN{}/\BenchRestFitExcessN{} (\BenchRestFitFailPct{}) excess-work fits. We also isolate an exploratory \BenchCoreFourN{}-pair logical-counter upper bound---unverified against reference substitution because AST diffs stay offline---within which at least \BenchRealizedCpuCoreN{} pairs achieve $\ge \BenchMinRatio{}\times$ single-invocation container CPU acceleration (a lower bound under spawn masking).
+\item \textbf{Stratified triage reliability and two-sided sensitivity bounds:} A blind author audit of \BenchAuthorSample{} pre-drawn pairs (\BenchAuthTotalClustersN{} clusters) reveals higher overall LLM pass rates (\BenchAuthLLMPassFrac{} vs.\ \BenchAuthAuthorPassFrac{}; exploratory unclustered McNemar \BenchAuthMcNemarP{}) alongside severe confirmatory singleton instability (binary $\kappa =$ \BenchAuthConfBinK{}, 95\% CI \BenchAuthConfBinKCI{}). Gate~1 execution of \BenchAuthRejExec{} author-rejected LLM passes (zero growth alerts) shows that clean harness execution does not guarantee S1 work-delta eligibility, inflating non-alert fits; we bound both false-negative stops via linear Manski tipping curves~\cite{manski1990nonparametric} and false-positive passes via exact sign-flip and Fisher tipping.
+\item \textbf{Five empirically motivated prescriptions and trace-reproducible artifact:} Concrete instrumentation, oracle, multi-stream, AST-minimality, and triage-auditing prescriptions backed by a trace-reproducible artifact linking reported tables and figures to SHA-256 receipts with zero raw upstream identifiers in the manuscript or trace files.
+\end{enumerate}
 
-Mined code-optimization corpora pair slower and faster revisions at scale.
-PIE draws slow--fast contest submissions ordered by judge timings to train
-and evaluate performance-improving code edits~\cite{shypula2024pie}, building
-on large-scale submission archives such as CodeNet~\cite{puri2021codenet}.
-Repository-mined collections such as CppPerf pair developer performance-fix
-commits with project build or test context~\cite{ho2026cppperf}, complementing
-empirical studies of real-world performance bugs and developer optimizations
-in systems and dynamic languages~\cite{jin2012understanding,selakovic2016performance}.
-As mining studies emphasize, commit messages, sampling filters, and repository
-structure bound what mined pairs represent~\cite{kalliamvakou2014promises}.
-Such datasets establish how candidate pairs are collected; we study how many
-survive qualification into a sound comparative growth experiment.
+The manuscript proceeds by synthesizing related work and prior development context (Section~\ref{sec:related}), specifying the frozen design, instrumentation contract, and statistical estimands (Section~\ref{sec:design}), answering RQ1--RQ4 in turn (Section~\ref{sec:results}), deriving five benchmark qualification rules alongside validity threats (Section~\ref{sec:discussion}), and closing with conclusions, data availability, and operational sensitivity analyses (Appendix~\ref{app:sensitivity}).
 
-Turning a candidate pair into a comparative benchmark requires both a
-correctness oracle and inputs that stress scaling. Curated fault benchmarks
-such as Defects4J rely on checked test witnesses~\cite{just2014defects4j},
-yet the general test-oracle problem remains acute whenever pairs are evaluated
-beyond fixed upstream inputs~\cite{barr2015oracle}. In code-generation
-evaluation, EvalPlus showed that augmenting thin functional test suites
-overturns apparent pass rates~\cite{liu2023is}, and EvalPerf introduced
-differential performance evaluation on stress inputs to separate functional
-correctness from code efficiency~\cite{liu2024evaluating}. Qualification of
-slow--fast C++ pairs faces the dual requirement: an oracle independent of
-both submissions and a legal multi-size workload ladder on which both
-revisions remain defined.
+\section{Related work and development context}
+\label{sec:related}
 
-Empirical computational complexity estimates scaling behavior by fitting
-execution cost across varying input sizes~\cite{goldsmith2007measuring}.
-Subsequent profilers relate work to input structure automatically, including
-algorithmic profiling in \texttt{aprof}~\cite{zaparanuks2012algorithmic},
-input-sensitive profiling~\cite{coppa2012input}, and automated multiparameter
-scalability modeling in \texttt{Extra-P}~\cite{calotoiu2013using}. Dynamic
-and static bug detectors target specific inefficiency mechanisms such as
-repetitive memory-access patterns~\cite{nistor2013toddler} or redundant
-collection traversals~\cite{olivo2015static}, while evolutionary fuzzers such
-as \texttt{SlowFuzz} and \texttt{PerfFuzz} synthesize pathological inputs
-that maximize step counts~\cite{petsios2017slowfuzz,lemieux2018perffuzz}.
-Rather than searching for worst-case inputs in a single program, we fit the
-ratio of a shared logical operation across paired versions and audit whether
-auxiliary work or constant-factor shifts explain the observed speedup.
+\paragraph{Mined optimization and fault corpora.}
+Machine-learning and program-repair research increasingly mines large commit histories and competitive-programming archives to construct performance benchmarks.
+PIE curates slow--fast submission pairs ordered by online-judge runtimes atop IBM's Project CodeNet~\cite{shypula2024pie,puri2021codenet}, while CppPerf mines real-world C++ performance-improving commits paired with repository build context~\cite{ho2026cppperf}.
+Classic empirical studies of performance bugs and optimizations in systems and dynamic-language software~\cite{jin2012understanding,selakovic2016performance} show that real optimizations span algorithmic changes, redundant traversal removal, and low-level micro-tuning.
+However, as repository-mining and software-engineering sampling methodology warn~\cite{kalliamvakou2014promises,baltes2022sampling}, commit messages, heuristics, and language-build assumptions introduce strong selection and construct biases unless validated dynamically.
+Benchmarks in functional testing such as Defects4J~\cite{just2014defects4j} anchor every pair to executable triggering tests; we quantify what fraction of mined C++ optimization pairs actually satisfy the stricter prerequisites required for empirical growth claims.
 
-Environment layout, link order, and process startup can bias wall-clock
-timings~\cite{mytkowicz2009producing}, motivating multi-run statistical
-protocols and explicit uncertainty quantification~\cite{georges2007statistically,kalibera2013rigorous}.
-Counting deterministic source-level operations across \texttt{-O0},
-\texttt{-O2}, and \texttt{-O3} removes timer jitter and loader overhead at
-small input sizes, while paired sandbox CPU-time baselines show where single-shot
-timings under- or over-select relative to logical work ratios.
+\paragraph{Complexity profiling, bug detection, and fuzzing.}
+Goldsmith et al.~\cite{goldsmith2007measuring} formalized empirical computational complexity by fitting execution cost power laws across multiple input sizes.
+Follow-on dynamic profilers---including \texttt{aprof} for algorithmic profiling~\cite{zaparanuks2012algorithmic}, input-sensitive context profiling~\cite{coppa2012input}, and \texttt{Extra-P} for multiparameter scalability modeling~\cite{calotoiu2013using}---isolate code regions whose cost grows superlinearly with problem dimensions.
+Targeted bug detectors locate inefficient loop-carried memory accesses in Toddler~\cite{nistor2013toddler} or redundant container traversals~\cite{olivo2015static}, while complexity fuzzers such as \texttt{SlowFuzz}~\cite{petsios2017slowfuzz} and \texttt{PerfFuzz}~\cite{lemieux2018perffuzz} synthesize worst-case inputs maximizing dynamic instruction or branch counts.
+Unlike single-program worst-case search or regression-free profilers, comparative benchmark qualification must jointly verify dual-program semantic equivalence, shared event calibration across independent input streams, and putative restoration edits.
 
-\paragraph{Development evidence.}
-The archived paired audit motivated tracking desk stops separately from
-execution and distinguishing admissible fits from alerts. It was a
-development sample with inherited controls, not an estimate from the
-expanded frame. In a separate replay-only diagnostic, false-alert rates
-were \GroupedQuadraticFalse{} for quadratic same-growth shams,
-\GroupedLinearFalse{} for linear same-growth shams, and
-\GroupedAppropriateFalse{} for appropriate superlinear controls.
-The pilot evidence does not support ranker superiority. Neither set of
-pilot results is pooled with the benchmark under study.
+\paragraph{Oracles, rigorous benchmarking, and compiler semantics.}
+The oracle problem remains central whenever programs are stress-tested beyond original judge inputs~\cite{barr2015oracle}.
+In LLM code evaluation, EvalPlus~\cite{liu2023is} demonstrated that augmented test suites sharply reduce inflated pass rates, while EvalPerf~\cite{liu2024evaluating}, EffiBench~\cite{huang2024effibench}, and Mercury~\cite{du2024mercury} highlighted the need for harder differential workloads to separate functional correctness from runtime efficiency.
+Whereas EvalPerf evaluates single-size differential efficiency on LLM-generated Python functions without cross-optimization scalar exit-counter parity or putative restoration edits, our qualification pipeline isolates multi-size C++ work-ratio scaling, cross-optimization counter equivalence, and counterfactual restoration fidelity.
+Measurement-bias research in C/C++ and JVM systems---including Mytkowicz et al.~\cite{mytkowicz2009producing}, \textsc{Stabilizer}~\cite{curtsinger2013stabilizer}, Hoefler and Belli~\cite{hoefler2015scientific}, Georges et al.~\cite{georges2007statistically}, Kalibera and Jones~\cite{kalibera2013rigorous}, and studies of developer microbenchmark suites~\cite{leitner2017exploratory,laaber2019software,costa2021whats}---establishes that link order, heap layout, process wrapper startup, and cloud noise readily distort wall-clock benchmarks, while undefined behavior exposes C/C++ programs to silent optimization divergence and compiler miscompilations~\cite{wang2013towards,yang2011finding}.
+We pair sandboxed undefined-behavior sanitization with cross-optimization (\texttt{-O0}/\texttt{-O2}/\texttt{-O3}) scalar counter checks to detect UB/optimization divergence, alongside an outer-container CPU-time baseline that surfaces wrapper-floor masking.
 
-\section{Study design}
+\paragraph{LLM evaluation threats and inter-rater reliability.}
+Recent empirical software engineering guidelines warn that closed-source or vendor-routed LLMs threaten determinism, reproducibility, and leakage control when used inside research pipelines~\cite{sallou2024breaking}.
+Evaluating categorical human--LLM agreement solely via Cohen's $\kappa$~\cite{cohen1960coefficient} is notoriously fragile under class skew and rater bias, prompting reporting of prevalence- and bias-adjusted $\kappa$ (PABAK)~\cite{byrt1993bias}, Gwet's AC1~\cite{gwet2008computing}, Krippendorff-style distribution diagnostics~\cite{krippendorff2004reliability}, paired McNemar~\cite{mcnemar1947note} and Bowker~\cite{bowker1948test} symmetry tests, and explicit category guidelines~\cite{artstein2008inter}, alongside Manski-style partial-identification sensitivity bounds~\cite{manski1990nonparametric}.
+Our statistical tests apply exact Clopper--Pearson binomial intervals~\cite{clopper1934use}, Holm--Bonferroni familywise control~\cite{holm1979simple}, and distribution-free Theil--Sen rank-slope estimators~\cite{theil1950rank,sen1968estimates} alongside these reliability diagnostics.
+
+\paragraph{Prior pilot and development context.}
+Before scaling to \BenchPairs{} pairs, we audited a \BenchPilotPairs{}-pair development sample and evaluated an earlier single-side localization ranker (which scores slow candidates alone by worst-stream operation-count curvature without contrasting against a paired reference or sham) in a deterministic replay diagnostic.
+In that pilot diagnostic, single-side false-alert rates reached \GroupedQuadraticFalse{} on quadratic same-growth shams (benign control edits preserving quadratic complexity) and \GroupedLinearFalse{} on linear same-growth shams, versus an alert rate of \GroupedAppropriateFalse{} on appropriate superlinear-versus-lower-order controls.
+Those control failures demonstrated why rankers cannot rely on single-side scores alone and motivated four safeguards here: retaining unrateable desk stops in primary denominators, pairing primary fits with sham and restoration controls, quarantining pilot development clusters from confirmatory inference, and never pooling archived pilot proportions with the expansion study.
+
+\section{Study design and instrumentation contract}
 \label{sec:design}
 
-\subsection{Frozen intake and independent units}
+\subsection{Frozen intake, deduplication, and quarantine}
 
-The manifest fixes \BenchPairs{} pair identities before benchmark execution.
-PIE supplies \BenchPIE{} rows (\BenchVal{} validation and \BenchTrain{}
-training); CodeNet~\cite{puri2021codenet}
-supplies \BenchCodeNet{}, and GitHub performance-fix commits supply
-\BenchGitHub{}. The PIE test split is not used.
-The \emph{Contest} frame contains the PIE and CodeNet submissions. PIE
-supplies the released timing order. The CodeNet draw uses consecutive
-accepted C++ submissions from the same author, problem, and compiler
-language, with a strictly lower positive judge CPU time on the later
-submission; submissions already used in PIE are excluded from this draw.
-For the \emph{Repository} frame, the candidate reference is a public
-commit whose subject says it fixes performance, and the target is its
-parent. These labels establish an orientation, not a measured speed
-ordering on our workloads.
+The frozen manifest fixes \BenchPairs{} candidate pairs prior to execution: \BenchPIE{} from PIE~\cite{shypula2024pie} (\BenchVal{} validation and \BenchTrain{} training), \BenchCodeNet{} from Project CodeNet~\cite{puri2021codenet}, and \BenchGitHub{} from public GitHub commits.
+The sealed PIE test split was strictly excluded and remains untouched.
+The Contest frame comprises \BenchContestPairs{} PIE and CodeNet pairs: PIE preserves released judge-time orderings, whereas CodeNet draws consecutive accepted C++ submissions by the same author, problem, and compiler dialect with strictly lower positive judge CPU time on the later submission, taken from \BenchCodeNet{} PIE-training problems disjoint from the \BenchTrain{} drawn PIE-train problems.
+The Repository frame (\BenchGitHub{} pairs) draws public C++ commits whose subject contains the phrase ``\texttt{fix performance}'' and pairs the commit (candidate reference) with its immediate parent (candidate target); commit messages establish only an assumed orientation, not a verified runtime difference.
 
-The extension uses a bounded repository search and hash-ordered contest
-draw. It takes one contest pair per problem in the extension, skipping
-problems already drawn, and alternates between PIE training and CodeNet while
-both have eligible clusters. CodeNet is restricted to PIE training problems
-so that no test-split metadata is needed. The repository snapshot and its
-page expansion are documented in the intake record. Selection does not
-prefer pairs that look easier to build or likely to pass. Each row carries
-its upstream pin and available source hashes. Retrieval or licence failures
-and duplicates remain visible as intake stops, rather than being replaced.
+Stage~S0 enforces source availability at pinned upstream revisions, C++ source verification, license inspectability, and duplicate removal.
+Pairs failing S0 remain visible as \BenchIntakeStopsN{} intake stops (\BenchIntakeDupN{} duplicates and \BenchIntakeUnretN{} unretrievable or unusable license records; \BenchIntakeContestN{} Contest and \BenchIntakeRepoN{} Repository), leaving \BenchSOPassN{} S0-pass pairs.
+We link pairs into connected components across judge problem identifiers, repository roots, shared aliases, whitespace/comment-normalized sources, and identifier/literal-normalized AST templates.
+All \BenchQuarPairsN{} PIE validation pairs (with zero cross-frame overlaps in the frozen draw) map to \BenchQuarClustersN{} development-exposed components and are strictly quarantined from confirmatory inference.
+The remaining \BenchConfPairsN{} confirmatory pairs partition into \BenchConfClustersN{} independent clusters (\BenchConfContestClustersN{} Contest clusters and \BenchConfRepoClustersN{} Repository clusters covering \BenchConfRepoPairsN{} pairs).
+Because the deterministic extension selected one Contest pair per problem, \BenchConfSingletonN{}/\BenchConfClustersN{} confirmatory clusters (\BenchConfContestClustersN{}/\BenchConfContestClustersN{} Contest and \BenchConfRepoSingletonN{}/\BenchConfRepoClustersN{} Repository) are singletons, and a pre-execution SHA-256 hash (\texttt{representative\_rank}) selects one representative per cluster before desk inspection.
 
-A row is a pair; a test unit is a connected component. Initial keys are
-judge and problem for contest submissions and upstream repository root for
-patches. Shared aliases, normalized source, and identifier- and
-literal-normalized template matches connect keys, including across frames.
-Pairs in components linked to the archived audit and the retained
-development-exposed validation stratum do not enter the confirmatory
-analysis. Missing fingerprint evidence is not evidence of no overlap.
-The analysis reports Contest, Repository, and their distinct union; the
-union counts a shared pair once. After intake and quarantine, a stable
-hash of the corpus, component, and pair identifiers selects the
-representative before desk inspection, with lexical tie breaking. All
-other rows still receive a disposition.
+\subsection{Five-stage pipeline and desk triage rubric}
 
-\subsection{Qualification and the run contract}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{fig_pipeline_funnel.pdf}
+\caption{End-to-end qualification pipeline, confirmatory cluster attrition, quarantined stratum disposition, and three-zone evidentiary boundaries across publicly re-executable intake, replay-only LLM desk triage, and offline deterministic execution with public trace replay.}
+\label{fig:pipeline-funnel}
+\end{figure}
 
-Each comparison is accounted for at its earliest terminal stage. At
-\textsc{S0} we check retrieval at the pinned identities, C++ source, usable
-licence evidence, and uniqueness. Intake failures are reported against the
-frozen manifest but excluded from analysis rates. At \textsc{S1} the desk
-assessment asks whether the pair supports a legal six-size geometric
-ladder on three workload streams, an independent oracle, a countable
-event with the same meaning in both versions, and an isolated restoration
-and sham edit. Source findings
-such as an output defect are distinct from missing measurement contracts
-and from barriers specific to the build route. Four dated protocol
-amendments refined Stage~S1 labeling before confirmatory execution:
-Amendment~1 assigned \texttt{desk\_unrateable} without model inspection to
-packets lacking self-contained specifications and restricted Repository
-reporting to counts only; Amendment~2 dropped the second S1 rater;
-Amendment~3 classified all S1-dependent rates as \emph{replay-only}; and
-Amendment~4 added terminal \texttt{indeterminate} when the primary rater
-cannot decide desk criteria. Accordingly, all Repository pairs (whose
-commits carry no independent specification) and Contest pairs whose problem
-statements reference unbundled images receive \texttt{desk\_unrateable},
-and both \texttt{desk\_unrateable} and \texttt{indeterminate} stay in
-every post-S0 denominator (counting as desk stops in P2 and as not
-reaching execution in P1) and never enter S2 or P3; sensitivity
-analysis~S13 repeats P1--P3 with \texttt{desk\_unrateable} removed.
-Because every Repository S0-pass pair is \texttt{desk\_unrateable}, no
-Repository test runs and the Union equals Contest for every rated or
-executed outcome. The logged reason records
-which prerequisite stopped the pair, not that either program is slow or
-that its growth is negative.
+Figure~\ref{fig:pipeline-funnel} traces every pair from Stage~S0 through Stage~S5, where \CaseRef{$k$} denotes the one-indexed de-identified identifier across the \BenchConfSTwoPassN{} confirmatory S1-pass pairs.
+At Stage~S1, a static pre-execution desk screen asks whether a pair supports: (i)~a six-size geometric workload ladder spanning at least \BenchMinSpan{}$\times$ across \BenchNumStreams{} input streams (\texttt{W1}--\texttt{W3}); (ii)~an independent output correctness oracle; (iii)~a shared countable work event in both revisions; and (iv)~an isolated putative restoration edit plus a work-preserving sham edit inside one translation unit.
+Pairs failing S1 map to a closed rubric separating \emph{contract} barriers (fixed input domain, insufficient span, absent restoration, uncalibrated work delta), \emph{source} defects (source UB, forced ISA/arch intrinsics, spec violations), and \emph{route} blockers (missing external headers/libraries).
 
-Eligible pairs advance in stable-hash order, not in order of expected
-growth. At \textsc{S2} the Gate~1 runner checks dependencies by preprocessing
-the comparison as a single translation unit. At \textsc{S3} the target,
-reference, restoration, and sham build and run under the Bubblewrap
-launcher in the pinned container with GCC~\BenchGCC. The restoration edits
-the target to replace the proposed mechanism; the sham is an edit intended
-to preserve the measured work. Plain and undefined-behavior-sanitized
-outputs must agree with an oracle independent of the pair. Counted builds
-must report the same work counts at \texttt{-O0}, \texttt{-O2}, and
-\texttt{-O3}. An observed oracle failure and an infrastructure failure have
-different implications: the former counts as reaching execution, whereas
-the latter does not. Infrastructure retries use the same pins and stop at
-the protocol's limit. Pairs not executed at closure are recorded rather
-than deferred off the ledger. No post-intake stop is discarded from the
-P1 or P2 denominator within the confirmatory frame.
+Prior to confirmatory execution, the frozen protocol and finalized Stage~S1--S3 amendments (digests listed in \emph{Data availability}) established four pre-execution rules:
+\begin{itemize}
+\item \textbf{Specification holds and conditional repository build rule:} Two pre-execution hold rules assign \texttt{desk\_unrateable} before desk inspection: unbundled external figures in Contest statements (\BenchContestUnbundledConfN{} confirmatory clusters) and \texttt{no\_independent\_repository\_spec} for Repository commits lacking standalone specifications (\BenchRepoDeskUnratN{} S0-pass pairs across \BenchConfRepoClustersN{} clusters). All \BenchHeldUnratConfClustN{} held clusters remain in the primary P1 and P2 denominators. Because all \BenchConfRepoClustersN{} Repository clusters stopped at Stage~S1 under \texttt{no\_independent\_repository\_spec} and the Contest execution lower bound exceeded the pilot upper bound (\BenchContestExecLo{} $>$ \BenchPilotExecUpperPct{}), the conditional \S9 native-repository build branch was not triggered; dynamic Stage~S2--S5 measurements therefore characterize standalone Contest kernels exclusively.
+\item \textbf{Single-workflow Stage~S1 screening:} Primary Stage~S1 labeling ran once through a single vendor-routed LLM workflow (\BenchSOneBatchesN{} batches, \BenchSOneAttemptsN{} attempts with \BenchSOneRetriesN{} retries during \BenchSOneDateWindow{}), rather than deploying a second LLM rater. Because backend model routing is undisclosed~\cite{sallou2024breaking}, all S1-dependent statistics are classified as \emph{replay-only} (with inter-LLM agreement SA11 omitted).
+\item \textbf{Indeterminate desk outcomes:} Pairs whose eligibility cannot be established without compilation or execution receive a terminal \texttt{indeterminate} status, staying in post-S0 denominators without advancing to Stage~S2.
+\item \textbf{Pre-execution fixture accounting:} All fixture synthesis stops between S1 pass and S3 execution enter explicit accounting (SA14) alongside post-run disposition sensitivity analyses (Appendix~\ref{app:sensitivity}).
+\end{itemize}
 
-\paragraph{Model judgments and blind check.}
-The desk decisions are model-based, not human. \BenchDeskMethods{}
-Inter-model agreement was not measured (\BenchModelAgreement).
-S1 labels come from one Devin workflow whose backend routing the vendor
-does not disclose, so they cannot be reproduced; P1--P3 computed from
-them are \emph{replay-only} rather than re-executable (Amendment~3).
-Conditional on the fixed S1 passes, S2--S5 Gate~1 preprocessing,
-isolated execution, and fitting remain deterministic and
-\emph{re-executable} from the pinned fixtures, and P3's
-$\ge \BenchMinFits{}$ confirmatory fitted-cluster gate is satisfied.
-The separate blind
-check covers \BenchAuthorSample{} pairs from a draw frozen before
-production labeling and is carried out by one author without access to
-model decisions while assigning labels. It is descriptive only, never
-establishes human ground truth, and never alters primary labels or
-triggers adjudication.
+To assess rubric consistency separately from primary labeling, one author blindly labeled a pre-drawn \BenchAuthorSample{}-pair sample (\texttt{s1\_author\_check\_draw.json}, never pooled with or allowed to mutate primary labels).
 
-\paragraph{Amendment~5 and execution disclosures.}
-\BenchAmendmentFiveDisclosures{}
+\subsection{Instrumentation, four-variant matrix, and sandbox invariants}
 
-\subsection{Fit admission and interpretation}
+\paragraph{Sandbox isolation.}
+Pairs passing S1 undergo offline fixture synthesis (\texttt{expansion\_fixtures.py}) and run in an Ubuntu~\BenchUbuntuVer{} container under \texttt{systemd-run -{}-user -{}-scope} (\BenchMemCapMiB{} memory, zero swap, \BenchTasksCap{} tasks, single-core CPU quota) and Bubblewrap~\BenchBwrapVer{} isolation, compiling via GCC~\BenchGCC{} (\texttt{-std=c++17}).
+Kernel \texttt{prlimit} enforces \BenchAsCapMiB{} address space, \BenchCpuCapSec{} CPU time (equal soft/hard limits sending immediate \texttt{SIGKILL} rather than catchable \texttt{SIGXCPU}), \BenchFileCapMB{} file size, and zero core dumps (retaining Linux's default \BenchStackCapMB{} \texttt{RLIMIT\_STACK}) during both compilation and binary execution, while outer timeouts enforce \BenchWallCapSec{} execution (\BenchCompileTimeoutSec{} compilation).
+Because \texttt{prlimit -{}-as=\BenchAsCapMiB{}} sits below cgroup memory (\BenchMemCapMiB{}), large allocations hit \texttt{std::bad\_alloc}/\texttt{SIGABRT} and preclude AddressSanitizer shadow reservations; since \texttt{observation()} reads \texttt{memory\_cap} only from cgroup OOM counters, VA exhaustion surfaces as \texttt{process\_failure}.
 
-At \textsc{S4}, right-censored points are recorded but not fitted. Every
-specified workload stream must have at least \BenchMinSizes{} common
-uncapped sizes with positive counts and a span of at least
-\(\BenchMinSpan\times\). For measured target and reference event counts
-\(T(n)\) and \(Q(n)\), respectively, the fit is ordinary least squares of
-\(\log[T(n)/Q(n)]\) on \(\log n\). At \textsc{S5} the screen alerts if every
-stream meets both cutoffs: a slope of at least \(\BenchMinSlope\) and a
-ratio of at least \(\BenchMinRatio\) at the largest common size. An
-admissible non-alert fails a cutoff. An inadmissible fit has no verdict;
-in particular, a timeout is not a non-alert.
+\paragraph{Four-variant matrix and structural validation.}
+Offline recipes supply \BenchNumVariants{} single-translation-unit variants: original slow \emph{target} ($T$), original fast \emph{reference} ($Q$), putative \emph{restoration} ($R$, transplanting the speedup onto $T$), and putative work-preserving \emph{sham} ($S$, benign control perturbation on $T$).
+Structural validation (\texttt{validate\_fixture()}) verifies SHA-256 parity between embedded \texttt{originals} and manifest entries, non-empty \texttt{plain}/\texttt{counted} variants within \BenchFileCapMB{}, three workload streams (\texttt{W1}--\texttt{W3}) of six geometric sizes bound to independent oracle outputs, and SHA-256 rationale bindings (leaving span checks to S4).
+The runner preprocesses \texttt{originals} via \texttt{-E} without compiling or executing them, leaving four structural blind spots in \texttt{validate\_fixture()} (Section~\ref{sec:discussion}): no AST edit-distance minimality bound on $R$, no $\texttt{sham} \neq \texttt{target}$ non-identity check, no AST/hash link from \texttt{originals} to \texttt{plain}, and no \texttt{-E -U PATH\_B\_COUNT} equivalence between \texttt{counted} and \texttt{plain}.
 
-The restoration checks whether the proposed edit accounts for the excess
-work: it must recover at least \BenchRecovery{} of the positive excess at
-the two largest common sizes on every stream. The sham should preserve
-work. We record a failed restoration separately from the target--reference
-screen verdict. An additional refit drops the largest size; if the
-remaining span or number of sizes no longer admits a fit, the evidence is
-range-limited rather than negative. We also report the any-stream rule as
-a sensitivity check, using the complete set of admitted stream fits.
-Even a robust alert is conditional on the selected event, input
-construction, and measured range.
+\paragraph{Execution modes, counters, and policy sensitivity.}
+Each variant compiles under \BenchNumModes{} modes: \texttt{plain} (\texttt{-O2}), \texttt{ubsan} (\texttt{-O2 -fsanitize=undefined -fno-sanitize-recover=undefined}, without ASan or \texttt{-D\_GLIBCXX\_ASSERTIONS}, letting \texttt{-O2} elide UB before traps fire), plus counted \texttt{-O0}, \texttt{-O2}, and \texttt{-O3} under \texttt{-DPATH\_B\_COUNT} (with \texttt{-O0}/\texttt{-O3} overriding \texttt{-O2}).
+Counted binaries emit $(c_0, c_1)$ over a bind-mounted regular file opened on FD~\BenchFDWire{} (\texttt{EAPG\_COUNTER\_FD}, tracking primary events $c_0$ and auxiliary driver ticks $c_1$; replay verified max parsed counter \BenchMaxCounterVal{} $\ll 2^{64}$ under \texttt{MAX\_SCALE}, where $5N^2 < 2^{64}$).
+An inner \texttt{/bin/sh} redirection wrapper adds \BenchFDWrapOverheadMs{} over \texttt{plain} across sub-millisecond reference runs (\BenchOtwoMinusPlainSZeroMs{} on smallest-size alert references), jointly reflecting shell dispatch, \texttt{-DPATH\_B\_COUNT} hooks, and binary-layout shifts rather than shell overhead alone.
+Counted runs exit with status~\BenchTickExitCode{} when $c_0+c_1 \ge B(N) =$ \BenchTickCeiling{}, which right-censors cubic $O(N^3)$ slowdowns above modest $N$.
 
-\subsection{Estimands and inference}
+In variant-by-mode order ($T$, $Q$, $R$, $S$), \texttt{measure()} checks exit status and whitespace-collapsed stdout parity across all \BenchNumModes{} modes (\texttt{plain}/\texttt{ubsan} first), halting early only on \texttt{infrastructure\_\allowbreak failure} or \texttt{invalid\_\allowbreak output} to \texttt{execution\_\allowbreak oracle\_\allowbreak failure}.
+Trace replay confirms \texttt{invalid\_\allowbreak output} captures both zero-exit \texttt{plain} stdout mismatches and exit-1 \texttt{ubsan} traps (via \texttt{-fno-\allowbreak sanitize-\allowbreak recover=\allowbreak undefined}), whereas signal exits (\texttt{SIGABRT}/\allowbreak\texttt{SIGSEGV}) map to \texttt{process\_\allowbreak failure}.
+Although \texttt{capped}, \texttt{process\_\allowbreak failure}, and \texttt{invalid\_\allowbreak counter} skip early halting in \texttt{measure()}, \texttt{disposition()} drops incomplete sizes \emph{only} for \texttt{capped} events; any \texttt{process\_\allowbreak failure} or \texttt{invalid\_\allowbreak counter} returns an unresolved \texttt{None} halt unless a later \texttt{invalid\_\allowbreak output} triggers \texttt{execution\_\allowbreak oracle\_\allowbreak failure} (Section~\ref{sec:rq2}).
 
-P1 divides the number of confirmatory representatives reaching isolated
-execution, including oracle failures, by the number passing intake.
-P2 averages the within-pair difference between the desk-stop and
-reached-execution indicators within each confirmatory component, then
-weights the components equally. P3 divides all-stream alerts by the number
-of confirmatory representatives with an admissible fit. P3 conditions on
-surviving the qualification stages; it is not a population-wide growth
-rate. Alerts per intake-passing cluster make that selection visible.
+Cross-optimization parity (\texttt{O0==O2==O3}) verifies scalar UB/value preservation across \texttt{-O0}/\allowbreak\texttt{-O2}/\allowbreak\texttt{-O3}---checking that printed counts match at exit, \emph{not} that \texttt{-O2} preserves unoptimized runtime work---alongside \texttt{target==sham}.
+Post-run disposition sensitivity analyses (Appendix~\ref{app:sensitivity}) quantify the impact of \BenchWaveOneOverrideN{} initial-batch \texttt{stderr}/audit oracle reclassifications, five post-hoc \texttt{process\_failure} status mappings, and the pre-patch \texttt{cpu\_cap} exit-137 runner, bounded via SHA-pinned manifests because early execution logs omit wall-clock timestamps (and SHA-pinning substituted for a pre-P1--P3 git commit under Section~10).
+Counter restoration checks only $5(T_0(n)-R_0(n)) \ge 4(T_0(n)-Q_0(n))$ ($\ge \BenchRecovery{}$) on whichever of the two largest uncapped sizes per stream satisfy $T_0(n) > Q_0(n)$ (evaluating a single size when $T_0 = Q_0$ at $n_{k-1}$ and ignoring non-regression when $T_0 \le Q_0$).
 
-Representative rates are reported as a count, denominator, percentage, and
-two-sided 95\% Clopper--Pearson interval. Exact two-sided binomial tests
-compare P1 and P3 to fixed rates from the archived audit, not to a second
-random sample. For P2, a two-sided whole-cluster sign-flip test treats ties
-as at least as extreme and does not permute zero-effect clusters. A
-whole-cluster percentile bootstrap describes interval sensitivity for
-contrasts; it does not replace the test. We use a fixed three-outcome Holm family at
-0.05 for primary inference and distinguish nominal secondary tests.
-When an eligible test does not reject the reference, we describe the
-result as consistent with it, not equivalent.
+\subsection{Scaling screen, alternative baselines, and statistical estimands}
 
-The size gates are \BenchMinClusters{} confirmatory clusters after intake
-and quarantine for P1 and P2, and \BenchMinFits{} fitted clusters for P3.
-Per-frame secondary inference also requires \BenchMinFits{} clusters in
-that frame. Below a gate we report descriptive counts and reference
-intervals where applicable, with no directional claim for the gated
-analysis. Results are computed after disposition closure, not as interim
-looks. Secondary analyses report desk reason buckets, post-S1 fixture stops (S14), preprocessing and
-oracle failures, work-fit sensitivity, infrastructure sensitivity, the
-all-pair equal-cluster rates, and the development-exposed stratum
-separately.
+For each workload stream $s \in \{1,\dots,\BenchNumStreams{}\}$ (\texttt{W1}--\texttt{W3}), S4 admits the fit when at least \BenchMinSizes{} common uncapped input sizes exist---meaning all \BenchNumVariants{} variants across all \BenchNumModes{} modes (twenty scheduled runs) complete uncapped---with strictly positive counts $T_0(n) > 0$, $Q_0(n) > 0$ spanning $\ge \BenchMinSpan{}\times$ ($\max n / \min n \ge \BenchMinSpan{}$).
+On log--log coordinates $x_i = \ln n_i$ and $y_i = \ln [T_0(n_i)/Q_0(n_i)]$, OLS yields log-ratio slope
+\begin{equation}
+\hat{\beta}_s = \frac{\sum_{i=1}^{k}(x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{k}(x_i - \bar{x})^2}, \qquad
+r_{s,\max} = \frac{T_0(n_k)}{Q_0(n_k)}.
+\label{eq:ols}
+\end{equation}
+The primary screen (\textbf{B0}) flags a pair (\texttt{alert}) iff \emph{every} stream satisfies $\hat{\beta}_s \ge \BenchMinSlope{}$ and $r_{s,\max} \ge \BenchMinRatio{}$.
+Because integer operation counts $(T_0(n_i), Q_0(n_i))$ are deterministic functions of $n_i$, OLS standard errors, $t$-test $p$-values, and slope lower bounds ($\text{CI}_L$) in Section~\ref{sec:results} serve solely as deterministic log-linear curvature diagnostics rather than frequentist sampling intervals over random inputs.
+Structurally, $\hat{\beta}_s \ge \BenchMinSlope{}$ over $[n_1, n_k]$ isolates scaling separation of at least $\Omega(n^{\BenchMinSlope{}})$; polylogarithmic gaps ($\Theta(\log n)$) decay as $1/\ln n$ and are examined separately rather than treated as false negatives.
+Pre-specified sensitivity SA8 drops the largest size $n_k$ and re-evaluates Eq.~\eqref{eq:ols} when $\ge \BenchMinSizes{}$ sizes spanning $\ge \BenchMinSpan{}\times$ remain, while SA7 evaluates an any-stream disjunction.
 
-The protocol distinguishes directional evidence from an inconclusive
-comparison. The direction of P2 is interpreted only if its Holm-adjusted
-test rejects. For P1, a claim of consistency with the pilot rate
-requires non-rejection and an interval half-width of at most five
-percentage points. For P3, consistency with the pilot finding that
-alerts are a minority requires non-rejection and an interval upper
-limit below one-half. Neither criterion establishes equivalence.
+We compare B0 against five screens: \textbf{B1} (endpoint ratio $r_{s,\max} \ge \BenchMinRatio{}$ only), \textbf{B2} (slope $\hat{\beta}_s \ge \BenchMinSlope{}$ only), \textbf{B3} (dual criteria on total ticks $c_0 + c_1$), \textbf{B4} (single-invocation container \texttt{plain} CPU dual screen with $\min(T,Q) \ge \BenchCpuFloorMs{}$, inclusive of \BenchBwrapOverheadMs{} container spawn rather than warmed in-process timing~\cite{hoefler2015scientific}), and \textbf{B5} (single-invocation container CPU endpoint ratio $\ge \BenchMinRatio{}$ with $\max(T,Q) \ge \BenchCpuFloorMs{}$).
+We also evaluate an exploratory four-check logical-counter core combining B3, SA8 drop-largest, distribution-free Theil--Sen rank slopes ($\ge \BenchMinSlope{}$)~\cite{theil1950rank,sen1968estimates}, and $c_0$-channel restoration parity ($\ge \BenchRecovery{}$), explicitly contrasting this unverified logical upper bound against observed container CPU speedup.
 
-The decision to investigate a native build is made once from the final
-single-translation-unit dispositions. It compares the lower confidence
-limit for P1 to the fixed pilot upper limit. If the lower limit exceeds
-that anchor, the native-build comparison is not pursued. Otherwise a
-native-build comparison is warranted under the protocol only if
-route-attributable repository stops meet the fixed count floor and are at
-least as numerous as executed repository representatives. Any such
-comparison is separate from the primary family and cannot retroactively
-change its denominators.
+Primary estimands evaluate confirmatory cluster representatives post-S0: \textbf{P1} measures conditional execution yield (including oracle failures, excluding build/fixture/infra stops); \textbf{P2} measures equal-cluster contrast between desk-stop and execution rates; and \textbf{P3} measures all-stream alerts per fitted cluster.
+Secondary estimands (\texttt{SA1}--\texttt{SA14}, with \texttt{SA11} inter-LLM agreement omitted under single-workflow S1 screening) span pilot benchmarks (\texttt{SA1}--\texttt{SA4}), alert-vs-non-alert parity (\texttt{SA5}), infrastructure/screen/drop-largest sensitivities (\texttt{SA6}--\texttt{SA8}), equal-cluster pair checks (\texttt{SA9}), Contest-only/quarantined/rateable-Contest strata (\texttt{SA10}, \texttt{SA12}, \texttt{SA13a/b}), and pre-S3 fixture attrition (\texttt{SA14}).
+Inference combines exact Clopper--Pearson 95\% intervals~\cite{clopper1934use}, exact two-sided Fisher historical calibration diagnostics against the archived pilot, within-cohort exact cluster sign-flip symmetry tests (\texttt{P2}, \texttt{SA5}, \texttt{SA13b}), and five-test Holm--Bonferroni McNemar tests~\cite{mcnemar1947note,holm1979simple} across \texttt{B1}--\texttt{B5}.
+Because archived pilot problem clusters are unexported outside P3's \BenchPilotFitN{} fits in \BenchPilotFitClustersN{} clusters, cross-cohort Fisher comparisons against the pilot serve strictly as historical calibration diagnostics rather than homogeneous population tests; Section~\ref{sec:results} foregrounds standalone Clopper--Pearson intervals alongside cluster-level P3 (\BenchPilotFitClustersFrac{} optimistic, \BenchPilotConservFrac{} conservative), effective-pilot-size ($n_{\text{eff}} \in \BenchPilotNeffRange{}$), and joint conservative Holm-3 bounds.
+As a conservative post-execution Section~11 deviation, Table~\ref{tab:outcomes} reports two-sample finite-sample Holm-3 $p$-values alongside the frozen zero-variance one-sample fixed-pilot binomials (\texttt{1-S}), using Sterne-convention two-sided exact $p$-values and sufficiency gates requiring $\ge \BenchMinClusters{}$ confirmatory clusters ($\ge \BenchMinFits{}$ fitted clusters for P3 and executed Repository inference).
 
 \section{Results}
 \label{sec:results}
 
-\subsection{Intake and where qualification stops}
-
-Table~\ref{tab:flow} separates pair dispositions from representative-level
-estimates. The intake breakdown is \BenchIntakeStops. The
-development-exposed stratum and overlaps by key are \BenchOverlap.
-Desk-stop outcomes are tabulated \BenchDeskReasons; isolated
-preprocessing, infrastructure, non-execution, and correctness losses
-are \BenchRunStops. This distinction matters because a build stop leaves
-the performance question unanswered, whereas an observed oracle failure
-invalidates the proposed comparison on the affected inputs.
+\subsection{RQ1: Qualification attrition, P1--P3, and repository specification holds}
 
 \begin{table}[htbp]
-\centering
-\small
-\begin{tabularx}{\linewidth}{@{}l*{3}{>{\raggedright\arraybackslash}X}@{}}
-\toprule
-Pair disposition & Contest & Repository & Distinct union \\
-\midrule
-Frozen draw & \BenchContestPairs & \BenchGitHub & \BenchPairs \\
-Stage~S0 intake stops & \BenchFlowIntakeC & \BenchFlowIntakeR & \BenchFlowIntakeU \\
-Stage~S1 desk stops & \BenchFlowDeskC & \BenchFlowDeskR & \BenchFlowDeskU \\
-Stage~S2 preprocessing stops & \BenchFlowPrepC & \BenchFlowPrepR & \BenchFlowPrepU \\
-Fixture stops (S2$\to$S3) & \BenchFlowFixtureC & \BenchFlowFixtureR & \BenchFlowFixtureU \\
-Stage~S3 infrastructure failures & \BenchFlowInfraC & \BenchFlowInfraR & \BenchFlowInfraU \\
-Not executed at closure & \BenchFlowUnrunC & \BenchFlowUnrunR & \BenchFlowUnrunU \\
-Stage~S3 oracle failures & \BenchFlowOracleC & \BenchFlowOracleR & \BenchFlowOracleU \\
-Stage~S4 no admissible fit & \BenchFlowNoFitC & \BenchFlowNoFitR & \BenchFlowNoFitU \\
-Stage~S5 admissible non-alert & \BenchFlowNoAlertC & \BenchFlowNoAlertR & \BenchFlowNoAlertU \\
-Stage~S5 all-stream alert & \BenchFlowAlertC & \BenchFlowAlertR & \BenchFlowAlertU \\
-\bottomrule
-\end{tabularx}
-\caption{\BenchTableFlowCaption}
+\caption{Stratified disposition ledger across all \BenchPairs{} frozen pairs and \BenchConfClustersN{} confirmatory cluster representatives. Repository has zero executed pairs because all \BenchConfRepoPairsN{} S0-pass patches lack standalone specifications (\texttt{desk\_unrateable}).}
 \label{tab:flow}
+\centering
+\scriptsize
+\begin{tabularx}{\linewidth}{@{}Xrrrrrr@{}}
+\toprule
+Terminal disposition & Conf.\ Contest & Quar.\ Contest & All Contest & Repository & Union & Conf.\ Reps \\
+\midrule
+Frozen draw & \BenchConfContestDrawn & \BenchQuarPairsN & \BenchContestPairs & \BenchGitHub & \BenchPairs & --- \\
+Stage~S0 intake stops & \BenchConfContestIntake & \BenchQuarIntakeN & \BenchFlowIntakeC & \BenchFlowIntakeR & \BenchFlowIntakeU & --- \\
+Stage~S1 desk stops (incl.\ holds) & \BenchConfContestDesk & \BenchQuarContestDesk & \BenchFlowDeskC & \BenchFlowDeskR & \BenchFlowDeskU & \BenchTotalDeskStopRepsN \\
+Stage~S2 single-TU preprocessing & \BenchConfContestPrep & \BenchQuarPostSOneZeroN & \BenchFlowPrepC & \BenchFlowPrepR & \BenchFlowPrepU & \BenchFlowPrepC \\
+Fixture stops (S1 pass $\to$ S3) & \BenchConfContestFix & \BenchQuarPostSOneZeroN & \BenchFlowFixtureC & \BenchFlowFixtureR & \BenchFlowFixtureU & \BenchFixtureStopN \\
+Stage~S3 infra failures & \BenchConfContestInfra & \BenchQuarPostSOneZeroN & \BenchFlowInfraC & \BenchFlowInfraR & \BenchFlowInfraU & \BenchInfraFailN \\
+Not executed at closure & \BenchConfContestUnrun & \BenchQuarUnrunN & \BenchFlowUnrunC & \BenchFlowUnrunR & \BenchFlowUnrunU & \BenchConfContestUnrun \\
+Stage~S3 oracle / UBSan failures & \BenchConfContestOracle & \BenchQuarPostSOneZeroN & \BenchFlowOracleC & \BenchFlowOracleR & \BenchFlowOracleU & \BenchOracleFailN \\
+Stage~S4 insufficient fit & \BenchConfContestNoFit & \BenchQuarPostSOneZeroN & \BenchFlowNoFitC & \BenchFlowNoFitR & \BenchFlowNoFitU & \BenchNoFitN \\
+Stage~S5 admissible non-alert & \BenchConfContestNoAlert & \BenchQuarPostSOneZeroN & \BenchFlowNoAlertC & \BenchFlowNoAlertR & \BenchFlowNoAlertU & \BenchNoAlertN \\
+Stage~S5 all-stream alert & \BenchConfContestAlert & \BenchQuarPostSOneZeroN & \BenchFlowAlertC & \BenchFlowAlertR & \BenchFlowAlertU & \BenchPThreeCount \\
+\bottomrule
+\addlinespace[2pt]
+\multicolumn{7}{@{}p{\linewidth}@{}}{\footnotesize \emph{Note:} Confirmatory S1 desk stops total \BenchTotalDeskStopRepsN{} cluster representatives across \BenchConfDeskPairsN{} stopped pairs because one confirmatory Repository cluster contains two S0-pass pairs.} \\
+\end{tabularx}
 \end{table}
 
-\begin{figure}[htbp]
+Table~\ref{tab:flow} accounts for every pair from frozen intake through terminal disposition.
+Of \BenchSOPassN{} S0-pass pairs (\BenchRateablePairsN{} rateable and \BenchHeldUnratAllN{} unrateable holds), \BenchQuarPairsN{} partition into \BenchQuarClustersN{} development-exposed clusters (\BenchQuarStopPct{}, 95\% CI \BenchQuarStopCI{} stopped at S1; \BenchQuarUnrunN{} S1 passes unexecuted at closure by rule).
+Across the \BenchConfPairsN{} confirmatory pairs (\BenchConfClustersN{} clusters: \BenchConfContestClustersN{} Contest, \BenchConfRepoClustersN{} Repository; \BenchConfSingletonN{} singletons), all \BenchConfRepoPairsN{} S0-pass Repository commits across \BenchConfRepoClustersN{} clusters receive \texttt{desk\_unrateable} under \texttt{no\_independent\_repository\_spec}. Because the Contest execution lower bound exceeded the pilot upper bound (\BenchContestExecLo{} $>$ \BenchPilotExecUpperPct{}) with zero Repository route stops, the conditional \S9 native-build branch was not triggered, so all dynamic execution, oracle, and scaling estimates characterize standalone Contest kernels exclusively (Contest P1 = \BenchContestExecPct{}, CI \BenchContestExecCI{}).
+
+Figure~\ref{fig:s1-taxonomy} disaggregates Stage~S1 across all \BenchSOPassN{} S0-pass pairs.
+Within confirmatory Contest (\BenchConfContestClustersN{} singleton clusters), \BenchConfSTwoPassN{} pairs pass S1 while \BenchConfContestDesk{} stop: \BenchContestUnbundledConfN{} unbundled-image holds plus \BenchRatedDeskStopRepsN{} rated stops (\BenchConfContractStopRepsN{} contract, \BenchConfSourceStopRepsN{} source, \BenchConfRouteStopRepsN{} route, \BenchConfIndetRepsN{} \texttt{indeterminate}).
+Contract barriers dominate rated stops, led by insufficient six-size geometric ladders and absent executable work deltas.
+
+\begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{fig_s1_desk_taxonomy.pdf}
-\caption{\BenchFigOneCaption}
+\caption{Stage~S1 desk-triage dispositions across \BenchSOPassN{} S0-pass pairs (Panel~A) and exact stop-reason counts across \BenchFlowDeskU{} stopped pairs (Panel~B, showing all \BenchConfDeskPairsN{} confirmatory stopped pairs across \BenchTotalDeskStopRepsN{} cluster representatives plus \BenchQuarContestDesk{} quarantined pairs). Unlabeled minor slivers in Panel~A: Confirmatory Contest includes \BenchConfSourceStopRepsN{} source stops, \BenchConfRouteStopRepsN{} route stops, and \BenchConfIndetRepsN{} \texttt{indeterminate}; Quarantined Contest includes \BenchQuarSourceN{} source stops, \BenchQuarHeldN{} held unrateable, and \BenchQuarIndetN{} \texttt{indeterminate}.}
 \label{fig:s1-taxonomy}
 \end{figure}
 
-\subsection{Primary outcomes and checks on the growth screen}
-
-The representative execution yield (P1) was \BenchExecRate. The
-equal-cluster difference between desk-stop and execution rates (P2) was
-\BenchDeskContrast. Among fitted representatives, \BenchFitAlertRate{}
-passed the all-stream screen (P3). Relative to intake-passing
-representatives, yield was \BenchIntakeAlertRate{}
-(Figure~\ref{fig:outcomes-forest}). The cluster counts and
-gate determinations were \BenchGates. Unadjusted and Holm-adjusted
-test results for the analyses meeting their gates were \BenchTests.
-Frame-specific denominators and estimates were \BenchFrames.
-
-\begin{figure}[htbp]
+\begin{table}[!t]
+\caption{Primary confirmatory outcomes (P1--P3, Holm-3 finite-sample control at $\alpha=0.05$) and secondary analyses (SA1--SA14; SA11 inter-LLM agreement omitted). Column \texttt{Finite $p$} aligns exact finite-sample $p$-values separately from test type (\texttt{Test}).}
+\label{tab:outcomes}
 \centering
-\includegraphics[width=\linewidth]{fig_qualification_outcomes.pdf}
-\caption{\BenchFigTwoCaption}
-\label{fig:outcomes-forest}
-\end{figure}
+\scriptsize
+\renewcommand{\arraystretch}{0.95}
+\setlength{\tabcolsep}{2.4pt}
+\begin{tabularx}{\linewidth}{@{}lXrr@{\hspace{7pt}}lrr@{}}
+\toprule
+ID & Estimand & Estimate & 95\% CI & Test & Finite $p$ & Proto.\ $p$ / Note \\
+\midrule
+\BenchTableTwoRows
+\bottomrule
+\addlinespace[2pt]
+\multicolumn{7}{@{}p{\linewidth}@{}}{\footnotesize \emph{Notes:} \texttt{Holm}: finite-sample Holm-3 across P1 (Fisher), P2 (sign-flip; \texttt{hold+WF} = conditional hold-plus-workflow bound), and P3 (Fisher); $\dagger$: two-sample Fisher calibration diagnostic vs.\ \BenchPilotPairs{}-pair pilot; \texttt{Sign}: exact cluster sign-flip; \texttt{1-S}: fixed-pilot binomials; \texttt{env.}: post-run disposition sensitivity envelope; \texttt{x-frame}: cross-frame Contest vs.\ repository-heavy pilot ($\ddagger$, decoupling SA3's \BenchSAThreeDenom{} runner pairs and \BenchSAThreeInclCompileN{}/\BenchConfSTwoPassN{} incl.\ compile stops from \BenchPilotPrepN{}/\BenchPilotPrepDenom{} pilot stops); SA5 compares against the \BenchPilotSAFiveDelta{} (\BenchPilotFitClustersFrac{} cluster) pilot contrast; SA9 reports a cluster bootstrap CI (P3 \BenchPThreePct{}, bootstrap CI \BenchSANinePThreeCI{}). Post-run disposition sensitivity checks span \BenchEnvSAFourRange{} for SA4 and \BenchEnvSAThirteenShort{} for SA13b (Appendix~\ref{app:sensitivity}).} \\
+\end{tabularx}
+\end{table}
 
-For the admitted fits, the disposition under the any-stream rule and
-drop-largest refit was \BenchFitSensitivity. Variant and censoring checks
-showed \BenchVariantChecks. The
-infrastructure-exclusion and all-pair sensitivity results were
-\BenchPairSensitivity. The separate development-exposed results were
-\BenchExposedResults. The native-build decision and its inputs were
-\BenchBuildDecision. These comparisons distinguish refusal to make a
-claim because the evidence was insufficient from a measured failure to
-meet a cutoff.
+Table~\ref{tab:outcomes} summarizes primary and secondary inference, with confirmatory clusters exceeding pre-specified size gates ($\BenchConfClustersN{} \ge \BenchMinClusters{}$; $\BenchFittedClusters{} \ge \BenchMinFits{}$).
+Under finite-sample Holm-3 control across \BenchConfClustersN{} post-S0 clusters, conditional execution yield reached \BenchPOneCount{}/\BenchConfClustersN{} = \BenchPOnePct{} (CI \BenchPOneCI{}, Fisher \BenchPOneFisherP{}, Holm-3 \BenchFinHolmPOne{} vs.\ \BenchPilotExecPct{} pilot, fixed-pilot \BenchPOneHolmP{}; Table~\ref{tab:outcomes}).
+Intake-to-alert yield was \BenchPThreeCount{}/\BenchConfClustersN{} = \BenchSATwoPct{} (CI \BenchSATwoCI{}, Fisher \BenchSATwoFisherP{}), while fitted-case alert yield fell to \BenchPThreeCount{}/\BenchFittedClusters{} = \BenchPThreePct{} (CI \BenchPThreeCI{}, Fisher \BenchPThreeFisherP{}, Holm-3 \BenchFinHolmPThree{} vs.\ \BenchPilotAlertPct{} pilot, fixed-pilot \BenchPThreeHolmP{}).
+Contrast P2 reached \BenchDeskContrast{} (unadjusted sign-flip and \texttt{1-S}-family Holm-3 \BenchPTwoHolmP{}), providing a conditional hold-plus-workflow bound.
+For historical pilot calibration, cluster-level P3 retains $p < 0.05$ under optimistic \BenchPilotFitClustersFrac{} (\BenchPThreePilotClustFisherP{}) and conservative \BenchPilotConservFrac{} (\BenchPThreePilotClustConservP{}) pilot bounds, though worst-case \texttt{tick\_cap} censoring (\BenchCensorWorstN{}/\BenchCensorDenom{}) attenuates P3 vs.\ \BenchPilotConservFrac{} above $0.05$ (\BenchCensorWorstFisherConservP{}).
+Pilot P1 stays below $0.05$ down to effective pilot size $n_{\text{eff}} = \BenchPilotNeffThirty{}$ (\BenchPOnePilotNeffThirtyP{}, tipping above $0.05$ at $n_{\text{eff}} = \BenchPOnePilotNeffTipN{}$; $n_{\text{eff}}=\BenchPilotNeffFifty{}$: \BenchPOnePilotNeffFiftyP{}; SA1: \BenchSAOnePilotNeffRangeP{} across $n_{\text{eff}} = \BenchPilotNeffRange{}$), with joint conservative Holm-3 across ($n_{\text{eff}}=\BenchPilotNeffThirty{}$ P1, P2, \BenchPilotConservFrac{} P3) yielding \BenchJointConservHolmPOne{} and \BenchJointConservHolmPThree{}.
+Because \BenchConfSingletonN{}/\BenchConfClustersN{} confirmatory clusters are singletons (only one two-pair Repository cluster), SA9 equal-cluster P1 matches representative P1 identically (\BenchPOnePct{}), differing only through bootstrap versus exact CP intervals.
+Pipeline yield in P1 and SA3 varies with corpus composition: holding all Repository pairs prior to Stage~S2 decouples Contest-only SA3 (\BenchSAThreeAllSPass{} across S1 passes; \BenchFlowPrepC{}/\BenchRunnerSOnePassN{} runner pairs, cross-frame Fisher \BenchSAThreeCrossFrameP{} omitted from Table~\ref{tab:outcomes}'s \texttt{Finite $p$} column; \BenchSAThreeInclCompileN{}/\BenchConfSTwoPassN{} = \BenchSAThreeInclCompilePct{} including upstream compile failures, Fisher \BenchSAThreeInclCompileP{}) from the repository-heavy pilot (\BenchPilotPrepN{}/\BenchPilotPrepDenom{} = \BenchPilotPrepPct{}).
+SA5 rejects 50\% parity in favor of non-alert dominance (\BenchSAFiveSignP{}), while post-run disposition sensitivity shifts oracle failure SA4 across \BenchEnvSAFourRange{} (baseline \BenchOracleFailPct{}, Fisher \BenchSAFourFisherP{}).
 
-Table~\ref{tab:alerts} disaggregates all confirmatory all-stream alerts across
-primary event counts $c_0$, combined primary-plus-auxiliary total ticks
-$c_0{+}c_1$, stream distinctness, drop-largest refits, and single-process
-sandbox CPU-time ratios. \BenchStreamAndFitForensics{}
+Algebraic decomposition of P2 shows that \BenchPTwoHoldsShare{} of its magnitude (\BenchPTwoHoldsPP{}, leaving \BenchPTwoRateableContribPP{} from rateable pairs) arises mechanically from \BenchHeldUnratConfClustN{} unrateable holds (\BenchContestUnbundledConfN{} unbundled Contest + \BenchConfRepoClustersN{} Repository).
+Excluding those holds leaves rateable Contest contrast SA13b (\BenchSAThirteenDelta{}, bootstrap \BenchSAThirteenBootCI{}, \BenchSAThirteenP{}, over \BenchRateableClustersN{} clusters with \BenchRateableExecPct{}, CI \BenchRateableExecCI{}, execution vs.\ \BenchRateableDeskPct{} desk stops) as the hold-free within-Contest baseline.
+Across all receipt-backed post-run disposition sensitivity checks in Appendix~\ref{app:sensitivity}, SA13b spans \BenchEnvSAThirteenRange{} and does not reject parity; however, Section~\ref{sec:rq4} shows this null is fragile in both S1 misclassification directions.
+For quarantined clusters (SA12), cluster-level desk stops (\BenchQuarClustStopFrac{}, cluster-exact CI \BenchQuarClustStopCI{}) yield roughly three times wider intervals than working-independence pair counts (\BenchQuarStopPct{}, CI \BenchQuarStopCI{}) because \BenchQuarPairsN{} pairs nest inside \BenchQuarClustersN{} clusters.
 
 \begin{table}[htbp]
+\caption{Confirmatory pair-level disposition parity by upstream corpus across non-quarantined drawn pairs (\BenchConfPairsN{} confirmatory S0-pass pairs plus \BenchIntakeStopsN{} S0 stops; columns track \BenchHeldUnratConfClustN{} held clusters / \BenchHeldConfPairsN{} held pairs, \BenchInfraFailN{} CodeNet infra stops, and \texttt{No-Fit} counts).}
+\label{tab:corpus-parity}
 \centering
-\footnotesize
-\begin{tabularx}{\linewidth}{@{}ll*{4}{>{\raggedright\arraybackslash}X}@{}}
+\scriptsize
+\setlength{\tabcolsep}{1.6pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrrrrrrrr@{}}
 \toprule
-Pos.\ (Src.) & Ladder ($n$; str.) & Primary $c_0$ slope ($R^2_{\min}$) & Largest $c_0$ ratio & Total ticks $c_0{+}c_1$ slope / ratio & Drop-max / CPU ratio \\
+Corpus (Frame) & Drawn & S0-Pass & Held & Rated Stop & S1 Pass & Fix Stop & Infra & Executed & Oracle & No-Fit & Fitted & Alert \\
+\midrule
+\BenchTableCorpusRows
+\bottomrule
+\end{tabular*}
+\end{table}
+
+As Table~\ref{tab:corpus-parity} reports, confirmatory execution yield (\BenchCorpusPieExecFrac{} PIE-train vs.\ \BenchCorpusCodeExecFrac{} CodeNet, two-sided Fisher \BenchCorpusExecFisherP{}) and fitted-alert rates (\BenchCorpusPieAlertFrac{} vs.\ \BenchCorpusCodeAlertFrac{}, two-sided Fisher \BenchCorpusAlertFisherP{}) show no statistically significant difference across PIE's curation filter on the shared CodeNet problem pool.
+
+\subsection{RQ2: Execution attrition, invariants, censoring, and \BenchFittedClusters{}-fit taxonomy}
+\label{sec:rq2}
+
+Conditional on passing S1 (\BenchConfSTwoPassN{} Contest pairs), \BenchFlowPrepC{}/\BenchSAThreeDenom{} runner-evaluated pairs (\BenchSAThreeAllSPass{} across all \BenchConfSTwoPassN{} S1 passes, CI \BenchSAThreeAllSPassCI{}) stopped at S2 dependency preprocessing.
+Instead, \BenchFixtureStopN{} pairs (\BenchFixtureStopPct{}, CI \BenchFixtureStopCI{}) exited as pre-S3 \texttt{fixture\_stop} (\BenchRunnerPreFixtureN{} pre-execution synthesis stops including \BenchOrigCompileFailN{} = \BenchOrigCompileFailPct{} [CI \BenchOrigCompileFailCI{}] upstream compile failures, plus \BenchRunnerOverlayFixtureN{} post-execution status reclassifications among \BenchRunnerSOnePassN{} runner-evaluated pairs), alongside \BenchInfraFailN{} infra failures, bringing \BenchPOneCount{} pairs (\BenchCondExecPct{} of S1 passes) to Gate~1 execution.
+
+\paragraph{Invariants and resource capping.}
+Across all \BenchRunnerSOnePassN{} runner-evaluated pairs, \BenchOZeroAgree{}/\BenchOZeroTotalTriples{} cross-optimization triples (\texttt{O0==O2==O3}) and \BenchShamAgree{}/\BenchShamTotalPairs{} \texttt{target==sham} pairs agreed with zero mismatches (conditioned on unverified $\texttt{sham} \neq \texttt{target}$ non-identity; unexecuted counts decomposed in Appendix Table~\ref{tab:appendix-forensics}), and all \BenchOZeroCapOtwoAgree{} \texttt{-O0}-only capped triples agreed on \texttt{O2==O3}.
+Gate~1 logged \BenchCpuCapEvents{} \texttt{cpu\_cap} events across \BenchCpuCapPos{} pairs and \BenchTickCapEvents{} \texttt{tick\_cap} events across \BenchTickCapPos{} pairs.
+\BenchCpuCapOZeroOnlyPts{}/\BenchCpuCapTotalPts{} \texttt{cpu\_cap} points (\CaseRef{\BenchPosNineZero{}} \BenchPosNineZeroOZeroOnlyPts{} points on \texttt{W1}/\texttt{W3}; \CaseRef{\BenchPosNineNine{}} \texttt{W2}/\texttt{W3}; \CaseRef{\BenchPosOneThreeNine{}} \texttt{W1}) completed across all non-\texttt{O0} modes and timed out solely under \texttt{-O0}, whereas the remaining two points at \CaseRef{\BenchPosNineZero{}} (largest size on alerting SA7 streams \texttt{W1}/\texttt{W3}; flat \texttt{W2} uncapped) timed out across \texttt{ubsan}, \texttt{-O0}, \texttt{-O2}, and \texttt{-O3} on \texttt{target}/\texttt{sham} while uninstrumented \texttt{plain} finished.
+Relaxing complete-case admission to \texttt{O2==O3} across those \BenchOZeroRelaxCapPtsN{} \texttt{-O0}-only points (\BenchOZeroRelaxPairsN{} pairs) produces \BenchOZeroRelaxDeltaN{} P3/SA7 alert changes and confirms \CaseRef{\BenchPosNineNine{}} and \CaseRef{\BenchPosOneThreeNine{}} are flat non-alerts.
+
+\paragraph{Oracle attribution and right-censoring.}
+\BenchOracleFailN{} executed pairs terminated in \texttt{execution\_\allowbreak oracle\_\allowbreak failure} (\BenchOracleFailPct{}, CI \BenchOracleFailCI{}, a lower bound under \texttt{-O2}-only UBSan without ASan): \BenchOracleUpstreamN{}/\BenchPOneCount{} (\BenchOracleUpstreamPct{}, CI \BenchOracleUpstreamCI{}; \BenchOracleUpstreamTgtN{} target, \BenchOracleUpstreamRefN{} reference) upstream defects, \BenchOracleRestoredN{} \texttt{restored} failure (\CaseRef{\BenchPosTwoSeven{}}), and \BenchOracleShamN{} \texttt{sham} failures.
+Reconciling \texttt{invalid\_output} mode/exit records partitions the \BenchOracleFailN{} failures cleanly into \BenchOraclePlainN{} \texttt{plain} exit-zero mismatches (\BenchOraclePlainUpstreamN{} upstream: \BenchOraclePlainTgtN{} target, \BenchOraclePlainRefN{} reference; plus \BenchOracleRestoredN{} \texttt{restored} at \CaseRef{\BenchPosTwoSeven{}}) and \BenchOracleUBAllN{} \texttt{ubsan} exit-one traps (\BenchOracleUBTgtN{} target, \BenchOracleUBRefN{} reference: \BenchOracleUBSanOnlyN{} UBSan-only plus \BenchOraclePlainSegvUBN{} concurrent \texttt{plain} \texttt{SIGSEGV} and \texttt{ubsan} \texttt{invalid\_output} at \CaseRef{\BenchPosTwoNine{}}).
+Only \BenchOracleMultiEvtN{}/\BenchOracleFailN{} pairs logged \texttt{process\_failure} prior to oracle failure. \CaseRef{\BenchPosTwoSeven{}} passed \texttt{plain}, \texttt{ubsan}, \texttt{-O2}, and \texttt{-O3} at sample zero while crashing with \texttt{SIGABRT} in \texttt{-O0} across \texttt{target}, \texttt{restored}, and \texttt{sham}, consistent with \texttt{-O2} UB elision or \texttt{-O0} codegen/ABI differences; this confounds its sole \texttt{restored} failure and leaves \BenchUnconfRestoredOracleN{}/\BenchPOneCount{} unconfounded \texttt{restored} oracle failures, while \CaseRef{\BenchPosTwoNine{}} hit \texttt{plain} \texttt{SIGSEGV}. Across all \BenchFittedClusters{} fitted pairs, \BenchFittedMaskedFailN{} had masked \texttt{process\_failure} or \texttt{invalid\_counter} events (Appendix Table~\ref{tab:appendix-forensics} details the seven-pair exit-code split and \BenchOracleCoordN{}/\BenchOracleFailN{} = \BenchOracleCoordPct{} exclusion sensitivity).
+
+Eight executed pairs exited at S4 as \texttt{insufficient\_fit}, adding zero $c_0+c_1$ B3 alerts across \BenchBThreeAllExecDenom{} non-oracle pairs (\BenchBThreeAllExecN{}/\BenchBThreeAllExecDenom{} = \BenchBThreeAllExecPct{}). Two had $Q_0=0$ (\BenchFitQZeroN{} pairs: \CaseRef{\BenchPosOneZeroZero{}} and \CaseRef{\BenchPosOneThreeOne{}}, with $c_0+c_1$ slopes $\le \BenchPosOneZeroZeroMaxSlope{}$), four had both counters zero (\BenchFitBothZeroN{} pairs: \CaseRef{\BenchPosFiveNine{}}, \CaseRef{\BenchPosOneZeroSix{}}, \CaseRef{\BenchPosOneFourZero{}}, and \CaseRef{\BenchPosOneSixZero{}}, with slopes $\le \BenchPosBothZeroMaxSlope{}$), and two were \texttt{tick\_cap}-censored (\BenchFitTickCapN{} pairs: \CaseRef{\BenchPosFiveFive{}} with negative $c_0$ slopes, and \CaseRef{\BenchPosOneFiveEight{}} meeting a \BenchCensorTolPct{} any-stream bound $\hat{\beta}_s \ge \BenchCensorSlopeMin{}$, $r_{\max} \ge \BenchMinRatio{}$).
+Censoring bounds range from \BenchCensorCondN{}/\BenchCensorDenom{} = \BenchCensorCondPct{} (CI \BenchCensorCondCI{}, conditional) and \BenchCensorWorstN{}/\BenchCensorDenom{} = \BenchCensorWorstPct{} (CI \BenchCensorWorstCI{}, worst-case \texttt{tick\_cap}) up to \BenchCensorCpuCapTotalN{}/\BenchCensorDenom{} = \BenchCensorCpuCapPct{} when adding all three \texttt{cpu\_cap} pairs (exact Fisher bounds vs.\ pilot strata in Appendix Table~\ref{tab:appendix-forensics}).
+
+\paragraph{Eight-regime taxonomy of the \BenchFittedClusters{} fits.}
+Across the \BenchFittedClusters{} fitted pairs, stream $c_0$ trajectories across \texttt{W1}--\texttt{W3} are distinct in \BenchDistinctThreeN{} (\BenchDistinctThreePct{}), two-distinct in \BenchDistinctTwoN{} (\BenchDistinctTwoPct{}), and identical in \BenchDistinctOneN{} (\BenchDistinctOnePct{}: \BenchDistinctOneCOneVarN{} varying in $c_1$, \BenchDistinctOneOblivN{} data-oblivious):
+\begin{itemize}
+\item \textbf{Zero or near-flat ratios (\BenchRegimeExactEqN{} + \BenchRegimeFlatLowN{} + \BenchRegimeFlatHighN{} = \BenchRegimeZeroFlatSumN{}):} \BenchRegimeExactEqN{} exact identities ($T_0 = Q_0$) plus \BenchConstZeroVarPairsN{} constant-factor pairs yield \BenchZeroVarPairsN{} zero-variance pairs, leaving \BenchDefinedRTwoPairsN{} defined-$R^2$ pairs (pair worst-stream median $R^2 =$ \BenchPairMedianRTwo{} overall vs.\ \BenchAlertPairMedianRTwo{} on alerts; stream medians \BenchAllStreamsMedianRTwo{} and \BenchAlertMedianRTwo{} across \BenchDefinedRTwoStreamsN{} defined vs.\ \BenchZeroVarStreamsN{} zero-variance streams of \BenchTotalFittedStreamsN{}), alongside \BenchRegimeFlatLowN{} near-flat ($r_{\max} < \BenchMinRatio{}$) and \BenchRegimeFlatHighN{} constant-factor ($r_{\max} \ge \BenchMinRatio{}$, $|\hat{\beta}_s| \le 0.05$) pairs.
+\item \textbf{Reversed, negative-slope, or sub-threshold pairs (\BenchRegimeNegAllN{} + \BenchRegimeMixedN{} + \BenchRegimeSubPosN{} = \BenchRegimeRevSubSumN{}):} \BenchRegimeNegAllN{} pairs shrinking with $n$ across all streams, \BenchRegimeMixedN{} mixed/reversed pairs, and \BenchRegimeSubPosN{} positive sub-\BenchMinSlope{} pairs including true $\Theta(\log n)$ gaps such as \CaseRef{\BenchPosSevenSeven{}} ($R^2_{\log n} = \BenchPosSevenSevenLogRSq{}$ at \BenchPosSevenSevenRatio{}).
+\item \textbf{Stream-selective (\BenchSASevenOnlyN{}) and all-stream (\BenchPThreeCount{}) alerts:} \BenchSASevenCount{} pairs (\BenchSASevenPct{}, CI \BenchSASevenCI{}) trigger SA7, including \BenchSASevenOnlyN{} stream-selective pairs reaching \BenchPosNineZeroRatio{} on \CaseRef{\BenchPosNineZero{}} (\texttt{W3}, strict complete-case) and \BenchPosOneFourFiveRatio{} on \CaseRef{\BenchPosOneFourFive{}} while another stream stays flat; only \BenchPThreeCount{} pairs (\BenchPThreePct{}, CI \BenchPThreeCI{}) pass all streams (invariant over $\beta_{\min} \in [\BenchBetaGridMin{}, \BenchMinSlope{}]$, rising to \BenchBetaGridDropAlerts{} at $\beta_{\min} = \BenchBetaGridDrop{}$ where $\Theta(\log n)$ pairs enter).
+\end{itemize}
+
+\subsection{RQ3: Screen selectivity, alert forensics, compiler folding, and restoration}
+\label{sec:rq3}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{fig_scaling_landscape.pdf}
+\caption{Worst-stream slope versus largest-size $c_0$ ratio across all \BenchFittedClusters{} fitted confirmatory pairs, separating the \BenchRealizedCpuCoreN{} observed container-CPU core alerts (\CaseRef{\BenchPosThirteen{}}, \CaseRef{\BenchPosOneSevenFive{}}) from the two logical-only core alerts (\CaseRef{\BenchPosNineFour{}}, \CaseRef{\BenchPosNineSeven{}}) and clamping six $\le 0.08$ non-alerts at $y = 0.08$ below the dotted break line (Panel~A); Panel~B shows screening selectivity versus B0 with Holm-5 exact paired McNemar $p$-values ($p_H$).}
+\label{fig:scaling-landscape}
+\end{figure}
+
+Figure~\ref{fig:scaling-landscape} compares B0 against five comparator screens across all \BenchFittedClusters{} fits.
+Testing endpoint ratio alone (B1, $r_{s,\max} \ge \BenchMinRatio{}$) flags \BenchBOneAlertsN{} pairs (\BenchBOnePct{}, CI \BenchBOneCI{}, nominal McNemar \BenchBOneMcNemarP{}, Holm-5 \BenchBOneHolmP{} vs.\ B0), injecting \BenchBOneFPN{} false-growth positives: \BenchBOneFlatN{} flat constant-factor speedups, \BenchBOneSubN{} sub-$\BenchMinSlope{}$ or $\Theta(\log n)$ pairs, \BenchBOneNegN{} negative-slope precomputations, and \BenchBOneSelN{} SA7 stream-selective pairs.
+Testing slope alone (B2) adds one crossover pair (\BenchBTwoAlertsN{} = \BenchBTwoPct{}, CI \BenchBTwoCI{}; \CaseRef{\BenchPosSevenNine{}} reaches slopes \BenchPosSevenNineSlopeRange{} via target/reference crossover below unity, endpoint ratios \BenchPosSevenNineRatioRange{}).
+Single-invocation container CPU screening (whose \BenchNoAlertN{} non-alert B4/B5 verdicts replay as aggregated confusion counts; per-point CPU timings are exported only for the \BenchPThreeCount{} alerts) suffers severe wrapper-floor masking: B4 flags \BenchBFourAlertsN{}/\BenchFittedClusters{} (\BenchBFourPct{}, CI \BenchBFourCI{}, nominal \BenchBFourMcNemarP{}, Holm-5 \BenchBFourHolmP{}) because Bubblewrap plus \texttt{systemd-run} container startup imposes a \BenchBwrapOverheadMs{} floor that saturates \BenchCpuFloorMs{} across \BenchFittedClusters{}/\BenchFittedClusters{} pairs and flattens sub-millisecond slopes, diagnosing outer-container masking rather than warmed in-process timing.
+Endpoint single-invocation container CPU ratio B5 flags \BenchBFiveAlertsN{} pairs (\BenchBFivePct{}, CI \BenchBFiveCI{}, nominal \BenchBFiveMcNemarP{}, Holm-5 \BenchBFiveHolmP{}, underpowered at $n=\BenchFittedClusters{}$) containing only \BenchBFiveTPN{} B0 alerts (\BenchBFiveCoreTPN{}/\BenchCoreFourN{} logical-core alerts: \BenchBFiveCoreRecPct{} recall, \BenchBFiveCorePrecPct{} precision) plus \BenchBFiveFPN{} constant-factor and jitter positives.
+
+\begin{table}[htbp]
+\caption{Forensic audit across all \BenchPThreeCount{} primary confirmatory alerts, pairing primary $c_0$ and combined $c_0+c_1$ fits with worst-stream deterministic OLS 95\% log-linear curvature lower bounds ($\text{CI}_L$), worst-stream Theil--Sen median slope (TS), SA8 drop-largest verdicts, \texttt{plain} CPU ratios, logical-counter upper-bound checks (\texttt{Log.}: $c_0+c_1$ dual, SA8 retain, $\text{TS} \ge \BenchMinSlope{}$, and unverified $(R_0,R_1)=(Q_0,Q_1)$ parity), and all-stream \texttt{plain} CPU ratio $\ge \BenchMinRatio{}\times$ (\texttt{CPU}). Column $n$~(str.) lists ladder range and distinct $c_0$ trajectories out of \BenchNumStreams{}; on \CaseRef{\BenchPosNineFour{}}, auxiliary $c_1$ variation shifts \texttt{Tot.}~$r_{\max}$ across streams despite identical $c_0$.}
+\label{tab:alerts}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lrrrrrrcrcc@{}}
+\toprule
+Case (Src.) & $n$ (str.) & $c_0$ $\hat{\beta}$ & $\text{CI}_L$ / TS & $c_0$ $r_{\max}$ & Tot.\ $\hat{\beta}$ & Tot.\ $r_{\max}$ & SA8 & CPU $r_{\max}$ & Log. & CPU \\
 \midrule
 \BenchAlertForensicsRows
 \bottomrule
-\end{tabularx}
-\caption{\BenchAlertTableCaption}
-\label{tab:alerts}
+\end{tabular*}
 \end{table}
 
-\BenchBaselineScreens{}
+Applying four exploratory logical-counter checks---combined $c_0+c_1$ dual passing (B3: \BenchBThreeAlertsN{}/\BenchFittedClusters{} = \BenchBThreePct{}, CI \BenchBThreeCI{}), SA8 drop-largest retention (\BenchSAEightAlertsN{}/\BenchSAEightAdmittedN{} = \BenchSAEightPct{}, CI \BenchSAEightCI{}; \BenchSAEightAnyAlertsN{}/\BenchSAEightAdmittedN{} = \BenchSAEightAnyPct{}, CI \BenchSAEightAnyCI{} any-stream), all-stream Theil--Sen slope $\ge \BenchMinSlope{}$~\cite{theil1950rank,sen1968estimates}, and $\ge \BenchRecovery{}$ $c_0$ counter restoration---isolates \BenchCoreFourN{}/\BenchFittedClusters{} = \BenchCoreFourPct{} (CI \BenchCoreFourCI{}; \CaseRef{\BenchPosThirteen{}}, \CaseRef{\BenchPosNineFour{}}, \CaseRef{\BenchPosNineSeven{}}, \CaseRef{\BenchPosOneSevenFive{}}; Table~\ref{tab:alerts} and Figure~\ref{fig:alert-trajectories}).
+Because \texttt{validate\_fixture()} omitted AST non-identity checks and offline AST diffs stay private, this \BenchCoreFourN{}-pair set provides an \emph{unverified logical-counter upper bound} (zero AST-verified minimal restorations).
+Within this set, \BenchRealizedCpuCoreN{}/\BenchFittedClusters{} pairs (\CaseRef{\BenchPosThirteen{}}, \CaseRef{\BenchPosOneSevenFive{}}) reach $\ge \BenchMinRatio{}\times$ raw single-invocation \texttt{plain} CPU ratio across all streams (plus linear \CaseRef{\BenchPosOneSixFour{}} at \BenchPosOneSixFourCpuRatio{}), establishing a \emph{lower bound} on realized CPU speedups under container spawn masking: \CaseRef{\BenchPosNineFour{}} stays CPU-flat, whereas \CaseRef{\BenchPosNineSeven{}} exhibits sub-floor deltas solely because its small input ladder sits beneath the \BenchBwrapOverheadMs{} wrapper floor.
+Subtracting each stream's smallest-size spawn baseline ($\min(T(n_1), Q(n_1)) - \BenchSpawnFloorMs{}$, floored at \BenchSpawnFloorMs{}) confirms single-run sensitivity: \BenchPlainSubCoreN{}/\BenchFittedClusters{} (\CaseRef{\BenchPosOneSevenFive{}}) passes all three \texttt{plain} streams (\BenchOtwoSubCoreN{}/\BenchFittedClusters{} on counted \texttt{-O2}, where \CaseRef{\BenchPosNineSeven{}} passes only \BenchPosNineSevenOtwoStreamsN{}/\BenchNumStreams{} stream and still fails all-stream screening, passing \BenchPosNineSevenPlainStreamsN{}/\BenchNumStreams{} on \texttt{plain}).
+Across robust reference baselines, \texttt{min\_ref} ($\min_i Q(n_i) - \BenchSpawnFloorMs{}$) yields \BenchMinRefPlainCoreN{}/\BenchFittedClusters{} (\texttt{plain}) and \BenchMinRefOtwoCoreN{}/\BenchFittedClusters{} (\texttt{-O2}), while \texttt{med\_ref} ($\text{med}_i Q(n_i) - \BenchSpawnFloorMs{}$) yields \BenchMedRefPlainCoreN{}/\BenchFittedClusters{} (\texttt{plain}) and \BenchMedRefOtwoCoreN{}/\BenchFittedClusters{} (\texttt{-O2}). Offset-invariant additive $\Delta\text{CPU}(n)=T_{\text{plain}}(n)-Q_{\text{plain}}(n)$ OLS slopes against $\ln n$ (whose scale depends on $n_k$ rather than estimating a power-law exponent; Appendix Table~\ref{tab:appendix-cpu}) separate growing excess time on \CaseRef{\BenchPosThirteen{}}, \CaseRef{\BenchPosOneSevenFive{}}, and linear \CaseRef{\BenchPosOneSixFour{}} from near-flat \CaseRef{\BenchPosNineFour{}} and \CaseRef{\BenchPosNineSeven{}} (non-alert and \texttt{-O0} CPU traces stay offline).
+For $k=6$ ladder points (four residual degrees of freedom; five capped non-alert streams have four or five points), deterministic OLS $\text{CI}_L$ stays above $\BenchMinSlope{}$ on core alerts ($\min \text{CI}_L = \BenchCoreMinCILo{}$), while $H_0:\beta_s=0$ $p < 0.05$ reduces to $R^2 > \BenchOLSMinRSq{}$---letting scaling-flat \CaseRef{\BenchPosOneSixFour{}} $c_0+c_1$ hit \BenchPosOneSixFourTotP{} at slope \BenchPosOneSixFourTotSlope{} ($R^2 = \BenchPosOneSixFourTotRSq{}$).
 
-\subsection{Desk label checks}
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{fig_alert_trajectories.pdf}
+\caption{Log--log ratio trajectories for all \BenchPThreeCount{} primary growth alerts across primary $c_0$, total ticks $c_0 + c_1$, and \texttt{plain} sandbox CPU runtime across all three streams (\texttt{W1}--\texttt{W3}). Bold marked curves highlight stream~\texttt{W3} for \CaseRef{\BenchPosThree{}} and \CaseRef{\BenchPosOneSevenFive{}} and stream~\texttt{W1} otherwise; faint curves overlay the remaining two streams.}
+\label{fig:alert-trajectories}
+\end{figure}
 
-Inter-model S1 agreement was not measured (\BenchModelAgreement). The
-fixed blind sample showed \BenchAuthorCheck. \BenchAuthorConfusionProse{}
-\BenchAuthorDownstream{} We report the author comparison as a descriptive
-check on rubric application only; it never alters primary labels and is no
-validation of unobserved outcomes of desk-stopped pairs.
+Alert and restoration forensics expose three concrete instrumentation failure modes (Listing~1):
+\begin{enumerate}
+\item \textbf{Counter placement ($c_0$, $c_1$, $Q_0{=}0$) and offset inflation:} Counter placement alone reverses growth verdicts. On \CaseRef{\BenchPosOneSixFour{}}, a constant floor in $c_0$ creates a nominal \BenchPosOneSixFourRatio{} primary ratio while $c_0+c_1$ stays flat (\BenchPosOneSixFourTotRatio{}, slope \BenchPosOneSixFourTotSlopeTwoDec{}, unrounded \BenchPosOneSixFourTotSlope{}), matching its linear $O(N)$ \texttt{plain} CPU ratio (\BenchPosOneSixFourCpuRatio{}). Direct zero counts drop \CaseRef{\BenchPosOneZeroZero{}} and \CaseRef{\BenchPosOneThreeOne{}} ($Q_0=0$) into \texttt{insufficient\_fit}, whereas two $c_1$-routed groups remain $c_0$ non-alerts: \BenchCOneOnlyCount{} positive-$Q_1$ hits (\CaseRef{\BenchPosFourSeven{}} at \BenchPosFourSevenCOneRatio{} on \BenchPosFourSevenCOneStream{}; \CaseRef{\BenchPosEleven{}} at \BenchPosElevenCOneRatio{} on \BenchPosElevenCOneStream{}) and \BenchQOneZeroCount{} complete $Q_1=0$ eliminations such as \CaseRef{\BenchPosOneSevenFour{}}. Conversely, \CaseRef{\BenchPosThirteen{}} holds $Q_0$ at a two-tick proxy, inflating $c_0$ slope to \BenchPosThirteenCZeroSlope{} versus \BenchPosThirteenTotSlope{} on $c_0+c_1$.
+\item \textbf{Non-parametric filtering over residual-scale-invariant leverage:} Every six-point geometric ladder shares endpoint hat leverage $h_{\max} = \BenchPosThreeLev{}$. Because Cook's $D$ is residual-scale-invariant on deterministic trajectories (reaching $D_{\max} > 1.5$ even on $R^2 = 1.000$ core alerts; \CaseRef{\BenchPosThree{}} hits $D_6 = \BenchPosThreeCooksD{}$ on \texttt{W1} and $D_6 = \BenchPosThreeCooksDSThree{}$, $\max_i D_i = \BenchPosThreeCooksDSThreeMax{}$ on \texttt{W3}), disqualifying \CaseRef{\BenchPosThree{}} rests on unscaled slope collapse: leave-one-out slopes drop to \BenchPosThreeSOneLOO{} and \BenchPosThreeSThreeLOO{} ($R^2 = \BenchPosThreeRSq{}$, OLS CIs spanning zero: \BenchPosThreeSOneCI{}, \BenchPosThreeSThreeCI{}), flipping SA8 drop-largest and yielding Theil--Sen \BenchPosThreeWorstTS{}.
+\item \textbf{Candidate payload folding vs.\ observer effects (\CaseRef{\BenchPosNineFour{}} and \CaseRef{\BenchPosNineZero{}}):} On \CaseRef{\BenchPosNineFour{}}, \BenchPosNineFourTicksM{} million extra target $c_0$ ticks incur only \BenchPosNineFourOtwoMsRange{} marginal counted \texttt{-O2} CPU time (\BenchPosNineFourOtwoNsRange{}~ns/tick, $\ll 1$ cycle) and \BenchPosNineFourPlainNsRange{}~ns/tick in uninstrumented \texttt{plain} \texttt{-O2} ($<\BenchPosNineFourPlainUpperNs{}$\,ns/tick vs.\ \BenchPosOneSevenFiveOtwoNsRange{}~ns/tick counted and \BenchPosOneSevenFivePlainNsRange{}~ns/tick \texttt{plain} on \CaseRef{\BenchPosOneSevenFive{}}). Because uninstrumented \texttt{plain} \texttt{-O2} is equally CPU-flat, GCC~\BenchGCC{} \texttt{-O2} optimizations---such as Scalar Evolution (\texttt{-ftree-scev-cprop}), SIMD vectorization, or dead-code elimination preserving \texttt{-O0/-O2/-O3} scalar totals---likely collapse or heavily vectorize the underlying target computation rather than folding \texttt{c\_0++} alone. On \CaseRef{\BenchPosNineZero{}}, instrumentation or UBSan hooks instead inhibited \texttt{-O2} optimization (hitting \BenchCpuCapSec{} in \texttt{ubsan} and counted \texttt{-O0/-O2/-O3} while \texttt{plain} finished). Without GIMPLE/assembly IR dumps or exported \texttt{-O0} CPU logs, \CaseRef{\BenchPosNineFour{}} survives solely on logical counters with zero observed \texttt{-O2} CPU acceleration.
+\end{enumerate}
 
-\section{Discussion and threats to validity}
+\par\medskip\noindent
+\fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\footnotesize
+\textbf{Listing~1 (Synthetic C++ counter patterns illustrating offset aliasing and loop folding):}\\[2pt]
+\begin{minipage}[t]{0.46\linewidth}
+\texttt{// A.\ Event-scoped floor (cf.\ \CaseRef{\BenchPosOneSixFour{}})}\\
+\texttt{long Q0 = 1, Q1 = n; // O(1) c0 floor}\\
+\texttt{long T0 = n, T1 = n; // same O(n) total}\\
+\texttt{// c0/Q0 grows as n, (c0+c1) stays flat}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.50\linewidth}
+\texttt{// B.\ Candidate folding (cf.\ \CaseRef{\BenchPosNineFour{}})}\\
+\texttt{for(int i=0;i<n;++i) for(int j=0;j<=i;++j)}\\
+\hspace*{1em}\texttt{\{ acc += k; c0++; \} // n(n+1)/2 ticks}\\
+\texttt{// -O2 folds acc (+ batched/unguarded c0)}
+\end{minipage}
+}}\par\medskip
 
-\paragraph{Interpretation.}
-The study measures what is possible under a specified set of checks,
-rather than adjudicating the correctness of upstream speedup claims.
-The two useful reporting questions are how often the study gets an
-admissible comparison at all, and what the fitted comparisons show.
-Improvement at the sampled sizes can coexist with a flat ratio; a
-growth alert can coexist with no demonstrated wall-clock benefit.
-Preserving all dispositions makes either a concentrated pathway of loss
-or broad feasibility visible. \BenchDiscussionSynthesis{} The
-estimates should not be extrapolated from the fitted subset to pairs
-excluded by missing evidence.
+Restoration auditing across \BenchConfSTwoPassN{} S1 passes yielded \BenchRestPassAllN{} pass, \BenchRestNoExAllN{} \texttt{no\_excess}, \BenchRestFailAllN{} fail, and \BenchRestUnmeasAllN{} unmeasured (\BenchRestExecPassN{} / \BenchRestExecNoExN{} / \BenchRestExecFailN{} / \BenchRestExecUnmeasN{} across \BenchPOneCount{} executed pairs; four non-executed passes with partial execution traces explain the difference).
+Among \BenchFittedClusters{} fits, \BenchRestFitNoExN{} showed \texttt{no\_excess}, leaving \BenchRestFitExcessN{} testable pairs: \BenchRestFitFailN{}/\BenchRestFitExcessN{} (\BenchRestFitFailPct{}, CI \BenchRestFitFailCI{}) failed $\ge \BenchRecovery{}$, while \BenchRestFitPassN{} passed. Of those passing restorations, \BenchRestExactCopyN{}/\BenchRestFitPassN{} (\BenchRestExactCopyPct{}, including all \BenchPThreeCount{} primary alerts) matched $(R_0, R_1) = (Q_0, Q_1)$ identically without offline AST edit-distance checks, alongside \BenchRestNonExactPassN{} non-exact passes (zero P3 alerts). Appendix Table~\ref{tab:appendix-forensics} reports the non-exact regime split: \BenchRestSurgicalN{} surgical (\BenchRestSurgicalBand{}), \BenchRestMildOverN{} mild (\BenchRestMildBand{}), and \BenchRestHighOverN{} over-recoveries (\BenchRestHighBand{} at \CaseRef{\BenchPosNineOne{}} \BenchRestOverNineOneRange{} and \CaseRef{\BenchPosOneTwoNine{}} \BenchRestOverOneTwoNineRange{}), with \BenchRestCOneInflN{}/\BenchRestNonExactPassN{} inflating $c_1 > \max(T_1, Q_1)$.
+Checking \emph{all} uncapped points across those \BenchRestFitPassN{} passes confirms \BenchAllPtExcessFailN{} excess-point failures, \BenchAllPtRoneInflN{} $c_1$ inflations, \BenchAllPtMaxBoundFailN{} violations of $R_0 \le \max(T_0, Q_0)$, and \BenchAllPtNonRegFailN{} exact reference crossovers ($R_0 = Q_0 > T_0$ at \CaseRef{\BenchPosEighteen{}}, \CaseRef{\BenchPosFourFour{}}).
+Re-evaluating \BenchRecovery{} restoration on $c_0 + c_1$ shifts the ledger to \BenchRestTotPassN{} pass, \BenchRestTotNoExN{} \texttt{no\_excess}, and \BenchRestTotFailN{} fail (\BenchRestTotFailN{}/\BenchRestTotExcessN{} = \BenchRestTotFailPct{}, CI \BenchRestTotFailCI{}), admitting \BenchRestTotNewTestN{} previously untestable $c_1$-shifted pairs (including \CaseRef{\BenchPosFourSeven{}} and all \BenchQOneZeroCount{} $Q_1=0$ pairs) while masking \BenchRestCOneMaskN{} primary $c_0$ shortfalls (motivating Rule~2).
 
-\paragraph{Construct and internal validity.}
-The named operation is a proxy for one part of work, not a complete cost
-model; as Table~\ref{tab:alerts} illustrates, an isolated operation ratio can
-grow linearly while combined total ticks remain constant-factor. The oracle
-and sanitizers test specific inputs and enabled checks; they do not prove that
-both programs are equivalent on all inputs. Instrumented runs can still miss
-an uncounted cost outside the instrumented functions, and single-process
-sandbox timings include startup overhead that masks sub-millisecond scaling.
-Checking count stability across compiler optimization levels, comparing
-combined total ticks, causal restoration, and sham edits, and refitting
-without the largest size address separate failure modes; none licenses
-extrapolation beyond the measured range. Desk decisions come from one vendor
-workflow whose backend routing is undisclosed and may vary across requests;
-while downstream S2--S5 gates screen out unbuildable or non-growing S1 passes,
-desk-stopped pairs never enter S2--S5, leaving an unmeasured false-negative
-desk-stop rate in P1, P2, and Sec.~S13, and a single-author blind check cannot
-measure variation among multiple human raters.
+\subsection{RQ4: Reliability of single-workflow LLM desk triage and tipping bounds}
+\label{sec:rq4}
+
+\begin{table}[htbp]
+\caption{Stratified agreement between single-workflow LLM desk triage and blind author audit across \BenchAuthorSample{} pre-drawn pairs (Overall \BenchAuthTotalClustersN{} clusters, Confirmatory singletons, and \BenchAuthQuarClustersN{} Quarantined clusters).}
+\label{tab:author-irr}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{1.8pt}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lr@{\hspace{5pt}}rrrrrrr@{}}
+\toprule
+Stratum & $n$ & 3-Bkt ($\kappa$; 95\% CI) & Bin.\ \% ($\kappa$) & PABAK & AC1 & $a/b/c/d$ & Contr. & McNemar $p$ \\
+\midrule
+\BenchTableFourRows
+\bottomrule
+\addlinespace[2pt]
+\multicolumn{9}{@{}p{\linewidth}@{}}{\footnotesize \emph{Notes:} \texttt{3-Bkt}: three-bucket agreement (\texttt{pass}/\texttt{contract}/\texttt{source}); \texttt{Bin.}: binary \texttt{pass}/\texttt{stop} with cell counts $a/b/c/d$ (both pass / LLM pass, author stop / LLM stop, author pass / both stop). \texttt{Contr.} lists contract-stop reversals (\BenchAuthConfContractRev{}, CI \BenchAuthConfContractRevCI{}, confirmatory contract stops; \BenchAuthQuarRev{} quarantined; overall confirmatory LLM stops: \BenchAuthConfAllStopRev{}). \texttt{Quar.} omits cluster CIs (---) because per-pair author ballots stay offline; parenthesized $p$-values ($\dagger$) are exploratory unclustered pair-level values across clustered strata.} \\
+\end{tabular*}
+\end{table}
+
+Table~\ref{tab:author-irr} disaggregates the \BenchAuthorSample{}-pair blind author audit across strata.
+Overall exact label match reached \BenchAuthExactPct{} ($\kappa = \BenchAuthExactK{}$, cluster bootstrap CI \BenchAuthExactCI{}), rising to \BenchAuthBucketPct{} under three-bucket aggregation ($\kappa = \BenchAuthBucketK{}$, CI \BenchAuthBucketCI{}, $\kappa_{\max} = \BenchAuthBucketKappaMax{}$, conservative $q=3$ $\text{AC1} = \BenchAuthBucketACOne{}$ since \texttt{route} and \texttt{indeterminate} had zero entries).
+Collapsing to binary \texttt{pass}/\texttt{stop} yields \BenchAuthBinPct{} agreement ($\kappa = \BenchAuthBinK{}$, PABAK $= \BenchAuthBinPABAK{}$, Gwet's AC1 $= \BenchAuthBinACOne{}$, bias index $\text{BI} = \BenchAuthBinBI{}$, prevalence index $\text{PI} = \BenchAuthBinPI{}$). The LLM passed far more items than the blind author (\BenchAuthLLMPassFrac{} vs.\ \BenchAuthAuthorPassFrac{}; \BenchAuthPassStopN{} vs.\ \BenchAuthStopPassN{}), giving exploratory unclustered pair-level asymmetries across \BenchAuthTotalClustersN{} clusters (McNemar \BenchAuthMcNemarP{}; exact conditional Bowker \BenchAuthAllBowkerExactP{}; large-sample $Q = \BenchAuthBowkerQ{}$, $\text{df}=3$, \BenchAuthBowkerP{} with sparse cells).
+
+Stratifying by quarantine exposes bidirectional confirmatory instability alongside a two-fold familiarity gap.
+Quarantined pairs (\BenchAuthQuarN{} pairs in \BenchAuthQuarClustersN{} clusters) achieved \BenchAuthQuarPct{} bucket agreement ($\kappa = \BenchAuthQuarKappa{}$, binary $\kappa = \BenchAuthQuarBinK{}$, \BenchAuthQuarRev{} contract reversals).
+Independent Confirmatory singletons (\BenchAuthConfN{}) dropped to \BenchAuthConfPct{} bucket agreement ($\kappa = \BenchAuthConfKappa{}$, coarse bootstrap CI \BenchAuthConfBucketKCI{}); unclustered cohort Fisher \BenchAuthCohortFisherP{} attenuates above $0.05$ under clustering (\BenchCohortClustSensP{} if \BenchAuthQuarClustersN{} quarantined clusters maintain their \BenchAuthQuarPct{} agreement).
+On Confirmatory binary \texttt{pass}/\texttt{stop}, reliability collapses to $\kappa =$ \BenchAuthConfBinK{} (coarse descriptive bootstrap CIs: \BenchAuthConfBinKCI{}, PABAK \BenchAuthConfPABAKCI{}, AC1 \BenchAuthConfACOneCI{}, discrete resampling stepping in tenths at $n=\BenchAuthConfN{}$).
+Binary McNemar appears symmetric (\BenchAuthConfMcNemarP{}, \BenchAuthConfPassStopN{} vs.\ \BenchAuthConfStopPassN{}), yet full $3\times 3$ cells expose opposing bias reversal (exact conditional Bowker \BenchAuthConfBowkerExactP{}; large-sample $Q = \BenchAuthConfBowkerQ{}$, $\chi^2_3$ \BenchAuthConfBowkerP{} with expected counts $<5$).
+Among the \BenchAuthRejTotalN{} sampled confirmatory LLM passes rejected by the blind author, \BenchAuthRejExec{} executed in Gate~1 (CI \BenchAuthRejExecCI{}) yet yielded zero growth alerts (six \texttt{no\_alert} fits, one \texttt{insufficient\_fit}, and one \texttt{fixture\_stop}).
+Clean harness execution therefore does not establish S1 work-delta eligibility, and LLM over-admission inflates non-alert executions; conversely, the author rated \BenchAuthConfAllStopRev{} LLM stops (CI \BenchAuthConfAllStopRevCI{}) passable.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{fig_manski_tipping.pdf}
+\caption{Manski linear tipping bounds for unexecuted S1 stops across rateable SA13b and full P2 (Panel~A; hollow marker on the two-step curve shows the uncalibrated \BenchAuthConfAllStopRev{} author-reversal plug-in for $\hat{\theta} = \BenchManskiPlugInTheta{}$ with horizontal bar spanning rectangular joint uncertainty \BenchManskiPlugJointRectCI{}) and P3 robustness under \texttt{tick\_cap} (\BenchCensorWorstN{}/\BenchCensorDenom{}), \texttt{+cpu\_cap} (\BenchCensorCpuCapTotalN{}/\BenchCensorDenom{} = \BenchCensorCpuCapPct{}), and minimum tipping thresholds against the \BenchPilotAlertN{}/\BenchPilotFitN{} pilot fit rate (Panel~B).}
+\label{fig:manski-tipping}
+\end{figure}
+
+Because pre-freeze gating barred running stopped pairs inside Gate~1, true false-negative yield $\theta \in [0, 1]$ among the \BenchRatedDeskStopRepsN{} rateable S1 stops stays unmeasured (Figure~\ref{fig:manski-tipping}).
+Across \BenchRateableClustersN{} rateable clusters (SA13b), the desk-minus-execution gap flips sign ($\Delta(\theta) < 0$) at $\theta > \BenchManskiTipRate{}$ (\BenchManskiTipNum{}/\BenchRatedDeskStopRepsN{}) under one-step propagation and $\theta > \BenchManskiTwoStepTipTheta{}$ ($p_{\text{fn}} > \BenchManskiTwoStepTipPfn{}$) under two-step propagation $\Delta_{\text{2-step}} = [(D - E) - D p_{\text{fn}}(1 + y)] / N$, whereas flipping full P2 across \BenchConfClustersN{} clusters requires $\theta > \BenchManskiFullFlipTheta{}$ under one-step propagation.
+For conditional sensitivity illustration only, plugging in $p_{\text{fn}} = \BenchAuthConfAllStopRev{}$ gives $\hat{\theta} = \BenchManskiPlugInTheta{}$ (fixed-$y$ CI \BenchManskiPlugInThetaCI{}), although \BenchAuthConfAllStopRev{} is an uncalibrated single-rater disagreement rather than a lower bound given \BenchAuthRejExec{} clean post-synthesis executions among author-rejected passes and unverified $y_{\text{stopped}} = \BenchPOneCount{}/\BenchConfSTwoPassN{}$ transportability.
+Joint uncertainty over $(p_{\text{fn}}, y)$ spans \BenchManskiPlugJointJeffCI{} under exact Jeffreys quadrature and \BenchManskiPlugJointRectCI{} under the conservative rectangular Cartesian product of two 95\% intervals ($(1-0.05)^2$ box coverage).
+Sampling variance in $y$ adds only \BenchManskiYDeltaSEDiffPP{} in quadrature to $\text{SE}(\hat{\theta})$, with standalone fixed-$p_{\text{fn}}$ $y$-only CP half-widths of $\pm$\BenchManskiYTwoStepHalfPP{} (two-step) and $\pm$\BenchManskiYOneStepHalfPP{} (one-step).
+Under that plug-in, rateable yield shifts to \BenchManskiPlugInPOne{} and SA13b shifts to \BenchManskiPlugInSAThirteen{} (\BenchManskiPlugInTwoStepSAThirteen{} two-step).
+
+For P3 (\BenchPThreeCount{}/\BenchFittedClusters{}, Panel~B), assuming all \BenchOracleFailN{} oracle failures enter the fitted denominator ($(\BenchPThreeCount{}+k)/(\BenchFittedClusters{}+\BenchOracleFailN{})$), erasing Fisher calibration significance ($p \ge 0.05$) requires \BenchPThreeOracleTipN{}/\BenchOracleFailN{} (\BenchPThreeOracleTipPct{}) oracle failures to be true alerts (yielding \BenchPThreeOracleTipResultPct{} vs.\ \BenchPilotAlertN{}/\BenchPilotFitN{} pilot, or \BenchPThreeOracleTipConservN{}/\BenchOracleFailN{} = \BenchPThreeOracleTipConservPct{} vs.\ conservative \BenchPilotConservFrac{}).
+Under the adversarial added-alert convention ($(\BenchPThreeCount{}+k)/(\BenchFittedClusters{}+k)$, zero added non-alerts), minimum oracle tipping is \BenchPThreeOracleAdvTipN{}/\BenchOracleFailN{} (\BenchPThreeOracleAdvTipPct{} vs.\ \BenchPilotAlertN{}/\BenchPilotFitN{}; \BenchPThreeOracleAdvTipConservN{}/\BenchOracleFailN{} = \BenchPThreeOracleAdvTipConservPct{} vs.\ \BenchPilotConservFrac{}), matching the adversarial zero-non-alert lower bound of \BenchPThreeSOneTipN{}/\BenchRatedDeskStopRepsN{} (\BenchPThreeSOneTipPct{}, yielding \BenchPThreeSOneTipResultPct{} vs.\ \BenchPilotAlertN{}/\BenchPilotFitN{}; \BenchPThreeSOneTipConservN{}/\BenchRatedDeskStopRepsN{} = \BenchPThreeSOneTipConservPct{} vs.\ \BenchPilotConservFrac{}) S1-stopped alerts.
+False-positive LLM passes perturb SA13b and P3 in the opposite direction: reclassifying \BenchSAThirteenFpTipN{}/\BenchPOneCount{} (\BenchSAThirteenFpTipPct{}) executed passes as S1 stops flips SA13b significantly positive (\BenchSAThirteenFpTipDelta{}, \BenchSAThirteenFpTipP{}).
+Likewise, the blind author rejected \BenchAuthConfFitRejFrac{} sampled confirmatory fitted LLM passes; removing \BenchPThreeFpTipConservN{}/\BenchNoAlertN{} (\BenchPThreeFpTipConservPct{}) \texttt{no\_alert} passes tips P3 above $0.05$ against conservative \BenchPilotConservFrac{} (\BenchPThreeFpTipConservP{}), and removing \BenchPThreeFpTipFullN{}/\BenchNoAlertN{} (\BenchPThreeFpTipFullPct{}) tips P3 against \BenchPilotAlertN{}/\BenchPilotFitN{} (\BenchPThreeFpTipFullP{}).
+
+\section{Discussion: Five empirically motivated rules and validity threats}
+\label{sec:discussion}
+
+\subsection{Five empirically motivated prescriptions for C++ benchmark construction}
+
+Raw speedups in Contest or Repository corpora rarely survive growth qualification without breaking common evaluation shortcuts. Table~\ref{tab:rules} separates mechanics actually exercised in Gate~1 from \emph{empirically motivated design prescriptions requiring future validation}, summarized concisely below.
+
+\begin{table}[htbp]
+\caption{Summary of five qualification prescriptions separating mechanics exercised in Gate~1 from recommended remediations.}
+\label{tab:rules}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\begin{tabularx}{\linewidth}{@{}lXX@{}}
+\toprule
+Rule & Exercised in Gate~1 (Study Scope) & Recommended Prescription (Future Validation) \\
+\midrule
+Rule~1 & S0--S5 full denominator tracking (incl.\ holds and fixture stops) & Evaluate multi-file repository benchmarks in isolated corpus-specific strata \\
+Rule~2 & Primary $c_0$ fit, $Q_0>0$, and $\ge \BenchRecovery{}$ restoration on $c_0$ & Joint $(c_0, c_0+c_1)$ fit admitting $Q_0=0$ + $\max(T,Q)$ non-regression \\
+Rule~3 & \texttt{O0==O2==O3}, \texttt{-O2} UBSan, and outer \texttt{cpu.stat} baselines & Cgroup \texttt{MemoryMax} (ASan/\texttt{\_GLIBCXX\_ASSERTIONS}), \texttt{-O0} UBSan, IR + warmed ns/tick \\
+Rule~4 & Dual B0 + SA8, Theil--Sen, and OLS curvature diagnostics & Hunk-scoped AST preservation (cond.\ $R \not\equiv Q$), \BenchRestTwoSidedBand{} band, \texttt{sham} $\neq$ \texttt{target}, \texttt{-E} parity \\
+Rule~5 & Precision audit on LLM passes + blind S1 author check & Stratified Gate~1 execution of sampled S1-rejected pairs \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{enumerate}
+\item \textbf{Keep unrateable and unexecuted items in explicit denominators.} Specification holds drive \BenchPTwoHoldsShare{} of P2; multi-file repository benchmarks should be evaluated in independent strata rather than pooled under Contest-dominated denominators.
+\item \textbf{Evaluate $(c_0, c_0+c_1)$ jointly and enforce symmetric all-point non-regression.} Single-counter $c_0$ admits event-scoped floors (\CaseRef{\BenchPosOneSixFour{}}), while $c_0+c_1$ masks \BenchRestCOneMaskN{} $c_0$ shortfalls. Pipelines should require joint $(c_0, c_0+c_1)$ admissibility when $Q_0 > 0$ and admit $Q_0 = 0$ loop eliminations via $c_0+c_1$ without artificial constant $Q_0$ padding. They should also enforce excess-conditional restoration across all uncapped sizes ($c_0$ when $T_0>Q_0$; $c_0+c_1$ when $T_0+T_1>Q_0+Q_1$) paired with symmetric hard non-regression bounds ($R_0 \le \max(T_0, Q_0)$ and $R_1 \le \max(T_1, Q_1)$), while logging $T_0 < R_0 \le Q_0$ and $T_1 < Q_1$ (\CaseRef{\BenchPosNineOne{}}, \CaseRef{\BenchPosOneSevenFive{}}) as reference crossovers. Across all \BenchRestFitPassN{} passing restorations here, all-point replay found \BenchAllPtExcessFailN{} excess failures, \BenchAllPtRoneInflN{} $c_1$ inflations, \BenchAllPtMaxBoundFailN{} violations of $R_0 \le \max(T_0, Q_0)$, and \BenchAllPtNonRegFailN{} exact reference crossovers ($R_0 = Q_0 > T_0$ at \CaseRef{\BenchPosEighteen{}}, \CaseRef{\BenchPosFourFour{}}).
+\item \textbf{Pair scalar optimization checks with compiler IR, warmed timing, and full sanitizers.} Pipelines should replace \texttt{RLIMIT\_AS} with cgroup \texttt{MemoryMax} to permit ASan and \texttt{-D\_GLIBCXX\_ASSERTIONS}, run UBSan at \texttt{-O0}, and admit \texttt{O2==O3} cleanly on \texttt{-O0}-only timeouts (zero alert drift across all \BenchOZeroRelaxCapPtsN{} such points). To detect intra-loop SCEV folding, SIMD collapse, or counter observer effects, harnesses should pair identical pre-sink DCE barriers (outside timed loops) with compiler-IR inspection and warmed in-process $\Delta t_{\text{plain}}/\Delta c_0$ versus counted \texttt{-O2} parity.
+\item \textbf{Pair distribution-free screens with AST-verified minimal restoration and sham guards.} Automated validators should enforce \texttt{tree-sitter-cpp} hunk-scoped AST preservation (requiring $R$ to keep $T$'s surrounding subtrees outside the localized hunk and rejecting $R \equiv Q$ whenever outside-hunk ASTs diverge, tagging single-hunk pairs as \texttt{native\_single\_hunk}). Validators should likewise apply a two-sided \BenchRestTwoSidedBand{} acceptance band (flagging \BenchRestHighBand{} over-recoveries at \CaseRef{\BenchPosNineOne{}}, \CaseRef{\BenchPosOneTwoNine{}}), enforce $\texttt{sham} \neq \texttt{target}$ and \texttt{originals}-to-\texttt{plain} derivation, and check normalized \texttt{-E -U PATH\_B\_COUNT} equivalence.
+\item \textbf{Audit rejected LLM strata via sandbox execution.} Severe confirmatory disagreement ($\kappa =$ \BenchAuthConfBinK{}; \BenchAuthRejExec{} author-rejected LLM passes executing without alerts) leaves S1 recall unmeasured across the \BenchManskiTipRate{} (\BenchManskiTwoStepTipTheta{} two-step) tipping bound; pipelines should execute a stratified random sample of desk stops inside Gate~1.
+\end{enumerate}
+
+\subsection{Threats to validity}
+
+\paragraph{Construct validity.}
+Primary counter $c_0$ tracks one named algorithmic loop or helper; auxiliary loops in $c_1$ capture residual intra-driver work, not hardware cache misses or memory allocation bytes.
+Our screen targets $\ge \BenchMinSlope{}$ log--log slope across \BenchMinSpan{}$\times$ input scaling and therefore does not classify true $\Theta(\log n)$ speedups (\CaseRef{\BenchPosSevenSeven{}}) or sub-polynomial constant-factor improvements as alerts; we preserve these cases in distinct taxonomy strata rather than conflating them with zero speedups.
+In addition, the \BenchTickCeiling{} counter ceiling systematically right-censors cubic $O(N^3)$ targets above modest input sizes.
+As \CaseRef{\BenchPosNineFour{}} illustrates, cross-optimization scalar parity under \texttt{-O2} does not rule out payload folding or vectorized machine-cost collapse; conversely, B4 and B5 evaluate single-invocation container timing inclusive of \BenchBwrapOverheadMs{} spawn overhead rather than warmed in-process microbenchmarking~\cite{hoefler2015scientific}.
+Because \texttt{validate\_fixture()} omitted AST non-identity checks and private AST diffs remain offline, logical parity $(R_0, R_1) = (Q_0, Q_1)$ across \BenchRestExactCopyN{}/\BenchRestFitPassN{} (\BenchRestExactCopyPct{}) passing restorations---including all \BenchPThreeCount{} primary alerts---establishes an upper bound unverified against reference replacement (Rule~4).
+Gate~1 also compiles UBSan at \texttt{-O2} (allowing optimization passes to elide UB) and sets \texttt{prlimit -{}-as=\BenchAsCapMiB{}} below cgroup memory (\BenchMemCapMiB{}), precluding ASan/\texttt{-D\_GLIBCXX\_ASSERTIONS}, attributing VA exhaustion to \texttt{process\_failure}, and making SA4 (\BenchOracleFailPct{}) a lower bound on dynamic defects.
+Finally, dynamic runs cover finite tested inputs and scales rather than universal program equivalence.
+
+\paragraph{Internal validity.}
+Four boundaries constrain causal attribution.
+First, S1 stops derive from a single vendor-routed LLM workflow whose backend routing is undisclosed, making \BenchExecRate{} a conditional lower bound under the pinned workflow and leaving S1 error bounded in both directions via Table~\ref{tab:author-irr} and Figure~\ref{fig:manski-tipping}.
+Second, Table~\ref{tab:author-irr} reflects one blind author audit rather than independent external raters and shows a two-fold quarantine familiarity confound (\BenchAuthQuarPct{}, \BenchAuthQuarRev{} reversals vs.\ \BenchAuthConfPct{}, binary $\kappa =$ \BenchAuthConfBinK{}).
+Third, post-run disposition sensitivity reflects \BenchOracleCoordN{}/\BenchOracleFailN{} audited initial-batch oracle reclassifications and five post-hoc \texttt{process\_failure} status mappings whose early logs lack wall-clock timestamps (and SHA-pinning substituted for a pre-P1--P3 git commit under Section~10); deferring exit-status halts also attributed \CaseRef{\BenchPosTwoSeven{}} to \texttt{restored} despite an earlier \texttt{target} \texttt{SIGABRT}. Appendix~Table~\ref{tab:appendix-sensitivity} shows P1 and P3 stay tightly bounded while SA4 spans \BenchEnvSAFourRange{} and SA13b remains above $0.05$ across all receipt-backed toggles.
+Fourth, matching Zone~3 in Figure~\ref{fig:pipeline-funnel}, third-party C++ payloads and harnesses stay offline (\texttt{replay-only} above execution traces), so external auditors replay pinned execution traces and aggregated non-alert \texttt{B4}/\texttt{B5} summaries rather than recompiling third-party C++ submissions directly.
 
 \paragraph{External and conclusion validity.}
-PIE and CodeNet are contest data with overlapping provenance. The
-repository snapshot favors projects and commits visible under a bounded
-search and its language, date, and wording filters. An isolated build
-can reject a pair that would run with project-native dependencies. The
-draw and overlap quarantine reduce dependence but cannot rule out
-unidentified aliases or templates. Estimates apply to the defined
-frames and protocol; they are not estimates for all C++ code. The
-archived references are fixed development comparisons distorted by pilot
-deferrals and outcome-prioritized execution, not sampling distributions. Frame
-imbalance is complete in execution \BenchRepoExecSummary, so all isolated
-execution and fitted-case estimates apply solely to Contest submissions.
+All \BenchConfRepoClustersN{} Repository clusters lacked standalone specifications and stopped at Stage~S1 before build or execution.
+The \BenchGitHub{}-commit GitHub arm therefore characterizes standalone specification availability~\cite{baltes2022sampling}, while execution, oracle, compiler-folding, and scaling estimates generalize solely to standalone Contest kernels rather than multi-file CMake/Ninja repositories~\cite{ho2026cppperf}.
+CodeNet and PIE share competitive-programming provenance, and keyword mining misses silent optimizations.
+Comparisons against the archived \BenchPilotPairs{}-pair pilot serve strictly as historical calibration diagnostics (never homogeneous population comparisons), finite-sample Fisher/McNemar/sign tests with Holm control guard multiplicity, and unclustered $p$-values across clustered strata are explicitly flagged.
 
 \section{Conclusion}
+\label{sec:conclusion}
 
-A public slow--fast pair is an input to benchmark qualification, not a
-growth benchmark by itself. Under the frozen protocol, the
-intake-to-alert yield was \BenchIntakeAlertRate. \BenchConclusionTakeaway{}
-The ledger distinguishes documented stops from negative fits, so readers
-can see what was measured and which prerequisites ruled out a comparison.
-Any positive finding concerns the named work event on the tested range
-under the pinned route.
+Public slow--fast C++ performance pairs are raw candidates rather than self-validating scaling evidence.
+Across \BenchPairs{} frozen pairs, pre-execution \texttt{no\_independent\_repository\_spec} holds stop all \BenchConfRepoClustersN{} Repository clusters at Stage~S1, single-workflow S1 screening disagrees sharply with human audit ($\kappa =$ \BenchAuthConfBinK{}) below the \BenchManskiTwoStepTipTheta{} two-step tipping threshold, independent oracles discard at least \BenchOracleFailPct{} of executed Contest pairs, and counter placement, endpoint leverage, and candidate compiler folding leave an unverified logical-counter upper bound of \BenchCoreFourN{}/\BenchFittedClusters{} (\BenchCoreFourPct{})---with at least \BenchRealizedCpuCoreN{}/\BenchFittedClusters{} reaching $\BenchMinRatio{}\times$ single-invocation container CPU speedup.
+Enforcing the five prescriptions in Section~\ref{sec:discussion} within explicit denominators establishes concrete qualification criteria for standalone C++ performance benchmarks.
 
 \section*{Data availability and use of AI}
 
-The frozen manifest identifies public upstream versions by pins and hashes.
-The artifact is designed to connect the manifest and the dated protocol
-to a terminal ledger, representative identifiers, and receipts that
-reproduce the reported estimates where the inputs permit it. For artifact
-availability and evidence classifications, \BenchAvailability.
-We do not release locally retained source payloads, private archives,
-or raw rater ballots. A receipt-only check, where provided, does not
-constitute a fresh execution. No private-only estimate is reported in the
-abstract or conclusion.
+This companion repository preserves immutable pre-execution archives (intake manifest \BenchPinManifest{}, protocol \BenchPinProtocol{}, hold list \BenchPinHolds{}, and Amendment~5 \BenchPinAmendFive{}; \texttt{held\_out\_used = false}; see \texttt{protocol/README.md} for historical archive mappings including the pre-Amendment-5 five-pair quarantined diagnostic and the standalone \texttt{MODES} extract of \texttt{path\_b\_run.py}).
+It also provides de-identified counter traces (\texttt{data/\allowbreak anonymous-\allowbreak measurements.json}, \BenchPinAnon{}), aggregated forensic, IRR, alert CPU, and non-alert B4/B5 confusion summaries (\BenchPinForensics{}), offline statistical replay (\texttt{analysis/\allowbreak expansion\_\allowbreak analyze.py}), figure generation (\texttt{analysis/\allowbreak generate\_\allowbreak figures.py}), and the stdlib verifier \texttt{verify.py}.
+Running \texttt{python -B verify.py -{}-figures -{}-pdf} checks every tracked file in \texttt{SHA256SUMS.txt}, verifies claim SHA-256 provenance, replays all tables and macros, regenerates and raster-verifies all figures, and compiles the PDF with zero raw upstream identifiers in manuscript prose, tables, figures, or trace files (public intake identifiers appear solely in the frozen pinning artifacts under \texttt{data/freeze/} used for Zone-1 clustering, hold pinning, and Table~\ref{tab:corpus-parity} replay).
+Original candidate C++ payloads, per-pair author ballots, and unexported per-mode CPU timings stay offline under third-party source and blinding boundaries.
+A single vendor-routed LLM workflow executed replay-only Stage~S1 desk screening, and LLM assistants aided fixture authoring (checked deterministically via \texttt{validate\_fixture()}, UBSan, \texttt{O0==O2==O3}, and \texttt{target==sham}) and prose editing; deterministic Python scripts compute and verify every reported statistic.
 
-Generative AI assisted in drafting. Desk judgments are disclosed as
-model judgments, separately from deterministic build, oracle, counter,
-and statistical checks.
-The methods record identifies the applied rubric, protocol amendments,
-and pinned procedures to the extent the evidence can be disclosed.
-
-\bibliographystyle{plain}
+{\small
+\bibliographystyle{plainurl}
 \bibliography{paired_mechanism}
+}
+
+\clearpage
+\appendix
+\renewcommand{\thetable}{A\arabic{table}}
+\setcounter{table}{0}
+\setlength{\intextsep}{6pt plus 1pt minus 1pt}
+\section{Operational sensitivity, CPU baselines, and forensics}
+\label{app:sensitivity}
+
+Across the baseline and seven receipt-backed post-run disposition sensitivity toggles (SHA-256 pins \BenchPinLedger{}, \BenchPinRepPlan{}, \BenchWaveOnePin{}, \BenchWaveTwoPin{}, and pre-patch runner \BenchPinWaveTwoCap{}), P1 spans \BenchEnvPOneRange{}, P3 spans \BenchEnvPThreeRange{}, SA4 spans \BenchEnvSAFourRange{}, and rateable SA13b spans \BenchEnvSAThirteenRange{} (Table~\ref{tab:appendix-sensitivity}).
+The toggles cover \BenchStackCapMB{} stack-limit overflows (\texttt{SIGSEGV}, two pairs: \texttt{ubsan}-only at \CaseRef{\BenchPosSevenOne{}}; \texttt{ubsan} and \texttt{-O0} at \CaseRef{\BenchPosOneOneSix{}}, tagged \texttt{ubsan\_only\_stack\_8mb}), strict UB/crash classifications (\texttt{SIGABRT}/\texttt{SIGSEGV}, two pairs), unpatched \texttt{cpu\_cap} \texttt{SIGKILL} throttling (\BenchCpuCapPos{} pairs), a single-stream cap boundary (one pair), and \BenchOracleCoordN{} audited initial-batch \texttt{stderr} oracle reclassifications (chronology relies on SHA-pinned manifests because early logs omit wall-clock timestamps).
+
+\begin{table}[!ht]
+\caption{Operational sensitivity table across receipt-backed post-run disposition toggles and execution cap mappings. Exact paired McNemar $p$-values for SA13b reduce identically to exact binomial sign-flip bounds across cluster-level discordances; all exploratory $p$-values are unadjusted for multiplicity and remain above $0.05$.}
+\label{tab:appendix-sensitivity}
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{0.88}
+\begin{tabularx}{\linewidth}{@{}Xrrrrrr@{}}
+\toprule
+Scenario / Operational Toggle & P1 & P2 & SA13b ($p$) & P3 & SA4 & SA14 \\
+\midrule
+\BenchTableAppRows
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[!ht]
+\caption{Alert-level floor-subtracted ($\min(T(n_1), Q(n_1)) - \BenchSpawnFloorMs{}$ at smallest size $n_1$, floored at \BenchSpawnFloorMs{}) and offset-invariant additive $\Delta\text{CPU}(n) = T_{\text{plain}}(n) - Q_{\text{plain}}(n)$ OLS separation slopes (ms per unit $\ln n$, diagnostic scale depending on $n_k$) across the five non-outlier alerts (\CaseRef{\BenchPosThree{}} excluded by SA8 flip and Theil--Sen \BenchPosThreeWorstTS{}).}
+\label{tab:appendix-cpu}
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{0.88}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabularx}{\linewidth}{@{}lXrrr@{}}
+\toprule
+Case & Floor-subtracted \texttt{plain} / \texttt{-O2} summary & \texttt{plain} $\Delta$ (max $n$) & Add.\ $\Delta\text{CPU}$ & Core CPU \\
+\midrule
+\CaseRef{\BenchPosThirteen{}} & \texttt{plain} \BenchSubCpuOneThreeSlopeRange{} (\BenchPosThirteenPlainStreamsFrac{}; zero-off.\ \BenchPosThirteenPlainZeroSubRange{}); \texttt{-O2} \BenchPosThirteenOtwoSubSlopeRange{} (\BenchPosThirteenOtwoStreamsFrac{}) & \BenchPosThirteenPlainDeltaMsRange{} & \BenchAddCpuOneThreeSlopeRange{} & \checkmark \\
+\CaseRef{\BenchPosOneSevenFive{}} & \texttt{plain} \BenchSubCpuOneSevenFiveSlopeRange{} (\BenchPosOneSevenFivePlainStreamsFrac{}); \texttt{-O2} \BenchPosOneSevenFiveOtwoSubSlopeRange{} (\BenchPosOneSevenFiveOtwoStreamsFrac{}) & \BenchPosOneSevenFivePlainDeltaMsRange{} & \BenchAddCpuOneSevenFiveSlopeRange{} & \checkmark \\
+\CaseRef{\BenchPosOneSixFour{}} & \texttt{plain} \BenchSubCpuOneSixFourSlopeRange{} (\BenchPosOneSixFourPlainStreamsFrac{}; linear \BenchPosOneSixFourCpuRatio{}); \texttt{-O2} \BenchPosOneSixFourOtwoStreamsFrac{} & --- & \BenchAddCpuOneSixFourSlopeRange{} & Linear \\
+\CaseRef{\BenchPosNineFour{}} & \texttt{plain} \BenchSubCpuNineFourSlopeRange{} (\BenchPosNineFourPlainStreamsFrac{}); \texttt{-O2} \BenchPosNineFourOtwoStreamsFrac{} (folded payload) & --- & \BenchAddCpuNineFourSlopeRange{} & $\times$ \\
+\CaseRef{\BenchPosNineSeven{}} & \texttt{plain} \BenchSubCpuNineSevenSlopeRange{} (\BenchPosNineSevenPlainStreamsFrac{}); \texttt{-O2} \BenchPosNineSevenOtwoStreamsN{}/\BenchNumStreams{} (fails all-stream) & --- & \BenchAddCpuNineSevenSlopeRange{} & $\times$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[!ht]
+\caption{Granular forensic decompositions backing Sections~\ref{sec:rq2}--\ref{sec:rq3}: unrun invariant samples, non-cap \texttt{process\_failure} exit codes, censoring Fisher bounds vs.\ pilot strata (\BenchPilotAlertPct{} unclustered, \BenchPilotFitClustersFrac{} optimistic cluster, \BenchPilotConservFrac{} conservative cluster), and non-exact passing restoration regimes.}
+\label{tab:appendix-forensics}
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{0.88}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Forensic Component & Exact Receipt-Bound Breakdown \\
+\midrule
+Unrun invariants & \BenchOZeroMiss{} \texttt{O0/O2/O3} triples (\BenchOZeroOracleAbort{} oracle abort, \BenchOZeroOverlayFix{} post-execution \texttt{fixture\_stop}, \BenchOZeroCapped{} capped, \BenchOZeroInfraMiss{} infra); \BenchShamMiss{} \texttt{target==sham} pairs (\BenchShamOracleAbort{} / \BenchShamOverlayFix{} / \BenchShamCapped{} / \BenchShamInfraMiss{}). \\
+\addlinespace[1.5pt]
+Non-cap \texttt{process\_failure} & Seven pairs (\CaseRef{\BenchPosTwoSeven{}}, \CaseRef{\BenchPosTwoNine{}} oracle-prior; \CaseRef{\BenchPosSevenOne{}}, \CaseRef{\BenchPosOneZeroSeven{}}, \CaseRef{\BenchPosOneOneSix{}}, \CaseRef{\BenchPosOneFourOne{}}, \CaseRef{\BenchPosOneSixSeven{}} reclassifications): \BenchPfStderrN{} non-empty \texttt{stderr} at exit 0, \BenchPfSigabrtN{} \texttt{SIGABRT}, \BenchPfSigsegvN{} \texttt{SIGSEGV}. Audited initial-batch oracle exclusions: \BenchOracleCoordN{}/\BenchOracleFailN{} (\BenchOracleCoordPct{}; \BenchWaveOneOverrideN{} initial \texttt{stderr} overrides). \\
+\addlinespace[1.5pt]
+Censoring Fisher bounds & Worst-case \texttt{tick\_cap} (\BenchCensorWorstN{}/\BenchCensorDenom{} = \BenchCensorWorstPct{}): \BenchCensorWorstFisherP{} vs.\ \BenchPilotAlertPct{}, \BenchCensorWorstFisherFourTwelveP{} vs.\ \BenchPilotFitClustersFrac{}, \BenchCensorWorstFisherConservP{} vs.\ \BenchPilotConservFrac{}. Plus non-flat \texttt{cpu\_cap} \CaseRef{\BenchPosNineZero{}} (\BenchCensorCpuCapExclFlatN{}/\BenchCensorDenom{} = \BenchCensorCpuCapExclFlatPct{}): \BenchCensorCpuCapExclFlatP{}, \BenchCensorCpuCapExclFlatConservP{} (conserv.). Plus all three \texttt{cpu\_cap} (\BenchCensorCpuCapTotalN{}/\BenchCensorDenom{} = \BenchCensorCpuCapPct{}): \BenchCensorCpuCapFisherP{}, \BenchCensorCpuCapFourTwelveP{}, \BenchCensorCpuCapConservP{}. \\
+\addlinespace[1.5pt]
+Non-exact rest.\ (\BenchRestNonExactPassN{}) & Zero P3 alerts; \BenchRestNonExSATwoN{} SA7 (\CaseRef{\BenchPosNineZero{}}, \CaseRef{\BenchPosOneTwoNine{}}), \BenchRestNonExSubN{} sub-\BenchMinSlope{} (\CaseRef{\BenchPosNineOne{}}), \BenchRestNonExFlatN{} flat, \BenchRestNonExNegN{} negative-slope, and \BenchRestNonExMixN{} mixed/reversed pairs. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
 \end{document}
