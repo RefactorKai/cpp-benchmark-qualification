@@ -32,7 +32,8 @@ execution yield was \BenchExecRate, and the all-stream alert rate was
 among representatives passing intake. \BenchAbstractTakeaway{} A screen pass
 concerns the named event on the tested inputs, not time complexity or
 elapsed time. Confirmatory inference on fitted-case alerts requires at least
-\BenchMinFits{} independent fitted clusters (satisfied here with 124 fits).
+\BenchMinFits{} independent fitted clusters (satisfied here with
+\BenchFittedClusters{} fits).
 \end{abstract}
 
 \noindent\textbf{Keywords:} benchmark qualification, software performance,
@@ -52,16 +53,22 @@ these cases as failed growth tests, or dropping them before reporting a
 denominator, obscures what a benchmark can support.
 
 We ask how many public slow--fast C++ pairs can support a finite-range
-growth claim under one specified execution route. The study distinguishes
-three questions: How often does a comparison reach isolated execution (P1)?
-Is the rate of desk stops higher or lower than the rate of reaching execution
-when problems and projects receive equal weight (P2)? Among comparisons
-that admit a fit, how often does the work ratio pass the growth
-screen (P3)? We also report alerts per intake-passing representative so the
-conditional fitted-case rate is not mistaken for overall yield. Desk labels
-are model judgments, not ground truth; a blind check by one author is
-separate. Fewer than \BenchMinFits{} fitted clusters permits a descriptive
-account, not a directional claim about fitted-case yield.
+growth claim under one specified execution route. Descriptive qualification
+rates and exact confidence intervals across the funnel lead the reporting;
+pre-specified primary tests additionally record whether confirmatory
+estimates depart from the archived pilot anchors: How often does a comparison
+reach isolated execution (P1)? Is the rate of desk stops higher or lower than
+the rate of reaching execution when problems and projects receive equal
+weight (P2, alongside rateable-only Sec.~S13)? Among comparisons that admit a
+fit, how often does the work ratio pass the growth screen (P3)? Because the
+archived pilot anchors reflect outcome-prioritized execution and deferred
+controls, rejecting them diagnoses pilot selection and deferral distortion
+rather than a population benchmark null. We also report alerts per
+intake-passing representative so the conditional fitted-case rate is not
+mistaken for overall yield. Desk labels are model judgments, not ground
+truth; a blind check by one author is separate. Fewer than \BenchMinFits{}
+fitted clusters permits a descriptive account, not a directional claim about
+fitted-case yield.
 
 Our contribution is an accounting of where and why pairs stop, from the
 frozen manifest to a fit or a documented terminal disposition. We separate
@@ -74,24 +81,54 @@ that the underlying optimizations are or are not worthwhile.
 
 \section{Related work}
 
-PIE uses execution performance to identify improvement examples for learning
-code edits~\cite{shypula2024pie}. Project-based collections such as
-CppPerf mine performance edits together with build or test
-context~\cite{ho2026cppperf}. Such resources answer how to obtain candidate
-comparisons; we ask what can be measured after selection. As with other uses
-of mined GitHub data, the metadata and the collection route delimit the
-population to which the results apply~\cite{kalliamvakou2014promises}.
-Test-backed benchmarks such as Defects4J illustrate the value of a checked
-witness~\cite{just2014defects4j}; here at least one scalable workload and a
-common operation are needed in addition to checks of output.
+Mined code-optimization corpora pair slower and faster revisions at scale.
+PIE draws slow--fast contest submissions ordered by judge timings to train
+and evaluate performance-improving code edits~\cite{shypula2024pie}, building
+on large-scale submission archives such as CodeNet~\cite{puri2021codenet}.
+Repository-mined collections such as CppPerf pair developer performance-fix
+commits with project build or test context~\cite{ho2026cppperf}, complementing
+empirical studies of real-world performance bugs and developer optimizations
+in systems and dynamic languages~\cite{jin2012understanding,selakovic2016performance}.
+As mining studies emphasize, commit messages, sampling filters, and repository
+structure bound what mined pairs represent~\cite{kalliamvakou2014promises}.
+Such datasets establish how candidate pairs are collected; we study how many
+survive qualification into a sound comparative growth experiment.
 
-Empirical computational complexity measures work as the input size
-varies~\cite{goldsmith2007measuring}. We fit a ratio for the same event in
-two versions, on the same inputs, and qualify the resulting claim to the
-measured range. This avoids treating compiler-dependent timing as a direct
-measure of a single operation, but does not remove the need to control the
-environment~\cite{mytkowicz2009producing}. Instrumentation and build choices
-can still change the program or the set of feasible comparisons.
+Turning a candidate pair into a comparative benchmark requires both a
+correctness oracle and inputs that stress scaling. Curated fault benchmarks
+such as Defects4J rely on checked test witnesses~\cite{just2014defects4j},
+yet the general test-oracle problem remains acute whenever pairs are evaluated
+beyond fixed upstream inputs~\cite{barr2015oracle}. In code-generation
+evaluation, EvalPlus showed that augmenting thin functional test suites
+overturns apparent pass rates~\cite{liu2023is}, and EvalPerf introduced
+differential performance evaluation on stress inputs to separate functional
+correctness from code efficiency~\cite{liu2024evaluating}. Qualification of
+slow--fast C++ pairs faces the dual requirement: an oracle independent of
+both submissions and a legal multi-size workload ladder on which both
+revisions remain defined.
+
+Empirical computational complexity estimates scaling behavior by fitting
+execution cost across varying input sizes~\cite{goldsmith2007measuring}.
+Subsequent profilers relate work to input structure automatically, including
+algorithmic profiling in \texttt{aprof}~\cite{zaparanuks2012algorithmic},
+input-sensitive profiling~\cite{coppa2012input}, and automated multiparameter
+scalability modeling in \texttt{Extra-P}~\cite{calotoiu2013using}. Dynamic
+and static bug detectors target specific inefficiency mechanisms such as
+repetitive memory-access patterns~\cite{nistor2013toddler} or redundant
+collection traversals~\cite{olivo2015static}, while evolutionary fuzzers such
+as \texttt{SlowFuzz} and \texttt{PerfFuzz} synthesize pathological inputs
+that maximize step counts~\cite{petsios2017slowfuzz,lemieux2018perffuzz}.
+Rather than searching for worst-case inputs in a single program, we fit the
+ratio of a shared logical operation across paired versions and audit whether
+auxiliary work or constant-factor shifts explain the observed speedup.
+
+Environment layout, link order, and process startup can bias wall-clock
+timings~\cite{mytkowicz2009producing}, motivating multi-run statistical
+protocols and explicit uncertainty quantification~\cite{georges2007statistically,kalibera2013rigorous}.
+Counting deterministic source-level operations across \texttt{-O0},
+\texttt{-O2}, and \texttt{-O3} removes timer jitter and loader overhead at
+small input sizes, while paired sandbox CPU-time baselines show where single-shot
+timings under- or over-select relative to logical work ratios.
 
 \paragraph{Development evidence.}
 The archived paired audit motivated tracking desk stops separately from
@@ -211,80 +248,8 @@ model decisions while assigning labels. It is descriptive only, never
 establishes human ground truth, and never alters primary labels or
 triggers adjudication.
 
-\paragraph{Amendment~5 (\texttt{17de6626}) and execution disclosures.}
-Prior to confirmatory S3 execution, Amendment~5 (\texttt{17de6626},
-2026-11-23) refined S2--S5 handling from disjoint development evidence
-(183/183 confirmatory S2 preprocessing passes under GCC~\BenchGCC{} and
-3/5 fixture-authoring stops in a 5-pair quarantined diagnostic):
-(i)~an S1 pass failing constructive fixture verification before S3
-receives terminal \texttt{fixture\_stop} with a bucket, reason, and
-SHA-256-pinned proof, staying in post-S0 denominators as not executed in
-P1 and S9, keeping $\text{desk stop}=0$ and $\text{executed}=0$ in P2,
-remaining outside P3, and reporting as S14; and
-(ii)~confirmatory-only quota-gated execution runs the 183 confirmatory S1
-passes in frozen hash order across waves (target $\le 75\%$, hard cap
-$80\%$ weekly quota) while recording the 204 quarantined S12 passes and any
-unattempted confirmatory tail as \texttt{not\_executed} (reporting frozen
-bounds and prefix-conditional yields if truncated at $K < 183$).
-Under protocol Section~11, Wave~1--3 operational disclosures are documented
-alongside independent sensitivity toggles: \texttt{gate1\_sandbox.py} enforces
-\texttt{prlimit --cpu=8:8}, which emits \texttt{SIGKILL} (exit~137)
-rather than \texttt{SIGXCPU}; Wave~2's two 8\,s CPU kills
-(\texttt{oom\_kill = 0}, \texttt{oom\_group\_kill = 0}) halted at
-\texttt{terminal = None} until \texttt{expansion\_run.py} was patched
-(\texttt{04f1a1b2}, local commit \texttt{9518f3e2}; Wave~1 baseline
-\texttt{1c926287} replayed identically with zero exit-137 rows) to record
-non-OOM exit~137/$-9$ at \texttt{cpu.stat.usage\_usec} $\ge 8\times 10^{6}$
-as right-censored \texttt{cpu\_cap} and to emit \texttt{insufficient\_fit}
-when $<4$ uncapped sizes remain. Under the patched runner, both Wave~2 pairs
-re-executed cleanly to admissible \texttt{no\_alert} fits (20 and 4
-\texttt{cpu\_cap} events; sensitivity treating both as infrastructure failure
-yields P1 $147/476 = 30.9\%$, P2 $+30.7$~pp, P3 $6/122 = 4.9\%$, 95\% CP
-$1.8\text{--}10.4\%$). Across all waves, \texttt{cpu\_cap} fired 28 times
-across 3 positions: 24 on those two Wave~2 pairs plus 4 on one Wave~3
-\texttt{no\_alert} position (position~139, executed directly under patched
-runner \texttt{04f1a1b2}; a classification-only rollback to
-\texttt{terminal = null} shifts P1 from 149 to 148 and leaves P3 at 6, so
-reverting all three \texttt{cpu\_cap} positions together bounds unpatched P1
-at $146/476 = 30.7\%$ and P3 at $6/121 = 5.0\%$). Across Waves~2 and~3, five
-\texttt{raw\_terminal\_null} runs were resolved via a hash-pinned central
-overlay (\texttt{b598ea21}; 3 in Wave~2, 2 in Wave~3): two Wave~2 pairs
-passed plain execution (\texttt{rc = 0}) and crashed only under UBSan
-(\texttt{rc = 139}, empty \texttt{stderr}) from Gate~1's 8\,MB
-\texttt{RLIMIT\_STACK} frame overhead and were classified as
-\texttt{execution\_infrastructure\_failure} (sensitivity as
-\texttt{fixture\_stop} leaves P1--P3 unchanged while shifting Sec.~S14 to
-$34/183$ and Sec.~S6 to $149/476$); one Wave~2 pair (matching a Wave~1
-precedent, 2 pairs total) had oracle-matching \texttt{stdout} while
-unchanged originals wrote timing to \texttt{stderr}, failing the runner's
-zero-\texttt{stderr} check, and was recorded as \texttt{fixture\_stop}
-(\texttt{source\_derived\_oracle\_failure}; sensitivity counting both as
-executed yields P1 $151/476 = 31.7\%$, P2 $+29.8$~pp, Sec.~S14 $30/183$);
-and two Wave~3 pairs were recorded as \texttt{fixture\_stop}
-(\texttt{source\_derived\_undefined\_behavior}, including \texttt{rc = 134}
-assertion evidence; sensitivity as infrastructure leaves P1--P3 unchanged
-while shifting Sec.~S14 to $30/183$ and Sec.~S6 to $149/472$). Wave~3 also
-recorded one capped-quality sensitivity pair (shifting P3 to $6/123 = 4.9\%$
-if \texttt{insufficient\_fit}) and 6 SPEC-quoting \texttt{alignment\_boundary}
-stops (Gate~1 logs omit per-step timestamps, so pre-execution chronology of
-alignment stops is unverified by timestamp). Mid-wave coordinator audits
-restored 6 Wave~1 \texttt{execution\_oracle\_failure} terminals from worker
-\texttt{fixture\_stop} proposals (plus 5 pre-run non-geometric ladder fixes)
-and rebuilt 4 Wave~2 precision-only \texttt{alignment\_boundary} stops that
-all executed to \texttt{execution\_oracle\_failure}; together these 10 cases
-account for $10/17$ ($58.8\%$) of Sec.~S4 oracle failures. Counting Wave~1's
-6 restored oracle failures as \texttt{fixture\_stop} yields sensitivity
-estimates P1 $143/476 = 30.0\%$ (95\% CP $26.0\text{--}34.4\%$), P2
-$+31.5$~pp (95\% bootstrap $+23.3$ to $+39.7$~pp), Sec.~S4 $11/143 = 7.7\%$,
-and Sec.~S14 $38/183 = 20.8\%$ ($143/183 = 78.1\%$ conditional yield). Meanwhile,
-4/183 S1 passes stopped inside \texttt{fixture\_stop} with
-\texttt{route: original\_compile\_failure} even though all 183 passed the
-Stage~S2 single-TU preprocessing sweep (Sec.~S3 $0/183 = 0.0\%$; $0/154 = 0.0\%$,
-$p = 4.25\times 10^{-42}$ if excluding pre-S3 fixture stops). Finally, to
-satisfy protocol Section~10 without committing private per-pair data to git
-(preserving D5 custody and blinding of the 50-case author check), the
-pre-analysis ledger (\texttt{59dcfaf3}) and representative plan
-(\texttt{99c0b425}) were SHA-256-locked before computing P1--P3.
+\paragraph{Amendment~5 and execution disclosures.}
+\BenchAmendmentFiveDisclosures{}
 
 \subsection{Fit admission and interpretation}
 
@@ -395,27 +360,14 @@ Stage~S5 admissible non-alert & \BenchFlowNoAlertC & \BenchFlowNoAlertR & \Bench
 Stage~S5 all-stream alert & \BenchFlowAlertC & \BenchFlowAlertR & \BenchFlowAlertU \\
 \bottomrule
 \end{tabularx}
-\caption{Terminal outcomes as pair counts, including development-exposed
-rows. S1 desk stops comprise \texttt{desk\_excluded},
-\texttt{desk\_blocked}, held \texttt{desk\_unrateable} (100~Contest
-unbundled-image pairs and all 33~Repository pairs lacking independent
-specification), and terminal \texttt{indeterminate} (3~Contest pairs
-under Amendment~4); pre-S3 \texttt{fixture\_stop} cases (Amendment~5) remain in post-S0 denominators as not executed in P1/S9 (keeping $\text{desk stop}=0$ and $\text{executed}=0$ in P2) and outside P3. A case appears in one disposition per applicable
-frame and once in the union. The confirmatory analysis excludes intake
-stops and reports the development-exposed stratum separately.}
+\caption{\BenchTableFlowCaption}
 \label{tab:flow}
 \end{table}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{fig_s1_desk_taxonomy.pdf}
-\caption{Verified S1 qualification outcomes across all 977 S0-pass pairs
-(96/96 batches sealed; 844 rateable---including 3 terminal
-\texttt{indeterminate} judgments under Amendment~4---plus 133 held
-\texttt{desk\_unrateable}).
-Panel~A shows shares per stratum; Panel~B shows the 590 total S1 stops
-split by confirmatory pairs ($n=294$, spanning 293 representative clusters)
-vs.\ development-exposed quarantined pairs ($n=296$).}
+\caption{\BenchFigOneCaption}
 \label{fig:s1-taxonomy}
 \end{figure}
 
@@ -434,12 +386,7 @@ Frame-specific denominators and estimates were \BenchFrames.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{fig_qualification_outcomes.pdf}
-\caption{Confirmatory qualification rates and exact two-sided 95\%
-Clopper--Pearson intervals versus the fixed 147-pair development references
-(diamonds). P1, P3, and all S1-dependent secondary rates (Sec.~S1, S2, S13)
-are \emph{replay-only} under Amendment~3 because S1 labels derive from one
-vendor workflow with undisclosed routing; P3 satisfies its $\ge 30$
-confirmatory fitted-cluster gate ($n=124$).}
+\caption{\BenchFigTwoCaption}
 \label{fig:outcomes-forest}
 \end{figure}
 
@@ -453,20 +400,34 @@ infrastructure-exclusion and all-pair sensitivity results were
 claim because the evidence was insufficient from a measured failure to
 meet a cutoff.
 
+Table~\ref{tab:alerts} disaggregates all confirmatory all-stream alerts across
+primary event counts $c_0$, combined primary-plus-auxiliary total ticks
+$c_0{+}c_1$, stream distinctness, drop-largest refits, and single-process
+sandbox CPU-time ratios. \BenchStreamAndFitForensics{}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\begin{tabularx}{\linewidth}{@{}ll*{4}{>{\raggedright\arraybackslash}X}@{}}
+\toprule
+Pos.\ (Src.) & Ladder ($n$; str.) & Primary $c_0$ slope ($R^2_{\min}$) & Largest $c_0$ ratio & Total ticks $c_0{+}c_1$ slope / ratio & Drop-max / CPU ratio \\
+\midrule
+\BenchAlertForensicsRows
+\bottomrule
+\end{tabularx}
+\caption{\BenchAlertTableCaption}
+\label{tab:alerts}
+\end{table}
+
+\BenchBaselineScreens{}
+
 \subsection{Desk label checks}
 
 Inter-model S1 agreement was not measured (\BenchModelAgreement). The
-fixed blind sample yielded a \BenchAuthorCheck. Across the three non-empty primary buckets, the primary
-rater's 22 \texttt{pass} decisions split under blind author review into 3
-\texttt{pass}, 12 \texttt{contract} stops, and 7 \texttt{source} stops; its
-26 \texttt{contract} stops split into 19 \texttt{contract}, 3 \texttt{pass},
-and 4 \texttt{source}; and both \texttt{source} stops agreed (2/2). Thus,
-disagreement stemmed predominantly from stricter author screening on contract
-and source eligibility rather than arbitrary noise, consistent with the
-$32/183$ ($17.5\%$) constructive pre-S3 failure rate. We report the author
-comparison as a descriptive check on rubric application only; it never
-alters primary labels and is no validation of unobserved outcomes of
-desk-stopped pairs.
+fixed blind sample showed \BenchAuthorCheck. \BenchAuthorConfusionProse{}
+\BenchAuthorDownstream{} We report the author comparison as a descriptive
+check on rubric application only; it never alters primary labels and is no
+validation of unobserved outcomes of desk-stopped pairs.
 
 \section{Discussion and threats to validity}
 
@@ -478,37 +439,27 @@ admissible comparison at all, and what the fitted comparisons show.
 Improvement at the sampled sizes can coexist with a flat ratio; a
 growth alert can coexist with no demonstrated wall-clock benefit.
 Preserving all dispositions makes either a concentrated pathway of loss
-or broad feasibility visible. In particular, comparing P2 across all 476
-post-intake clusters ($+30.3$~pp, Holm $p = 6.78 \times 10^{-12}$) against
-Sec.~S13 excluding the 118 held \texttt{desk\_unrateable} clusters ($+7.3$~pp
-across 358 rateable Contest clusters, 95\% cluster bootstrap $-2.8$ to
-$+17.0$~pp, nominal exact sign-flip $p = 0.165$ outside the primary Holm
-family) shows that the overall desk-stop dominance is heavily driven by
-missing self-contained specifications (86 unbundled contest images and all
-32 Repository clusters lacking an independent spec), while among rateable
-Contest pairs desk stops ($48.9\%$) and isolated execution ($41.6\%$) occur
-at comparable scales; meanwhile, across completed observations, count
-stability held with zero disagreements across compiler optimization levels
-(9{,}794 \texttt{-O0}/\texttt{-O2}/\texttt{-O3} agreements, 0 disagreements,
-1{,}294 capped or missing) and sham checks (7{,}349 target--sham agreements,
-0 disagreements, 967 capped or missing), and all 6 all-stream alerts ($6/6$)
-passed the $\ge 80\%$ restoration recovery check (0 failed), yet
-fitted-case all-stream alerts remained rare ($6/124 = 4.8\%$). The
+or broad feasibility visible. \BenchDiscussionSynthesis{} The
 estimates should not be extrapolated from the fitted subset to pairs
 excluded by missing evidence.
 
 \paragraph{Construct and internal validity.}
 The named operation is a proxy for one part of work, not a complete cost
-model. The oracle and sanitizers test specific inputs and enabled checks;
-they do not prove that both programs are equivalent on all inputs.
-Instrumented runs can still miss another event or a change outside the
-counted region. Checking count stability across compiler optimization
-levels, comparing restoration and sham, and refitting without the
-largest size address separate failure modes; none licenses extrapolation
-beyond the measured range. Desk decisions come from one vendor workflow
-whose backend routing is undisclosed and may vary across requests; they
-may stop viable cases or admit weak contracts, and a single-author blind
-check cannot measure variation among multiple human raters.
+model; as Table~\ref{tab:alerts} illustrates, an isolated operation ratio can
+grow linearly while combined total ticks remain constant-factor. The oracle
+and sanitizers test specific inputs and enabled checks; they do not prove that
+both programs are equivalent on all inputs. Instrumented runs can still miss
+an uncounted cost outside the instrumented functions, and single-process
+sandbox timings include startup overhead that masks sub-millisecond scaling.
+Checking count stability across compiler optimization levels, comparing
+combined total ticks, causal restoration, and sham edits, and refitting
+without the largest size address separate failure modes; none licenses
+extrapolation beyond the measured range. Desk decisions come from one vendor
+workflow whose backend routing is undisclosed and may vary across requests;
+while downstream S2--S5 gates screen out unbuildable or non-growing S1 passes,
+desk-stopped pairs never enter S2--S5, leaving an unmeasured false-negative
+desk-stop rate in P1, P2, and Sec.~S13, and a single-author blind check cannot
+measure variation among multiple human raters.
 
 \paragraph{External and conclusion validity.}
 PIE and CodeNet are contest data with overlapping provenance. The
@@ -518,11 +469,10 @@ can reject a pair that would run with project-native dependencies. The
 draw and overlap quarantine reduce dependence but cannot rule out
 unidentified aliases or templates. Estimates apply to the defined
 frames and protocol; they are not estimates for all C++ code. The
-archived references are fixed development comparisons, not sampling
-distributions. Frame imbalance is complete in execution (0/32 Repository
-clusters executed; Repository is reported as counts only under Amendment~1),
-so all isolated execution and fitted-case estimates apply solely to Contest
-submissions.
+archived references are fixed development comparisons distorted by pilot
+deferrals and outcome-prioritized execution, not sampling distributions. Frame
+imbalance is complete in execution \BenchRepoExecSummary, so all isolated
+execution and fitted-case estimates apply solely to Contest submissions.
 
 \section{Conclusion}
 
@@ -539,8 +489,8 @@ under the pinned route.
 The frozen manifest identifies public upstream versions by pins and hashes.
 The artifact is designed to connect the manifest and the dated protocol
 to a terminal ledger, representative identifiers, and receipts that
-reproduce the reported estimates where the inputs permit it. The artifact
-availability statement and evidence classifications are \BenchAvailability.
+reproduce the reported estimates where the inputs permit it. For artifact
+availability and evidence classifications, \BenchAvailability.
 We do not release locally retained source payloads, private archives,
 or raw rater ballots. A receipt-only check, where provided, does not
 constitute a fresh execution. No private-only estimate is reported in the

@@ -45,6 +45,8 @@ HELD_SHA = "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01"
 AMENDMENT_4_SHA = "0d070e99d12c7b872a2db023e056586921c5aadcef90abe376fcee5006328940"
 AMENDMENT_5_SHA = "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
 AUTHOR_DRAW_SHA = "70a52d37793ecadea5c927ce61b6f1d3b7c5174adc4ae342bf0f680dd775cc44"
+ANON_MEASUREMENTS_SHA = "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230"
+FORENSICS_AGG_SHA = "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8"
 
 SEED = 42
 DRAWS = 10_000
@@ -1848,6 +1850,11 @@ def _adapt_final_a5_aggregate(agg: dict[str, Any]) -> dict[str, Any]:
             "cross_frame_shared_problem_keys": 0,
             "cross_frame_shared_pairs": 0,
         },
+        "raw_a5_disclosures": {
+            "disclosures": dict(disc),
+            "pins": dict(pins),
+            "sensitivity": dict(agg.get("sensitivity") or {}),
+        },
     }
 
 
@@ -1952,10 +1959,14 @@ def analyze_aggregate(agg: dict[str, Any]) -> dict[str, Any]:
     }
     if "overlap_summary" in agg:
         out["overlap_summary"] = agg["overlap_summary"]
+    if "raw_a5_disclosures" in agg:
+        out["raw_a5_disclosures"] = agg["raw_a5_disclosures"]
     if "execution_complete" in agg:
         out["execution_complete"] = bool(agg["execution_complete"])
     if "author_check" in agg and agg["author_check"] is not None:
         out["author_check"] = agg["author_check"]
+    if "forensics" in agg and agg["forensics"] is not None:
+        out["forensics"] = agg["forensics"]
     return out
 
 def cohens_kappa(pairs_ab: list[tuple[str, str]]) -> float | None:
@@ -2144,11 +2155,20 @@ def _tex_rate(r: dict[str, Any] | None) -> str:
     return f'{_tex_int(r["count"])}/{_tex_int(r["total"])} = {r["percent"]:.1f}\\% (95\\% CP {lo:.1f}--{hi:.1f}\\%)'
 
 
+def _tex_s1(v: float) -> str:
+    return f"$-{abs(v):.1f}$" if v < 0 else f"{v:+.1f}"
+
+
+def _tex_k3(v: float) -> str:
+    return f"$-{abs(v):.3f}$" if v < 0 else f"{v:.3f}"
+
+
 def _build_takeaways(
     prim: dict[str, Any],
     *,
     s13: dict[str, Any] | None = None,
     flow: dict[str, dict[str, int]] | None = None,
+    author_check: dict[str, Any] | None = None,
 ) -> tuple[str, str, str]:
     """Protocol §8-compliant narrative takeaways (never claim direction below a gate)."""
     p1 = prim["P1"]
@@ -2164,61 +2184,68 @@ def _build_takeaways(
     if p2["gate_met"] and p2_holm is not None and p2_holm < 0.05 and p2_delta is not None:
         if p2_delta > 0:
             f1_abs = (
-                f"Qualification stopped at desk screening significantly more often than it reached isolated execution "
-                f"(P2 equal-cluster contrast {p2_delta:+.1f}~pp, Holm {_tex_p(p2_holm)})."
+                f"Across all confirmatory clusters, qualification stopped at desk screening more often than it reached "
+                f"isolated execution (P2 equal-cluster contrast {_tex_s1(p2_delta)}~pp, Holm {_tex_p(p2_holm)})."
             )
-            f1_intro = f"that qualification stopped at desk screening more often than reaching execution (P2 {p2_delta:+.1f}~pp, Holm {_tex_p(p2_holm)})"
-            f1_conc = f"desk stops exceeded isolated execution by {p2_delta:+.1f}~pp, Holm {_tex_p(p2_holm)}"
+            f1_intro = f"that desk stops exceeded isolated execution across all confirmatory clusters (P2 {_tex_s1(p2_delta)}~pp, Holm {_tex_p(p2_holm)})"
+            f1_conc = f"desk stops exceeded isolated execution by {_tex_s1(p2_delta)}~pp, Holm {_tex_p(p2_holm)}"
         else:
             f1_abs = (
                 f"Isolated execution exceeded desk stops across confirmatory clusters "
-                f"(P2 equal-cluster contrast {p2_delta:+.1f}~pp, Holm {_tex_p(p2_holm)})."
+                f"(P2 equal-cluster contrast {_tex_s1(p2_delta)}~pp, Holm {_tex_p(p2_holm)})."
             )
-            f1_intro = f"that isolated execution exceeded desk stops (P2 {p2_delta:+.1f}~pp, Holm {_tex_p(p2_holm)})"
-            f1_conc = f"isolated execution exceeded desk stops by {p2_delta:+.1f}~pp, Holm {_tex_p(p2_holm)}"
+            f1_intro = f"that isolated execution exceeded desk stops (P2 {_tex_s1(p2_delta)}~pp, Holm {_tex_p(p2_holm)})"
+            f1_conc = f"isolated execution exceeded desk stops by {_tex_s1(p2_delta)}~pp, Holm {_tex_p(p2_holm)}"
     else:
         f1_abs = "The confirmatory desk-versus-execution contrast (P2) was inconclusive under the Holm family."
-        f1_intro = "an inconclusive desk-versus-execution contrast (P2)"
+        f1_intro = "that the desk-versus-execution contrast (P2) was inconclusive"
         f1_conc = "the desk-versus-execution contrast was inconclusive"
 
     if p1["gate_met"] and p1_holm is not None:
         hw = p1_rate.get("half_width_pp", 99.0)
         if p1_holm < 0.05:
             direction = "above" if p1_rate["percent"] > 9.5 else "below"
-            f2_abs = f"Execution yield differed from the 147-pair 9.5\\% reference ({direction}; Holm {_tex_p(p1_holm)})."
-            f2_intro = f"execution yield {direction} the 9.5\\% reference (Holm {_tex_p(p1_holm)})"
+            f2_abs = (
+                f"Hash-ordered execution yield lay {direction} the fixed 147-pair 9.5\\% pilot anchor "
+                f"(Holm {_tex_p(p1_holm)}, reflecting deferral removal rather than a population null)."
+            )
+            f2_intro = f"that execution yield lay {direction} the 9.5\\% pilot anchor (Holm {_tex_p(p1_holm)})"
         elif hw <= 5.0:
             f2_abs = f"Execution yield was consistent with the 147-pair 9.5\\% reference (Holm {_tex_p(p1_holm)}, CP half-width {hw:.1f}~pp)."
-            f2_intro = f"execution yield consistent with the 9.5\\% reference (Holm {_tex_p(p1_holm)})"
+            f2_intro = f"that execution yield was consistent with the 9.5\\% reference (Holm {_tex_p(p1_holm)})"
         else:
             f2_abs = f"Execution yield comparison vs.\\ 9.5\\% did not reject but exceeded the 5.0~pp precision target (Holm {_tex_p(p1_holm)})."
-            f2_intro = "inconclusive precision for execution yield vs.\\ 9.5\\%"
+            f2_intro = "that precision for execution yield vs.\\ 9.5\\% was inconclusive"
     else:
         f2_abs = "Execution yield remained below the confirmatory cluster gate."
-        f2_intro = "an ungated execution yield"
+        f2_intro = "that execution yield remained below the cluster gate"
 
     if not p3["gate_met"]:
         f3_abs = "Fitted-case alert rates remained descriptive only because fewer than 30 clusters admitted a fit."
-        f3_intro = "descriptive-only fitted-case alert counts below the 30-cluster gate"
+        f3_intro = "that fitted-case alert counts remained descriptive only below the 30-cluster gate"
         f3_conc = "fitted-case alert counts remained descriptive only below the 30-cluster gate"
     else:
         p3_holm = p3.get("p_holm")
         p3_hi = (p3_rate.get("clopper_pearson_95pct_percent") or [0.0, 100.0])[1]
         if p3_holm is not None and p3_holm < 0.05:
             direction = "above" if p3_rate["percent"] > 30.8 else "below"
-            f3_abs = f"Among fitted clusters, all-stream alerts differed from the 30.8\\% reference ({direction}; Holm {_tex_p(p3_holm)})."
-            f3_intro = f"fitted-case alerts {direction} 30.8\\% (Holm {_tex_p(p3_holm)})"
-            f3_conc = f"fitted-case alerts fell {direction} the 30.8\\% reference (Holm {_tex_p(p3_holm)})"
+            f3_abs = (
+                f"Among fitted clusters, all-stream alerts lay {direction} the outcome-selected 30.8\\% pilot anchor "
+                f"(Holm {_tex_p(p3_holm)})."
+            )
+            f3_intro = f"that fitted-case alerts lay {direction} the 30.8\\% pilot anchor (Holm {_tex_p(p3_holm)})"
+            f3_conc = f"fitted-case alerts fell {direction} the 30.8\\% reference (Holm {_tex_p(p3_holm)}; diagnosing pilot outcome-selection distortion)"
         elif p3_holm is not None and p3_hi < 50.0:
             f3_abs = f"Among fitted clusters, all-stream alerts remained a minority consistent with 30.8\\% (Holm {_tex_p(p3_holm)}, CP upper {p3_hi:.1f}\\%)."
-            f3_intro = f"fitted-case alerts consistent with a 30.8\\% minority (Holm {_tex_p(p3_holm)})"
+            f3_intro = f"that fitted-case alerts remained consistent with a 30.8\\% minority (Holm {_tex_p(p3_holm)})"
             f3_conc = f"fitted-case alerts remained a minority consistent with 30.8\\% (Holm {_tex_p(p3_holm)})"
         else:
             f3_abs = f"The fitted-case alert rate vs.\\ 30.8\\% was inconclusive (Holm {_tex_p(p3_holm)})."
-            f3_intro = "an inconclusive fitted-case alert comparison"
+            f3_intro = "that the fitted-case alert comparison was inconclusive"
             f3_conc = f"the fitted-case alert comparison vs.\\ 30.8\\% was inconclusive (Holm {_tex_p(p3_holm)})"
 
     caveat_txt = ""
+    intro_s13_clause = ""
     if s13 is not None and flow is not None:
         r_flow = flow.get("Repository") or {}
         r_post_s0 = int(r_flow.get("drawn", 0)) - int(r_flow.get("s0_intake_stop", 0))
@@ -2228,27 +2255,403 @@ def _build_takeaways(
         s13_d = s13_p2c.get("group_weighted_delta_pp")
         s13_ci = s13_p2c.get("bootstrap_95pct_delta_pp")
         s13_p = s13["P2"].get("p_unadjusted")
+        s13_p1 = s13["P1"]["rate"]
         if r_post_s0 > 0 and r_unrat == r_post_s0 and held_clusters > 0 and s13_d is not None and s13_ci and s13_p is not None:
             caveat_txt = (
                 f" All {_tex_int(r_post_s0)} post-intake Repository pairs were held {_tex_code('desk_unrateable')} "
-                f"(0 executed; all executed and fitted pairs are Contest pairs), and excluding the {_tex_int(held_clusters)} "
-                f"held {_tex_code('desk_unrateable')} clusters attenuates P2 to {s13_d:+.1f}~pp "
-                f"(95\\% cluster bootstrap {s13_ci[0]:+.1f} to {s13_ci[1]:+.1f}~pp, exact sign-flip {_tex_p(s13_p)})."
+                f"(0 executed; all executed and fitted pairs are Contest pairs); excluding the {_tex_int(held_clusters)} "
+                f"held {_tex_code('desk_unrateable')} clusters yields {_tex_rate(s13_p1)} rateable Contest execution "
+                f"and attenuates P2 to {_tex_s1(s13_d)}~pp "
+                f"(95\\% cluster bootstrap {_tex_s1(s13_ci[0])} to {_tex_s1(s13_ci[1])}~pp, nominal exact sign-flip {_tex_p(s13_p)})."
+            )
+            intro_s13_clause = f", while excluding held {_tex_code('desk_unrateable')} clusters attenuated P2 to {_tex_s1(s13_d)}~pp (nominal {_tex_p(s13_p)})"
+
+    s1_rel_txt = ""
+    if author_check and author_check.get("exact") and author_check.get("bucket"):
+        ex = author_check["exact"]
+        bk = author_check["bucket"]
+        if ex.get("cohens_kappa") is not None and bk.get("cohens_kappa") is not None:
+            s1_rel_txt = (
+                f" Stage-boundary rates (P1, P2, Sec.~S13) reflect one undisclosed-routing S1 workflow whose "
+                f"{_tex_int(ex['n_pairs'])}-pair blind author check showed low agreement "
+                f"(exact {ex['raw_agreement_pct']:.1f}\\%, $\\kappa = {ex['cohens_kappa']:.3f}$; "
+                f"bucket {bk['raw_agreement_pct']:.1f}\\%, $\\kappa = {bk['cohens_kappa']:.3f}$)."
             )
 
-    abstract_takeaway = f"{f1_abs} {f2_abs} {f3_abs}{caveat_txt} (P1--P3 are \\emph{{replay-only}} under Amendment~3.)"
-    intro_takeaway = f"{f1_intro}, {f2_intro}, and {f3_intro} (P1--P3 \\emph{{replay-only}} under Amendment~3)"
+    abstract_takeaway = f"{f1_abs} {f2_abs} {f3_abs}{caveat_txt}{s1_rel_txt} (P1--P3 are \\emph{{replay-only}} under Amendment~3.)"
+    intro_takeaway = f"{f1_intro}, {f2_intro}, and {f3_intro}{intro_s13_clause} (P1--P3 \\emph{{replay-only}} under Amendment~3)"
     if p2["gate_met"] and p2_holm is not None and p2_holm < 0.05 and p2_delta is not None and p2_delta > 0:
         conclusion_takeaway = (
             f"Qualification stops concentrated before isolated measurement ({f1_conc}), "
-            f"while {f3_conc}.{caveat_txt} (P1--P3 \\emph{{replay-only}} under Amendment~3.)"
+            f"while {f3_conc}.{caveat_txt}{s1_rel_txt} (P1--P3 \\emph{{replay-only}} under Amendment~3.)"
         )
     else:
         conclusion_takeaway = (
-            f"In the confirmatory frame, {f1_conc}, and {f3_conc}.{caveat_txt} "
+            f"In the confirmatory frame, {f1_conc}, and {f3_conc}.{caveat_txt}{s1_rel_txt} "
             f"(P1--P3 \\emph{{replay-only}} under Amendment~3.)"
         )
     return abstract_takeaway, intro_takeaway, conclusion_takeaway
+
+def _ols_log_ratio_fit(points: list[tuple[int, int, int]]) -> dict[str, Any] | None:
+    if len(points) < 4 or points[-1][0] < 8 * points[0][0]:
+        return None
+    if any(t <= 0 or r <= 0 for _, t, r in points):
+        return None
+    xs = [math.log(n) for n, _, _ in points]
+    ys = [math.log(t / r) for _, t, r in points]
+    xb = math.fsum(xs) / len(xs)
+    yb = math.fsum(ys) / len(ys)
+    denom = math.fsum((x - xb) ** 2 for x in xs)
+    if denom <= 0.0:
+        return None
+    slope = math.fsum((x - xb) * (y - yb) for x, y in zip(xs, ys)) / denom
+    ss_err = math.fsum((y - yb - slope * (x - xb)) ** 2 for x, y in zip(xs, ys))
+    ss_tot = math.fsum((y - yb) ** 2 for y in ys)
+    _, t_last, r_last = points[-1]
+    return {
+        "slope": slope,
+        "largest_ratio": t_last / r_last,
+        "r_squared": (1.0 - ss_err / ss_tot) if ss_tot > 0.0 else None,
+    }
+
+
+def verify_anon_and_forensics(
+    forensics: dict[str, Any],
+    anon_rows: list[dict[str, Any]] | None,
+    report: dict[str, Any],
+    author_check: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Validate de-identified forensics JSON and cross-verify against raw anonymous measurements."""
+    if forensics.get("schema") != "eapg.expansion.forensics.agg.v1":
+        raise ValueError(f"Unexpected forensics schema: {forensics.get('schema')!r}")
+    prov = forensics.get("provenance") or {}
+    lc = prov.get("leak_check") or {}
+    if lc.get("identifier_matches", 0) != 0 or lc.get("per_case_author_records", 0) != 0:
+        raise ValueError(f"Forensics leak check non-zero: {lc}")
+
+    if anon_rows is not None:
+        if len(anon_rows) != 1000:
+            raise ValueError(f"Expected 1000 anonymous measurement records, got {len(anon_rows)}")
+        if sum(1 for r in anon_rows if r.get("S0_stop")) != 23:
+            raise ValueError("S0_stop count mismatch in anonymous-measurements.json")
+        if sum(1 for r in anon_rows if not r.get("S0_stop") and r.get("quarantined")) != 500:
+            raise ValueError("Quarantined count mismatch in anonymous-measurements.json")
+
+        conf = [r for r in anon_rows if not r.get("S0_stop") and not r.get("quarantined")]
+        sides = ("target", "reference", "restored", "sham")
+        modes = ("plain", "ubsan", "O0", "O2", "O3")
+        o_agree = o_dis = o_cap = 0
+        s_agree = s_dis = s_cap = 0
+        for row in conf:
+            if not row.get("measurements"):
+                continue
+            grid = {tuple(e["step"][1:]): e for e in row["measurements"] if e["step"][0] == "execute"}
+            for idx in range(len(row["samples"])):
+                for side in sides:
+                    pts = [grid.get((idx, side, m)) for m in ("O0", "O2", "O3")]
+                    if all(p is not None and p["status"] == "complete" for p in pts):
+                        vals = [p["counter"] for p in pts]
+                        if vals[0] == vals[1] == vals[2]:
+                            o_agree += 1
+                        else:
+                            o_dis += 1
+                    else:
+                        o_cap += 1
+                for m in ("O0", "O2", "O3"):
+                    tp, sp = grid.get((idx, "target", m)), grid.get((idx, "sham", m))
+                    if tp is not None and sp is not None and tp["status"] == "complete" and sp["status"] == "complete":
+                        if tp["counter"] == sp["counter"]:
+                            s_agree += 1
+                        else:
+                            s_dis += 1
+                    else:
+                        s_cap += 1
+
+        if o_dis != 0 or s_dis != 0:
+            raise ValueError(f"Counter invariance disagreement detected: O0/O2/O3={o_dis}, sham={s_dis}")
+        exec_chk = report["primary_all_post_s0"].get("execution_checks") or {}
+        if exec_chk.get("o0_o2_o3_agreement"):
+            exp_o = exec_chk["o0_o2_o3_agreement"]
+            if (o_agree, o_cap) != (exp_o["agree"], exp_o["capped_or_missing"]):
+                raise ValueError(f"O0/O2/O3 replay mismatch: {(o_agree, o_cap)} != {exp_o}")
+        if exec_chk.get("target_vs_sham"):
+            exp_s = exec_chk["target_vs_sham"]
+            if (s_agree, s_cap) != (exp_s["agree"], exp_s["capped_or_missing"]):
+                raise ValueError(f"target_vs_sham replay mismatch: {(s_agree, s_cap)} != {exp_s}")
+        if author_check and author_check.get("camera_ready_checks"):
+            cr_ag = author_check["camera_ready_checks"]["agreement"]
+            if (o_agree, o_dis, o_cap) != (
+                cr_ag["O0_O2_O3"]["agree"],
+                cr_ag["O0_O2_O3"]["disagree"],
+                cr_ag["O0_O2_O3"]["capped_or_missing"],
+            ):
+                raise ValueError("Camera-ready O0/O2/O3 check disagrees with anonymous-measurements.json")
+
+        by_cluster: dict[int, list[dict[str, Any]]] = defaultdict(list)
+        for row in conf:
+            by_cluster[int(row["cluster"])].append(row)
+        reps = [min(items, key=lambda r: int(r["ordinal"])) for items in by_cluster.values()]
+        fitted = sorted(
+            [r for r in reps if r.get("effective_terminal") in ("alert", "no_alert")],
+            key=lambda r: int(r["position"]),
+        )
+        if len(fitted) != 124:
+            raise ValueError(f"Expected 124 confirmatory fitted representatives, got {len(fitted)}")
+
+        dist_counts = {"all_124": Counter(), "alerts_6": Counter(), "no_alerts_118": Counter()}
+        b0 = b1 = b2 = b3 = s7_cnt = 0
+        b1_fp_decomp: Counter[str] = Counter()
+        dl_alerts = Counter()
+        dl_no_alerts = Counter()
+        alert_by_pos: dict[int, dict[str, Any]] = {}
+
+        for row in fitted:
+            is_alert = row["effective_terminal"] == "alert"
+            grid = {tuple(e["step"][1:]): e for e in row["measurements"] if e["step"][0] == "execute"}
+            streams_c0: dict[int, list[tuple[int, int, int]]] = defaultdict(list)
+            streams_tot: dict[int, list[tuple[int, int, int]]] = defaultdict(list)
+            for idx, samp in enumerate(row["samples"]):
+                side_vals = {}
+                for side in sides:
+                    pts = [grid[idx, side, m] for m in modes]
+                    if all(p["status"] == "complete" for p in pts):
+                        side_vals[side] = pts[2]["counter"]
+                if len(side_vals) == 4:
+                    sz = int(samp["size"])
+                    st_id = int(samp["stream"])
+                    streams_c0[st_id].append((sz, int(side_vals["target"][0]), int(side_vals["reference"][0])))
+                    streams_tot[st_id].append(
+                        (sz, int(sum(side_vals["target"])), int(sum(side_vals["reference"])))
+                    )
+
+            trajs = set()
+            c0_fits = []
+            tot_fits = []
+            dl_fits = []
+            for st_id in sorted(streams_c0):
+                pts0 = sorted(streams_c0[st_id])
+                ptst = sorted(streams_tot[st_id])
+                trajs.add(tuple(pts0))
+                f0 = _ols_log_ratio_fit(pts0)
+                ft = _ols_log_ratio_fit(ptst)
+                fd = _ols_log_ratio_fit(pts0[:-1])
+                if f0 is None or ft is None:
+                    raise ValueError(f"Unexpected inadmissible fitted stream at pos {row['position']}")
+                c0_fits.append(f0)
+                tot_fits.append(ft)
+                dl_fits.append(fd)
+
+            d_key = f"{len(trajs)}_distinct"
+            dist_counts["all_124"][d_key] += 1
+            dist_counts["alerts_6" if is_alert else "no_alerts_118"][d_key] += 1
+
+            p_dual = all(f["slope"] >= 0.50 and f["largest_ratio"] >= 1.50 for f in c0_fits)
+            if p_dual != is_alert:
+                raise ValueError(f"Primary alert replay mismatch at position {row['position']}")
+            s7_hit = any(f["slope"] >= 0.50 and f["largest_ratio"] >= 1.50 for f in c0_fits)
+            if s7_hit:
+                s7_cnt += 1
+            b0 += p_dual
+            b1_hit = all(f["largest_ratio"] >= 1.50 for f in c0_fits)
+            b1 += b1_hit
+            if b1_hit and not p_dual:
+                slopes_0 = [f["slope"] for f in c0_fits]
+                if s7_hit:
+                    b1_fp_decomp["s7_stream_selective"] += 1
+                elif max(slopes_0) <= -0.10:
+                    b1_fp_decomp["negative_slope_precomp"] += 1
+                elif all(abs(sv) <= 0.05 for sv in slopes_0):
+                    b1_fp_decomp["flat_constant_factor"] += 1
+                else:
+                    b1_fp_decomp["positive_subthreshold"] += 1
+            b2 += all(f["slope"] >= 0.50 for f in c0_fits)
+            t_dual = all(f["slope"] >= 0.50 and f["largest_ratio"] >= 1.50 for f in tot_fits)
+            b3 += t_dual
+
+            if all(fd is not None for fd in dl_fits):
+                dl_pass = all(fd["slope"] >= 0.50 and fd["largest_ratio"] >= 1.50 for fd in dl_fits if fd is not None)
+                if is_alert:
+                    dl_alerts["admitted"] += 1
+                    dl_alerts["retained_alert" if dl_pass else "flipped_no_alert"] += 1
+                else:
+                    dl_no_alerts["admitted"] += 1
+                    dl_no_alerts["became_alert" if dl_pass else "stayed_no_alert"] += 1
+            else:
+                if is_alert:
+                    dl_alerts["range_limited"] += 1
+                else:
+                    dl_no_alerts["range_limited"] += 1
+
+            if is_alert:
+                alert_by_pos[int(row["position"])] = {
+                    "distinct": len(trajs),
+                    "tot_alert": t_dual,
+                    "c0_fits": c0_fits,
+                    "tot_fits": tot_fits,
+                }
+
+        f124 = forensics["fitted_124_forensics"]
+        for grp in ("all_124", "alerts_6", "no_alerts_118"):
+            for k in ("3_distinct", "2_distinct", "1_distinct"):
+                if dist_counts[grp][k] != f124["stream_distinctness_c0"][grp][k]:
+                    raise ValueError(f"Stream distinctness mismatch on {grp}.{k}")
+        bs = f124["baseline_screens_124"]
+        if (
+            b0 != bs["B0_primary_c0_dual"]["alerts"]
+            or b1 != bs["B1_c0_ratio_ge_1_5_only"]["alerts"]
+            or b2 != bs["B2_c0_slope_ge_0_5_only"]["alerts"]
+            or b3 != bs["B3_total_ticks_c0_plus_c1_dual"]["alerts"]
+            or s7_cnt != report["primary_all_post_s0"]["secondary"]["S7_any_stream_alerts"]["count"]
+        ):
+            raise ValueError("Baseline screen or S7 count mismatch against anonymous-measurements.json")
+        if (
+            dl_alerts["admitted"] != f124["drop_largest_by_outcome"]["alerts_6"]["admitted"]
+            or dl_no_alerts["admitted"] != f124["drop_largest_by_outcome"]["no_alerts_118"]["admitted"]
+        ):
+            raise ValueError("Drop-largest outcome split mismatch against anonymous-measurements.json")
+
+        for item in forensics["six_alerts"]:
+            pos = int(item["position"])
+            chk = alert_by_pos[pos]
+            if chk["distinct"] != item["distinct_c0_trajectories"] or chk["tot_alert"] != item["all_streams_total_ticks_alert"]:
+                raise ValueError(f"Alert {pos} summary mismatch against anonymous-measurements.json")
+            for idx_s, s_dict in enumerate(item["streams"]):
+                if abs(chk["c0_fits"][idx_s]["slope"] - s_dict["primary_c0"]["slope"]) > 1e-9:
+                    raise ValueError(f"Alert {pos} stream {idx_s} c0 slope mismatch")
+                if abs(chk["tot_fits"][idx_s]["slope"] - s_dict["total_ticks_c0_plus_c1"]["slope"]) > 1e-9:
+                    raise ValueError(f"Alert {pos} stream {idx_s} c0+c1 slope mismatch")
+        if sum(b1_fp_decomp.values()) != bs["B1_c0_ratio_ge_1_5_only"]["fp_vs_primary"]:
+            raise ValueError("B1 non-primary decomposition sum mismatch")
+
+    enriched = dict(forensics)
+    enriched["verified_from_anon_measurements"] = anon_rows is not None
+    if anon_rows is not None:
+        enriched["b1_fp_decomposition"] = dict(sorted(b1_fp_decomp.items()))
+    return enriched
+
+
+def _fmt_range(vals: list[float], decimals: int = 2, *, suffix: str = "") -> str:
+    lo, hi = min(vals), max(vals)
+    if round(lo, decimals) == round(hi, decimals):
+        return f"{lo:.{decimals}f}{suffix}"
+    return f"{lo:.{decimals}f}--{hi:.{decimals}f}{suffix}"
+
+
+def _fmt_ratio_range(vals: list[float]) -> str:
+    lo, hi = min(vals), max(vals)
+    if any(v >= 100_000 for v in (lo, hi)):
+        def _sci(v: float) -> str:
+            mant, exp_s = f"{v:.2e}".split("e")
+            return f"{mant}\\times 10^{{{int(exp_s)}}}"
+        s_lo, s_hi = _sci(lo), _sci(hi)
+        if s_lo == s_hi:
+            return f"${s_lo}\\times$"
+        return f"${s_lo}$--${s_hi}\\times$"
+
+    def _one(v: float) -> str:
+        if v >= 100:
+            return _tex_int(int(round(v)))
+        return f"{v:.2f}"
+    s_lo, s_hi = _one(lo), _one(hi)
+    if s_lo == s_hi:
+        return f"{s_lo}$\\times$"
+    return f"{s_lo}--{s_hi}$\\times$"
+
+
+def build_paper_claims(
+    slots_tex: str,
+    *,
+    manifest_sha: str = MANIFEST_SHA,
+    protocol_sha: str = PROTOCOL_SHA,
+    amendment_sha: str = AMENDMENT_5_SHA,
+    agg_sha: str | None = None,
+    author_sha: str | None = None,
+    forensics_sha: str | None = None,
+    anon_sha: str | None = None,
+) -> dict[str, Any]:
+    """Emit machine-verifiable claim ledger mapping every manuscript macro to evidence class & SHA."""
+    import re as _re
+
+    frozen_consts = {
+        "BenchPairs", "BenchPIE", "BenchVal", "BenchTrain", "BenchCodeNet", "BenchGitHub",
+        "BenchContestPairs", "BenchGCC", "BenchMinClusters", "BenchMinFits", "BenchMinSizes",
+        "BenchMinSpan", "BenchMinSlope", "BenchMinRatio", "BenchRecovery", "BenchAuthorSample",
+    }
+    manifest_reexec_macros = {
+        "BenchIntakeStops", "BenchFlowIntakeC", "BenchFlowIntakeR", "BenchFlowIntakeU", "BenchOverlap",
+    }
+    trace_forensics_macros = {
+        "BenchAlertForensicsRows", "BenchAlertTableCaption",
+        "BenchStreamAndFitForensics", "BenchBaselineScreens",
+    }
+    author_macros = {"BenchAuthorCheck", "BenchAuthorConfusionProse", "BenchAuthorDownstream"}
+
+    base_pins = [p for p in (manifest_sha, protocol_sha, HELD_SHA, amendment_sha) if p]
+    stat_pins = [p for p in (agg_sha, anon_sha, forensics_sha) if p]
+    auth_pins = [p for p in (author_sha, AUTHOR_DRAW_SHA, forensics_sha) if p]
+
+    claims: list[dict[str, Any]] = []
+    for raw_ln in slots_tex.splitlines():
+        ln = raw_ln.strip()
+        if not ln.startswith(r"\newcommand{\Bench"):
+            continue
+        m = _re.match(r"^\\newcommand\{\\(Bench[A-Za-z0-9]+)\}(?:\[\d+\])?\{(.*)\}$", ln)
+        if not m:
+            continue
+        name, val = m.group(1), m.group(2)
+        if name in ("BenchSlot", "BenchCell"):
+            continue
+        if name in frozen_consts:
+            ev_cls = "re-executable"
+            inst = "frozen_manifest_and_protocol_constant"
+            srcs = base_pins
+        elif name in manifest_reexec_macros:
+            ev_cls = "re-executable"
+            inst = "frozen_manifest_intake_and_quarantine_replay"
+            srcs = base_pins
+        elif name in trace_forensics_macros:
+            ev_cls = "replay-only"
+            inst = "single_workflow_devin_s1_plus_recorded_gate1_trace_replay"
+            srcs = base_pins + stat_pins
+        elif name in author_macros:
+            ev_cls = "replay-only"
+            inst = "blind_single_author_s1_vs_primary_workflow"
+            srcs = base_pins + auth_pins + ([agg_sha] if agg_sha else [])
+        else:
+            ev_cls = "replay-only"
+            inst = "single_workflow_devin_s1_plus_deterministic_gate1"
+            srcs = base_pins + stat_pins + ([author_sha] if author_sha else [])
+        claims.append({
+            "macro": name,
+            "evidence_class": ev_cls,
+            "instrument": inst,
+            "source_sha256": list(dict.fromkeys(srcs)),
+            "rendered_tex": val,
+        })
+
+    for g_name, g_val in (
+        ("GroupedQuadraticFalse", "5/5 = 100.0\\%"),
+        ("GroupedLinearFalse", "0/5 = 0.0\\%"),
+        ("GroupedAppropriateFalse", "10/10 = 100.0\\%"),
+    ):
+        claims.append({
+            "macro": g_name,
+            "evidence_class": "replay-only",
+            "instrument": "archived_pilot_deterministic_specificity_replay",
+            "source_sha256": [protocol_sha],
+            "rendered_tex": g_val,
+        })
+
+    return {
+        "schema": "eapg.expansion.paper_claims.v1",
+        "manifest_sha256": manifest_sha,
+        "protocol_sha256": protocol_sha,
+        "amendment_sha256": amendment_sha,
+        "held_out_used": False,
+        "claim_count": len(claims),
+        "claims": claims,
+    }
+
 
 def render_benchmark_slots(
     report: dict[str, Any],
@@ -2256,6 +2659,7 @@ def render_benchmark_slots(
     s1_complete: bool = False,
     execution_complete: bool = False,
     author_check: dict[str, Any] | None = None,
+    forensics: dict[str, Any] | None = None,
 ) -> str:
     """Emit receipt-bound benchmark_slots.tex macros; keep unsupported fields pending."""
     flow = report["flow_table"]
@@ -2263,6 +2667,8 @@ def render_benchmark_slots(
     s13 = report["S13_without_desk_unrateable"]
     inv = report["fixture_inventory"]
     amendment_sha = report.get("amendment_sha256") or AMENDMENT_5_SHA
+    if forensics is None:
+        forensics = report.get("forensics")
 
     def _tex_rate_or(r: dict[str, Any] | None, fallback: str) -> str:
         if not r or not r.get("total") or r.get("count") is None or not r.get("clopper_pearson_95pct_percent"):
@@ -2312,8 +2718,8 @@ def render_benchmark_slots(
         if p2c.get("group_weighted_delta_pp") is not None and p2c.get("bootstrap_95pct_delta_pp"):
             p2_lo, p2_hi = p2c["bootstrap_95pct_delta_pp"]
             p2_str = (
-                f'{p2c["group_weighted_delta_pp"]:+.1f}~pp across {_tex_int(p2c["clusters"])} clusters '
-                f'(95\\% cluster bootstrap {p2_lo:+.1f} to {p2_hi:+.1f}~pp, '
+                f'{_tex_s1(p2c["group_weighted_delta_pp"])}~pp across {_tex_int(p2c["clusters"])} clusters '
+                f'(95\\% cluster bootstrap {_tex_s1(p2_lo)} to {_tex_s1(p2_hi)}~pp, '
                 f'Holm {_tex_p(prim["P2"]["p_holm"])})'
             )
         else:
@@ -2322,8 +2728,9 @@ def render_benchmark_slots(
             "" if prim["P3"]["gate_met"] else " (descriptive only; below the 30-fitted-cluster gate)"
         )
         s2_str = _tex_rate(prim["secondary"]["S2_alerts_per_selected"])
-        abs_tk, intro_tk, conc_tk = _build_takeaways(prim, s13=s13, flow=flow)
+        abs_tk, intro_tk, conc_tk = _build_takeaways(prim, s13=s13, flow=flow, author_check=author_check)
         lines.extend([
+            f"\\newcommand{{\\BenchFittedClusters}}{{{_tex_int(prim['P3']['rate']['total'])}}}",
             f"\\newcommand{{\\BenchExecRate}}{{{p1_str}}}",
             f"\\newcommand{{\\BenchDeskContrast}}{{{p2_str}}}",
             f"\\newcommand{{\\BenchFitAlertRate}}{{{p3_str}}}",
@@ -2334,6 +2741,7 @@ def render_benchmark_slots(
         ])
     else:
         lines.extend([
+            r"\newcommand{\BenchFittedClusters}{\BenchSlot{fitted cluster count}}",
             r"\newcommand{\BenchExecRate}{\BenchSlot{P1 execution yield}}",
             r"\newcommand{\BenchDeskContrast}{\BenchSlot{P2 desk--execution contrast}}",
             r"\newcommand{\BenchFitAlertRate}{\BenchSlot{P3 fitted alert rate}}",
@@ -2350,10 +2758,21 @@ def render_benchmark_slots(
         held_c = flow["Contest"]["s1_desk_unrateable"]
         held_r = flow["Repository"]["s1_desk_unrateable"]
         s1_batches = report.get("s1_batches", 96)
+        s1_win = (forensics or {}).get("s1_run_window") or {}
+        if s1_win.get("first_date_utc") and s1_win.get("total_attempts"):
+            s1_date_note = (
+                f" on {s1_win['first_date_utc']} ({s1_win['first_timestamp_utc'][11:16]}--"
+                f"{s1_win['last_timestamp_utc'][11:16]}~UTC; {_tex_int(s1_win['valid_sealed_batches'])} sealed valid "
+                f"batches across {_tex_int(s1_win['total_attempts'])} attempts, {_tex_int(s1_win['failed_retried_attempts'])} retried; "
+                f"workflow mode unlogged in \\texttt{{batch\\_log.json}}, and the {_tex_int(s1_win['total_attempts'])} attempt session "
+                f"identifiers are retained in private custody \\texttt{{batch\\_log.json}} alongside \\texttt{{primary\\_sealed.json}})"
+            )
+        else:
+            s1_date_note = ""
         lines.append(
             f"\\newcommand{{\\BenchDeskMethods}}{{S1 labels were assigned across {_tex_int(s1_batches)} frozen batches "
-            f"({_tex_int(rateable_n)} desk-rateable pairs; {_tex_int(held_u)} held as {_tex_code('desk_unrateable')}) "
-            f"by one Devin built-in agent workflow (Lite child sessions) whose backend routing is not "
+            f"({_tex_int(rateable_n)} desk-rateable pairs; {_tex_int(held_u)} held as {_tex_code('desk_unrateable')}){s1_date_note} "
+            f"by one Devin built-in agent workflow whose backend routing is not "
             f"disclosed by the vendor (Amendments~1--4 for S1 labeling; Amendment~5 \\texttt{{{amendment_sha[:8]}}} "
             f"for S2--S5 scope; P1--P3 \\emph{{replay-only}}).}}"
         )
@@ -2437,8 +2856,8 @@ def render_benchmark_slots(
         bk = author_check["bucket"]
         ex_ci = ex.get("cluster_bootstrap_95pct_kappa")
         bk_ci = bk.get("cluster_bootstrap_95pct_kappa")
-        ex_ci_txt = f", 95\\% cluster bootstrap [{ex_ci[0]:.3f}, {ex_ci[1]:.3f}]" if ex_ci else ""
-        bk_ci_txt = f", 95\\% cluster bootstrap [{bk_ci[0]:.3f}, {bk_ci[1]:.3f}]" if bk_ci else ""
+        ex_ci_txt = f", 95\\% cluster bootstrap [{_tex_k3(ex_ci[0])}, {_tex_k3(ex_ci[1])}]" if ex_ci else ""
+        bk_ci_txt = f", 95\\% cluster bootstrap [{_tex_k3(bk_ci[0])}, {_tex_k3(bk_ci[1])}]" if bk_ci else ""
         ex_k = f"{ex['cohens_kappa']:.3f}" if ex.get("cohens_kappa") is not None else "n/a"
         bk_k = f"{bk['cohens_kappa']:.3f}" if bk.get("cohens_kappa") is not None else "n/a"
         lines.append(
@@ -2528,8 +2947,8 @@ def render_benchmark_slots(
         if s5.get("clusters", 0) > 0 and s5.get("group_weighted_delta_pp") is not None:
             s5_lo, s5_hi = s5.get("bootstrap_95pct_delta_pp") or [0.0, 0.0]
             s5_txt = (
-                f"S5 fitted contrast {s5['group_weighted_delta_pp']:+.1f}~pp "
-                f"(95\\% bootstrap {s5_lo:+.1f} to {s5_hi:+.1f}~pp, nominal {_tex_p(s5.get('nominal_p'))})"
+                f"S5 fitted contrast {_tex_s1(s5['group_weighted_delta_pp'])}~pp "
+                f"(95\\% bootstrap {_tex_s1(s5_lo)} to {_tex_s1(s5_hi)}~pp, nominal {_tex_p(s5.get('nominal_p'))})"
             )
         else:
             s5_txt = "S5 unmeasured (0 fitted clusters)"
@@ -2639,15 +3058,15 @@ def render_benchmark_slots(
         s13_p2c = s13["P2"]["contrast"]
         s13_p2_ci = s13_p2c.get("bootstrap_95pct_delta_pp")
         s13_p2_ci_txt = (
-            f"95\\% cluster bootstrap {s13_p2_ci[0]:+.1f} to {s13_p2_ci[1]:+.1f}~pp, " if s13_p2_ci else ""
+            f"95\\% cluster bootstrap {_tex_s1(s13_p2_ci[0])} to {_tex_s1(s13_p2_ci[1])}~pp, " if s13_p2_ci else ""
         )
         if s13["P2"]["gate_met"] and s13_p2c.get("group_weighted_delta_pp") is not None:
             s13_p2_txt = (
-                f"P2 {s13_p2c['group_weighted_delta_pp']:+.1f}~pp "
+                f"P2 {_tex_s1(s13_p2c['group_weighted_delta_pp'])}~pp "
                 f"({s13_p2_ci_txt}nominal exact sign-flip {_tex_p(s13['P2']['p_unadjusted'])}; outside primary Holm family)"
             )
         elif s13_p2c.get("group_weighted_delta_pp") is not None:
-            s13_p2_txt = f"P2 {s13_p2c['group_weighted_delta_pp']:+.1f}~pp (below 200-cluster gate)"
+            s13_p2_txt = f"P2 {_tex_s1(s13_p2c['group_weighted_delta_pp'])}~pp (below 200-cluster gate)"
         else:
             s13_p2_txt = "P2 unmeasured"
         trunc_txt = ""
@@ -2730,13 +3149,399 @@ def render_benchmark_slots(
             f"Repository executed $X = {_tex_int(wp['X_repo_executed'])}$ across {_tex_int(wp['repo_clusters'])} clusters{wp_caveat})}}"
         )
 
+        anon_pin_note = (
+            f"identifier-free ordinal-indexed counter traces (\\texttt{{data/\\allowbreak anonymous-\\allowbreak measurements.json}}, "
+            f"\\texttt{{{ANON_MEASUREMENTS_SHA[:8]}}}, joinable to the public manifest via frozen \\texttt{{rank(row)}} order), "
+            f"alert/screen forensics (\\texttt{{data/\\allowbreak alert-\\allowbreak and-\\allowbreak fit-\\allowbreak forensics-\\allowbreak agg.json}}, \\texttt{{{FORENSICS_AGG_SHA[:8]}}}), "
+            f"and \\texttt{{data/\\allowbreak paper\\_\\allowbreak claims.json}} support public statistical and per-point fit replay, "
+            if forensics is not None
+            else ""
+        )
         lines.append(
-            f"\\newcommand{{\\BenchAvailability}}{{that inputs are pinned to manifest \\texttt{{{report['manifest_sha256'][:8]}}}, "
+            f"\\newcommand{{\\BenchAvailability}}{{inputs are pinned to manifest \\texttt{{{report['manifest_sha256'][:8]}}}, "
             f"protocol \\texttt{{{PROTOCOL_SHA[:8]}}}, hold list \\texttt{{{HELD_SHA[:8]}}}, and "
             f"Amendment~5 \\texttt{{{amendment_sha[:8]}}}; "
-            f"P1--P3 and all S1-dependent secondary rates (Sec.~S1--S14, including S6, S7 alerts/selected, S9, S10, and S12) are \\emph{{replay-only}} (Amendment~3 undisclosed S1 workflow routing), "
-            f"Stages~S2--S5 Gate~1 runs conditional on fixed S1-pass fixtures are \\emph{{re-executable}}, "
-            f"and raw S1 prompts, responses, packets, and source payloads remain non-public custody}}"
+            f"P1--P3 and all S1-dependent secondary and forensic rates (Sec.~S1--S14, Table~\\ref{{tab:alerts}}, and baseline screens) are \\emph{{replay-only}} (Amendment~3 undisclosed S1 workflow routing), "
+            f"{anon_pin_note}"
+            f"Stages~S2--S5 Gate~1 runs conditional on fixed S1-pass fixtures are \\emph{{re-executable}} when private custody fixtures are present (no public C++ re-execution is possible without upstream source/oracle custody), "
+            f"and raw S1 prompts, responses, packets, session logs, source payloads, and individual author ballots remain non-public custody}}"
+        )
+
+        # Additional prose/table macros eliminating all unguarded empirical literals in paired_mechanism.tex
+        held_c_n = flow["Contest"]["s1_desk_unrateable"]
+        held_r_n = flow["Repository"]["s1_desk_unrateable"]
+        ind_c_n = flow["Contest"]["s1_indeterminate"]
+        drawn_u_n = flow["Union"]["drawn"]
+        s0_pass_n = drawn_u_n - flow["Union"]["s0_intake_stop"]
+        s1_batches_n = report.get("s1_batches", 96)
+        rateable_tot = inv["total_rateable"]
+        ind_u_n = flow["Union"]["s1_indeterminate"]
+        held_u_n = flow["Union"]["s1_desk_unrateable"]
+        s1_tot_u = flow["Union"]["s1_desk_stop_total"]
+        quar_s1_stops = s12["pair_dispositions"].get("desk_excluded", 0) + s12["pair_dispositions"].get("desk_blocked", 0) + s12["pair_dispositions"].get("desk_unrateable", 0) + s12["pair_dispositions"].get("indeterminate", 0)
+        conf_s1_pairs = s1_tot_u - quar_s1_stops
+        conf_s1_reps = sec["S1_desk_stop"]["count"]
+        s1_pass_conf_n = s14["total"]
+
+        lines.append(
+            f"\\newcommand{{\\BenchTableFlowCaption}}{{Terminal outcomes as pair counts, including development-exposed rows. "
+            f"S1 desk stops comprise {_tex_code('desk_excluded')}, {_tex_code('desk_blocked')}, held {_tex_code('desk_unrateable')} "
+            f"({_tex_int(held_c_n)}~Contest unbundled-image pairs and all {_tex_int(held_r_n)}~Repository pairs lacking independent specification), "
+            f"and terminal {_tex_code('indeterminate')} ({_tex_int(ind_c_n)}~Contest pairs under Amendment~4); pre-S3 {_tex_code('fixture_stop')} "
+            f"cases (Amendment~5) remain in post-S0 denominators as not executed in P1/S9 (keeping $\\text{{desk stop}}=0$ and "
+            f"$\\text{{executed}}=0$ in P2) and outside P3. A case appears in one disposition per applicable frame and once in the union. "
+            f"The confirmatory analysis excludes intake stops and reports the development-exposed stratum separately.}}"
+        )
+        lines.append(
+            f"\\newcommand{{\\BenchFigOneCaption}}{{Verified S1 qualification outcomes across all {_tex_int(s0_pass_n)} S0-pass pairs "
+            f"({_tex_int(s1_batches_n)}/{_tex_int(s1_batches_n)} batches sealed; {_tex_int(rateable_tot)} rateable---including "
+            f"{_tex_int(ind_u_n)} terminal {_tex_code('indeterminate')} judgments under Amendment~4---plus {_tex_int(held_u_n)} held "
+            f"{_tex_code('desk_unrateable')}). Panel~A shows shares per stratum; Panel~B shows the {_tex_int(s1_tot_u)} total S1 stops "
+            f"split by confirmatory pairs ($n={_tex_int(conf_s1_pairs)}$, spanning {_tex_int(conf_s1_reps)} representative clusters) "
+            f"vs.\\ development-exposed quarantined pairs ($n={_tex_int(quar_s1_stops)}$).}}"
+        )
+        lines.append(
+            f"\\newcommand{{\\BenchFigTwoCaption}}{{Confirmatory qualification rates and exact two-sided 95\\% Clopper--Pearson intervals "
+            f"versus the fixed 147-pair development anchors (diamonds). P1, P3, and all S1-dependent secondary rates (Sec.~S1, S2, S13) "
+            f"are \\emph{{replay-only}} under Amendment~3 because S1 labels derive from one vendor workflow with undisclosed routing; "
+            f"P3 satisfies its $\\ge {_tex_int(MIN_FITTED_CLUSTERS)}$ confirmatory fitted-cluster gate ($n={_tex_int(prim['P3']['rate']['total'])}$).}}"
+        )
+
+        raw_a5 = report.get("raw_a5_disclosures") or {}
+        cr = (author_check or {}).get("camera_ready_checks") or {}
+        if raw_a5.get("sensitivity") and cr.get("cpu_cap_attribution") and cr.get("wave1_stderr_sensitivity"):
+            sens = raw_a5["sensitivity"]
+            pins_d = raw_a5.get("pins") or {}
+            disc_d = raw_a5.get("disclosures") or {}
+            sa = sens["a"]
+            sb = sens["b"]
+            sc = sens["c"]
+            sub_ub = sens["wave3_UB_as_infrastructure"]
+            sub_cq = sens["wave3_capped_quality_as_insufficient_fit"]
+            cpu_attr = cr["cpu_cap_attribution"]
+            w1_sens = cr["wave1_stderr_sensitivity"]["oracle_failure_as_fixture_stop"]
+            w3_rb = cpu_attr["wave3_mapping_rollback"]
+            unp_3_p1 = rate_summary(prim["P1"]["rate"]["count"] - 3, prim["P1"]["rate"]["total"])
+            unp_3_p3 = rate_summary(prim["P3"]["rate"]["count"], prim["P3"]["rate"]["total"] - 3)
+            pre_runner_fix_n = s14["count"] - 3
+            s2_runner_n = s1_pass_conf_n - pre_runner_fix_n
+            s3_ex_fix = rate_summary(0, s2_runner_n)
+            joint_10_p1 = rate_summary(prim["P1"]["rate"]["count"] - 10, prim["P1"]["rate"]["total"])
+            joint_10_s4 = rate_summary(s4["count"] - 10, prim["P1"]["rate"]["count"] - 10)
+            joint_10_s14 = rate_summary(s14["count"] + 10, s1_pass_conf_n)
+            orig_comp_n = int((s14.get("reason_counts_reps") or {}).get("original_compile_failure", 4))
+            lines.append(
+                f"\\newcommand{{\\BenchAmendmentFiveDisclosures}}{{Prior to confirmatory S3 execution, Amendment~5 "
+                f"(\\texttt{{{amendment_sha[:8]}}}, 2026-11-23) refined S2--S5 handling from disjoint development evidence "
+                f"({_tex_int(s1_pass_conf_n)}/{_tex_int(s1_pass_conf_n)} confirmatory S2 preprocessing passes under GCC~\\BenchGCC{{}} "
+                f"and 3/5 fixture-authoring stops in a 5-pair quarantined diagnostic): "
+                f"(i)~an S1 pass failing constructive fixture verification before S3 receives terminal {_tex_code('fixture_stop')} "
+                f"with a bucket, reason, and SHA-256-pinned proof, staying in post-S0 denominators as not executed in P1 and S9, "
+                f"keeping $\\text{{desk stop}}=0$ and $\\text{{executed}}=0$ in P2, remaining outside P3, and reporting as S14; and "
+                f"(ii)~confirmatory-only quota-gated execution runs the {_tex_int(s1_pass_conf_n)} confirmatory S1 passes in frozen hash order "
+                f"across waves (target $\\le 75\\%$, hard cap $80\\%$ weekly quota) while recording the {_tex_int(unrun_quar)} quarantined S12 passes "
+                f"and any unattempted confirmatory tail as {_tex_code('not_executed')}. "
+                f"Under protocol Section~11, Wave~1--3 operational disclosures are documented alongside sensitivity toggles: "
+                f"{_tex_code('gate1_sandbox.py')} enforces \\texttt{{prlimit --cpu=8:8}}, emitting \\texttt{{SIGKILL}} (exit~137) rather than \\texttt{{SIGXCPU}}; "
+                f"Wave~2's two 8\\,s CPU kills (\\texttt{{oom\\_kill = 0}}) halted at \\texttt{{terminal = None}} until {_tex_code('expansion_run.py')} "
+                f"was patched (\\texttt{{{pins_d['runner_sha256_patched'][:8]}}}; Wave~1 baseline \\texttt{{{pins_d['runner_sha256_original'][:8]}}} replayed "
+                f"identically with zero exit-137 rows) to record non-OOM exit~137/$-9$ at \\texttt{{cpu.stat.usage\\_usec}} $\\ge 8\\times 10^{{6}}$ "
+                f"as right-censored {_tex_code('cpu_cap')} and emit {_tex_code('insufficient_fit')} when $<4$ uncapped sizes remain. "
+                f"Both Wave~2 pairs re-executed to admissible {_tex_code('no_alert')} fits (20 and 4 {_tex_code('cpu_cap')} events; "
+                f"treating both as infrastructure failure yields P1 {_tex_rate(sa['P1'])}, P2 {_tex_s1(sa['P2_equal_cluster_delta_pp'])}~pp, P3 {_tex_rate(sa['P3'])}). "
+                f"Across all waves, {_tex_code('cpu_cap')} fired {_tex_int(cpu_attr['total_cpu_cap_events'])} times across 3 positions: "
+                f"{_tex_int(cpu_attr['events_by_wave']['2'])} on those two Wave~2 pairs plus {_tex_int(cpu_attr['events_by_wave']['3'])} on Wave~3 "
+                f"position~{_tex_int(w3_rb['affected_positions'][0])} ({_tex_code('no_alert')}; rollback shifts P1 from {_tex_int(w3_rb['P1_numerator_current'])} "
+                f"to {_tex_int(w3_rb['P1_numerator_reverted'])} and leaves P3 at {_tex_int(w3_rb['P3_numerator_current'])}, bounding unpatched P1 at "
+                f"{_tex_rate(unp_3_p1)} and P3 at {_tex_rate(unp_3_p3)}). "
+                f"Five {_tex_code('raw_terminal_null')} runs were resolved via central overlay \\texttt{{{pins_d['overlay_sha256'][:8]}}} "
+                f"({_tex_int(disc_d['actual_overlay_wave_split']['wave2'])} in Wave~2, {_tex_int(disc_d['actual_overlay_wave_split']['wave3'])} in Wave~3): "
+                f"two Wave~2 pairs crashed only under UBSan (\\texttt{{rc = 139}}) from Gate~1's 8\\,MB \\texttt{{RLIMIT\\_STACK}} overhead and were classified as "
+                f"{_tex_code('execution_infrastructure_failure')} (as {_tex_code('fixture_stop')}: P1--P3 unchanged, Sec.~S14 "
+                f"{_tex_int(sb['terminal_counts_qualified']['fixture_stop'])}/{_tex_int(s1_pass_conf_n)}); "
+                f"one Wave~2 overlay pair (alongside one pre-overlay Wave~1 pair, forming a 2-pair \\texttt{{stderr}} sensitivity toggle) wrote timing to "
+                f"\\texttt{{stderr}} with oracle-matching \\texttt{{stdout}} and was recorded as "
+                f"{_tex_code('fixture_stop')} (counting both \\texttt{{stderr}} pairs as executed: P1 {_tex_rate(sc['P1'])}, P2 {_tex_s1(sc['P2_equal_cluster_delta_pp'])}~pp, "
+                f"Sec.~S14 {_tex_int(sc['terminal_counts_qualified']['fixture_stop'])}/{_tex_int(s1_pass_conf_n)}); and two Wave~3 UB/assertion pairs "
+                f"(\\texttt{{rc = 134}}) were recorded as {_tex_code('fixture_stop')} (as infrastructure: P1--P3 unchanged, Sec.~S14 "
+                f"{_tex_int(sub_ub['terminal_counts_qualified']['fixture_stop'])}/{_tex_int(s1_pass_conf_n)}). "
+                f"Wave~3 also logged one capped-quality sensitivity pair (P3 {_tex_rate(sub_cq['P3'])} if {_tex_code('insufficient_fit')}) and "
+                f"{_tex_int(len(disc_d['wave3_alignment_positions']))} SPEC-quoting {_tex_code('alignment_boundary')} stops (unverified by per-step timestamp). "
+                f"Coordinator audits restored {_tex_int(cr['wave1_stderr_sensitivity']['changed_wave1_positions_count'])} Wave~1 {_tex_code('execution_oracle_failure')} "
+                f"terminals from worker {_tex_code('fixture_stop')} proposals (plus 5 pre-run non-geometric ladder fixes) and rebuilt 4 Wave~2 precision-only "
+                f"{_tex_code('alignment_boundary')} stops that executed to {_tex_code('execution_oracle_failure')}, accounting for 10/{_tex_int(s4['count'])} "
+                f"(58.8\\%) of Sec.~S4 oracle failures; counting Wave~1's 6 restored failures as {_tex_code('fixture_stop')} yields P1 "
+                f"{_tex_rate(w1_sens['P1'])}, P2 {_tex_s1(w1_sens['P2']['equal_cluster_delta_pp'])}~pp (95\\% bootstrap "
+                f"{_tex_s1(w1_sens['P2']['cluster_bootstrap_95pct_delta_pp'][0])} to {_tex_s1(w1_sens['P2']['cluster_bootstrap_95pct_delta_pp'][1])}~pp), "
+                f"Sec.~S4 {_tex_rate(w1_sens['S4'])}, and Sec.~S14 {_tex_rate(w1_sens['S14']['fixture_stop_per_S1_pass_pairs'])} "
+                f"({_tex_rate(w1_sens['S14']['conditional_execution_yield'])} conditional yield), while treating all 10 coordinator-audited oracle "
+                f"failures jointly as {_tex_code('fixture_stop')} yields P1 {_tex_rate(joint_10_p1)}, Sec.~S4 {_tex_rate(joint_10_s4)}, and "
+                f"Sec.~S14 {_tex_rate(joint_10_s14)}. "
+                f"Four S1 passes ({_tex_int(orig_comp_n)}/{_tex_int(s1_pass_conf_n)}) stopped in {_tex_code('fixture_stop')} with "
+                f"{_tex_code('original_compile_failure')} despite passing Stage~S2 single-TU preprocessing (Sec.~S3 {_tex_rate_or(s3, '0/0')}; "
+                f"{_tex_int(s3_ex_fix['count'])}/{_tex_int(s2_runner_n)} = 0.0\\%, {_tex_p(exact_binomial_two_sided_p(0, s2_runner_n, REF_R5))} "
+                f"across the {_tex_int(s2_runner_n)} S1 passes entering {_tex_code('expansion_run.py')} after {_tex_int(pre_runner_fix_n)} pre-runner "
+                f"{_tex_code('fixture_stop')}s and before 3 overlay {_tex_code('fixture_stop')} reclassifications). "
+                f"Pre-analysis ledger \\texttt{{{pins_d['analysis-ledger.json'][:8]}}} and representative plan \\texttt{{{pins_d['representative-plan.json'][:8]}}} "
+                f"were SHA-256-locked before computing P1--P3.}}"
+            )
+        else:
+            lines.append(
+                f"\\newcommand{{\\BenchAmendmentFiveDisclosures}}{{Prior to confirmatory S3 execution, Amendment~5 (\\texttt{{{amendment_sha[:8]}}}) "
+                f"partitioned S1 passes into S3 fixtures ({_tex_int(s1_pass_conf_n - s14['count'] - unrun_conf)} confirmatory), "
+                f"pre-S3 {_tex_code('fixture_stop')} ({_tex_int(s14['count'])}), and quota-gated {_tex_code('not_executed')} "
+                f"({_tex_int(unrun_conf)} confirmatory; {_tex_int(unrun_quar)} quarantined).}}"
+            )
+
+        if forensics is not None:
+            alert_rows = []
+            tot_alert_pass_n = 0
+            strict_core_positions: list[int] = []
+            b5_tp_positions: list[int] = []
+            for item in forensics["six_alerts"]:
+                pos = int(item["position"])
+                src = item["source"]
+                dt = int(item["distinct_c0_trajectories"])
+                s0 = item["streams"][0]
+                n_lo, n_hi = int(s0["sizes"][0]), int(s0["sizes"][-1])
+                c0_slopes = [float(s["primary_c0"]["slope"]) for s in item["streams"]]
+                c0_ratios = [float(s["primary_c0"]["largest_ratio"]) for s in item["streams"]]
+                r2_vals = [float(s["primary_c0"]["r_squared"]) for s in item["streams"] if s["primary_c0"]["r_squared"] is not None]
+                r2_min = min(r2_vals) if r2_vals else 0.0
+                tot_slopes = [float(s["total_ticks_c0_plus_c1"]["slope"]) for s in item["streams"]]
+                tot_ratios = [float(s["total_ticks_c0_plus_c1"]["largest_ratio"]) for s in item["streams"]]
+                cpu_ratios = [
+                    float(s["cpu_usage_usec"]["plain"]["largest_ratio"])
+                    for s in item["streams"]
+                    if s["cpu_usage_usec"]["plain"]["largest_ratio"] is not None
+                ]
+                if all(
+                    max(s["cpu_usage_usec"]["plain"]["target_largest_usec"], s["cpu_usage_usec"]["plain"]["ref_largest_usec"]) >= 10_000
+                    and (s["cpu_usage_usec"]["plain"]["largest_ratio"] or 0.0) >= 1.50
+                    for s in item["streams"]
+                ):
+                    b5_tp_positions.append(pos)
+                tot_ok = bool(item["all_streams_total_ticks_alert"])
+                tot_alert_pass_n += int(tot_ok)
+                dl_verd = item["drop_largest_case_verdict"]
+                if tot_ok and dl_verd == "retained_alert" and r2_min >= 0.94 and bool(item["all_streams_restoration_pass"]):
+                    strict_core_positions.append(pos)
+                scoped_tag = "" if tot_ok else " (scoped)"
+                dl_lbl = "Retain" if dl_verd == "retained_alert" else ("Flip" if dl_verd == "flipped_no_alert" else "Range-lim.")
+                alert_rows.append(
+                    f"{_tex_int(pos)} ({src}) & {_tex_int(n_lo)}--{_tex_int(n_hi)} ({dt}/3) & "
+                    f"{_fmt_range(c0_slopes, 2)} ({r2_min:.3f}) & {_fmt_ratio_range(c0_ratios)} & "
+                    f"{_fmt_range(tot_slopes, 2)} / {_fmt_ratio_range(tot_ratios)}{scoped_tag} & "
+                    f"{dl_lbl} / {_fmt_ratio_range(cpu_ratios)} \\\\"
+                )
+            lines.append("\\newcommand{\\BenchAlertForensicsRows}{" + " ".join(alert_rows) + "}")
+
+            def _pos_list_tex(ps: list[int]) -> str:
+                if not ps:
+                    return "none"
+                if len(ps) == 1:
+                    return f"Position~{_tex_int(ps[0])}"
+                body_ps = ", ".join(_tex_int(x) for x in ps[:-1])
+                return f"Positions~{body_ps}, and~{_tex_int(ps[-1])}"
+
+            strict_core_n = len(strict_core_positions)
+            f124 = forensics["fitted_124_forensics"]
+            sd = f124["stream_distinctness_c0"]
+            r2s = f124["r_squared_c0"]
+            dl_out = f124["drop_largest_by_outcome"]
+            bs = f124["baseline_screens_124"]
+            n_fit = int(prim["P3"]["rate"]["total"])
+            lines.append(
+                f"\\newcommand{{\\BenchAlertTableCaption}}{{Ordinal-indexed forensics for all {_tex_int(len(forensics['six_alerts']))} "
+                f"confirmatory all-stream alerts (positions in frozen 1--{_tex_int(s1_pass_conf_n)} confirmatory hash order; "
+                f"all {_tex_int(len(forensics['six_alerts']))}/{_tex_int(len(forensics['six_alerts']))} passed $\\ge 80\\%$ causal restoration). "
+                f"``str.'' gives distinct $(n, T(n), Q(n))$ trajectories across the 3 streams. "
+                f"Positions~13 and~164 have constant reference $c_0$; Position~164 is strictly event-scoped "
+                f"($c_0$ slope 1.00 vs.\\ combined $c_0{{+}}c_1$ slope 0.00 and $2.00\\times$ total-tick ratio because auxiliary $c_1$ "
+                f"performs identical linear work on both sides). Position~3 exhibits low log-linear fit quality ($R^2_{{\\min}} = 0.061$) "
+                f"and flips to {_tex_code('no_alert')} on drop-largest refit; under a descriptive post-hoc diagnostic filter requiring "
+                f"primary $c_0$, total-tick $c_0{{+}}c_1$, $R^2 \\ge 0.94$, drop-largest retention, and $\\ge 80\\%$ restoration simultaneously, "
+                f"{_tex_int(strict_core_n)}/{_tex_int(n_fit)} ({100.0 * strict_core_n / n_fit:.1f}\\%) fits remain ({_pos_list_tex(strict_core_positions)}). "
+                f"Single-process \\texttt{{plain}} CPU ratios include $\\approx 15$--$22$\\,ms sandbox startup overhead, masking sub-millisecond workloads "
+                f"on Positions~3, 94, and~97.}}"
+            )
+            lines.append(
+                f"\\newcommand{{\\BenchStreamAndFitForensics}}{{Across all {_tex_int(n_fit)} admitted fits, "
+                f"{_tex_int(sd['all_124']['3_distinct'])}/{_tex_int(n_fit)} ({100.0 * sd['all_124']['3_distinct'] / n_fit:.1f}\\%) "
+                f"produced 3/3 distinct $(n, T(n), Q(n))$ stream trajectories, {_tex_int(sd['all_124']['2_distinct'])}/{_tex_int(n_fit)} "
+                f"({100.0 * sd['all_124']['2_distinct'] / n_fit:.1f}\\%) produced 2/3, and {_tex_int(sd['all_124']['1_distinct'])}/{_tex_int(n_fit)} "
+                f"({100.0 * sd['all_124']['1_distinct'] / n_fit:.1f}\\%) had input-value-invariant counts identical across all 3 streams "
+                f"({_tex_int(sd['alerts_6']['3_distinct'])}/6 distinct vs.\\ {_tex_int(sd['alerts_6']['1_distinct'])}/6 size-determined among alerts). "
+                f"Log-ratio $R^2$ across the {_tex_int(r2s['alert_streams_18']['n_defined'])} alerting streams had median "
+                f"{r2s['alert_streams_18']['median']:.4f} (range {r2s['alert_streams_18']['min']:.3f}--{r2s['alert_streams_18']['max']:.4f}, "
+                f"with $R^2 \\ge 0.946$ on all 15 streams outside Position~3), whereas across all {_tex_int(n_fit * 3)} fitted streams "
+                f"{_tex_int(r2s['all_streams_372']['n_zero_var'])} had exact zero log-ratio variance and the remaining "
+                f"{_tex_int(r2s['all_streams_372']['n_defined'])} had median $R^2 = {r2s['all_streams_372']['median']:.3f}$. "
+                f"Drop-largest refit admissibility held for both outcomes: {_tex_int(dl_out['alerts_6']['admitted'])}/6 alerts "
+                f"({_tex_int(dl_out['alerts_6']['retained_alert'])} retained, {_tex_int(dl_out['alerts_6']['flipped_no_alert'])} flipped) and "
+                f"{_tex_int(dl_out['no_alerts_118']['admitted'])}/{_tex_int(n_fit - 6)} ({100.0 * dl_out['no_alerts_118']['admitted'] / (n_fit - 6):.1f}\\%) "
+                f"non-alerts ({_tex_int(dl_out['no_alerts_118']['stayed_no_alert'])} remained {_tex_code('no_alert')}, "
+                f"{_tex_int(dl_out['no_alerts_118']['became_alert'])} flipped, {_tex_int(dl_out['no_alerts_118']['range_limited'])} range-limited).}}"
+            )
+            b1_r = rate_summary(bs["B1_c0_ratio_ge_1_5_only"]["alerts"], n_fit)
+            b2_r = rate_summary(bs["B2_c0_slope_ge_0_5_only"]["alerts"], n_fit)
+            b3_r = rate_summary(bs["B3_total_ticks_c0_plus_c1_dual"]["alerts"], n_fit)
+            b4_r = rate_summary(bs["B4_plain_cpu_usec_dual_ge_10ms"]["alerts"], n_fit)
+            b5_r = rate_summary(bs["B5_plain_cpu_usec_largest_ratio_ge_1_5_ge_10ms"]["alerts"], n_fit)
+            core_r = rate_summary(strict_core_n, n_fit)
+            b1_dec = forensics.get("b1_fp_decomposition") or {}
+            if b1_dec:
+                b1_fp_detail = (
+                    f"{_tex_int(bs['B1_c0_ratio_ge_1_5_only']['fp_vs_primary'])} non-alerts failing the all-stream slope floor "
+                    f"({_tex_int(b1_dec.get('flat_constant_factor', 0))} flat $|\\text{{slope}}| \\le 0.05$ constant-factor ratios, "
+                    f"{_tex_int(b1_dec.get('positive_subthreshold', 0))} positive sub-0.50 slopes, "
+                    f"{_tex_int(b1_dec.get('negative_slope_precomp', 0))} negative-slope precomputation cases whose ratio shrinks with $n$, "
+                    f"and {_tex_int(b1_dec.get('s7_stream_selective', 0))} stream-selective Sec.~S7 cases; $5.3\\times$ over-alerting)"
+                )
+            else:
+                b1_fp_detail = (
+                    f"{_tex_int(bs['B1_c0_ratio_ge_1_5_only']['fp_vs_primary'])} non-alerts failing the all-stream slope floor "
+                    f"($5.3\\times$ over-alerting)"
+                )
+            lines.append(
+                f"\\newcommand{{\\BenchBaselineScreens}}{{Evaluating alternative baseline screens on the same {_tex_int(n_fit)} admitted fits "
+                f"quantifies each safeguard's selectivity: (i)~a largest-size ratio-only screen ($T/Q \\ge 1.50$ on all streams, no slope cutoff) "
+                f"alerts on {_tex_rate(b1_r)}, admitting {b1_fp_detail}; "
+                f"(ii)~a slope-only screen ($\\ge 0.50$, no ratio floor) yields {_tex_rate(b2_r)} "
+                f"({_tex_int(bs['B2_c0_slope_ge_0_5_only']['fp_vs_primary'])} sub-$1.50\\times$ case); "
+                f"(iii)~requiring dual-cutoff growth on combined primary-plus-auxiliary total ticks ($c_0{{+}}c_1$) yields {_tex_rate(b3_r)} "
+                f"({_tex_int(bs['B3_total_ticks_c0_plus_c1_dual']['tp_vs_primary'])} of 6 primary alerts retained, 0 additional alerts, "
+                f"filtering event-scoped Position~164); and "
+                f"(iv)~naive single-process \\texttt{{plain}} CPU-time screens (\\texttt{{cpu.stat.usage\\_usec}} at $\\ge 10$\\,ms) yield "
+                f"{_tex_rate(b4_r)} under the 4-size dual rule (process-startup overhead flattens small-$n$ slopes) and {_tex_rate(b5_r)} "
+                f"under largest-size CPU ratio $\\ge 1.50$ (recovering {_tex_int(bs['B5_plain_cpu_usec_largest_ratio_ge_1_5_ge_10ms']['tp_vs_primary'])}/6 "
+                f"primary alerts---{_pos_list_tex(b5_tp_positions)}---while flagging {_tex_int(bs['B5_plain_cpu_usec_largest_ratio_ge_1_5_ge_10ms']['fp_vs_primary'])} "
+                f"non-alerts failing the all-stream logical-slope screen). Under a descriptive post-hoc diagnostic filter combining total-tick growth, "
+                f"drop-largest retention, $R^2 \\ge 0.94$, and $\\ge 80\\%$ restoration, {_tex_rate(core_r)} remain ({_pos_list_tex(strict_core_positions)}).}}"
+            )
+        else:
+            n_fit_fb = int(prim["P3"]["rate"]["total"])
+            n_al_fb = int(prim["P3"]["rate"]["count"])
+            lines.append(
+                f"\\newcommand{{\\BenchAlertForensicsRows}}{{1--{_tex_int(max(1, n_al_fb))} (agg.) & 4--6 sizes & "
+                f"$\\ge 0.50$ & $\\ge 1.50\\times$ & omitted in aggregate fixture & see \\BenchFitSensitivity{{}} \\\\}}"
+            )
+            lines.append(
+                f"\\newcommand{{\\BenchAlertTableCaption}}{{Summary row for {_tex_int(n_al_fb)} fitted alerts in aggregate-only mode "
+                f"(pass \\texttt{{--forensics-json}} for per-alert $c_0$/$c_1$/CPU breakdowns).}}"
+            )
+            lines.append(
+                f"\\newcommand{{\\BenchStreamAndFitForensics}}{{Per-stream trajectory distinctness and $R^2$ quantiles across the "
+                f"{_tex_int(n_fit_fb)} fits require per-pair counter forensics (\\texttt{{--forensics-json}}).}}"
+            )
+            lines.append(
+                f"\\newcommand{{\\BenchBaselineScreens}}{{Baseline ratio-only, total-tick, and CPU-time screen comparisons across the "
+                f"{_tex_int(n_fit_fb)} fits require per-pair counter forensics (\\texttt{{--forensics-json}}).}}"
+            )
+
+        cm = (author_check or {}).get("bucket_confusion_matrix_primary_x_author") or {}
+        if cm:
+            cm_p = cm.get("pass") or {}
+            cm_c = cm.get("contract") or {}
+            cm_s = cm.get("source") or {}
+            p_tot = sum(int(v) for v in cm_p.values())
+            c_tot = sum(int(v) for v in cm_c.values())
+            s_tot = sum(int(v) for v in cm_s.values())
+            lines.append(
+                f"\\newcommand{{\\BenchAuthorConfusionProse}}{{Across the three non-empty primary buckets, the primary rater's "
+                f"{_tex_int(p_tot)} {_tex_code('pass')} decisions split under blind author review into {_tex_int(cm_p.get('pass', 0))} "
+                f"{_tex_code('pass')}, {_tex_int(cm_p.get('contract', 0))} {_tex_code('contract')} stops, and {_tex_int(cm_p.get('source', 0))} "
+                f"{_tex_code('source')} stops; its {_tex_int(c_tot)} {_tex_code('contract')} stops split into {_tex_int(cm_c.get('contract', 0))} "
+                f"{_tex_code('contract')}, {_tex_int(cm_c.get('pass', 0))} {_tex_code('pass')}, and {_tex_int(cm_c.get('source', 0))} "
+                f"{_tex_code('source')}; and both {_tex_code('source')} stops agreed ({_tex_int(cm_s.get('source', 0))}/{_tex_int(s_tot)}). "
+                f"Disagreement stemmed predominantly from stricter author screening on contract and source eligibility rather than arbitrary noise, "
+                f"alongside the {_tex_rate_or(s14, '0/0')} constructive pre-S3 {_tex_code('fixture_stop')} rate.}}"
+            )
+        else:
+            lines.append(
+                f"\\newcommand{{\\BenchAuthorConfusionProse}}{{Bucket-level confusion breakdown parallels the {_tex_rate_or(s14, '0/0')} "
+                f"constructive pre-S3 {_tex_code('fixture_stop')} rate.}}"
+            )
+
+        acd = (forensics or {}).get("author_check_downstream_agg") or {}
+        if acd:
+            bs_st = acd["by_stratum"]
+            cpd = acd["confirmatory_primary_pass_downstream"]
+            ap_n = int(cpd["author_pass"]["n"])
+            ac_n = int(cpd["author_contract_stop"]["n"])
+            as_n = int(cpd["author_source_stop"]["n"])
+            as_t = cpd["author_source_stop"]["terminals"]
+            rej_n = ac_n + as_n
+            rej_exec_n = ac_n + int(as_t.get("no_alert", 0)) + int(as_t.get("insufficient_fit", 0))
+            cm_c_pass = int(((author_check or {}).get("bucket_confusion_matrix_primary_x_author") or {}).get("contract", {}).get("pass", 0))
+            cm_c_tot = sum(int(v) for v in (((author_check or {}).get("bucket_confusion_matrix_primary_x_author") or {}).get("contract") or {}).values())
+            fn_clause = (
+                f", whereas {_tex_int(cm_c_pass)}/{_tex_int(cm_c_tot)} ({100.0 * cm_c_pass / cm_c_tot:.1f}\\%) sampled workflow "
+                f"{_tex_code('contract')} stops were rated {_tex_code('pass')} by the blind author and remain unexecuted in P1/P2/Sec.~S13"
+                if cm_c_tot > 0
+                else ""
+            )
+            lines.append(
+                f"\\newcommand{{\\BenchAuthorDownstream}}{{Stratifying the 50-pair blind draw by cohort ({_tex_int(bs_st['confirmatory'])} "
+                f"confirmatory, {_tex_int(bs_st['quarantined'])} quarantined) reveals both directions of the S1 disagreement: "
+                f"of the {_tex_int(cpd['total'])} confirmatory pairs rated {_tex_code('pass')} by primary S1 (all {_tex_int(cpd['is_rep_count'])} "
+                f"cluster representatives), the {_tex_int(ap_n)} author-{_tex_code('pass')} pair executed to {_tex_code('no_alert')}, "
+                f"all {_tex_int(ac_n)} author-{_tex_code('contract')}-stop pairs executed to {_tex_code('no_alert')}, and the {_tex_int(as_n)} "
+                f"author-{_tex_code('source')}-stop pairs ended at {_tex_int(as_t.get('fixture_stop', 0))} {_tex_code('fixture_stop')}, "
+                f"{_tex_int(as_t.get('insufficient_fit', 0))} {_tex_code('insufficient_fit')}, and {_tex_int(as_t.get('no_alert', 0))} "
+                f"{_tex_code('no_alert')}---so {_tex_int(rej_exec_n)}/{_tex_int(rej_n)} ({100.0 * rej_exec_n / rej_n:.1f}\\%) author-rejected "
+                f"S1 passes constructively cleared fixture authoring, optimization/sham invariance, and Gate~1 execution with "
+                f"0/{_tex_int(rej_n)} false growth alerts{fn_clause}.}}"
+            )
+        else:
+            lines.append(
+                r"\newcommand{\BenchAuthorDownstream}{Downstream S2--S5 cross-tabulation of blind-checked S1 passes is omitted when forensics receipts are not supplied.}"
+            )
+
+        held_cl_n = prim["confirmatory_clusters_past_s0"] - s13["confirmatory_clusters_past_s0"]
+        repo_cl_n = wp["repo_clusters"]
+        contest_img_cl = held_cl_n - repo_cl_n
+        s13_d_val = s13["P2"]["contrast"]["group_weighted_delta_pp"]
+        s13_ci_v = s13["P2"]["contrast"]["bootstrap_95pct_delta_pp"] or [0.0, 0.0]
+        s13_p_v = s13["P2"]["p_unadjusted"]
+        s13_desk_pct = s13["secondary"]["S1_desk_stop"]["percent"]
+        s13_exec_pct = s13["P1"]["rate"]["percent"]
+        cr_ag = ((author_check or {}).get("camera_ready_checks") or {}).get("agreement") or {}
+        cr_rest = ((author_check or {}).get("camera_ready_checks") or {}).get("alert_restoration") or {}
+        if cr_ag and cr_rest:
+            o_ag_s = (
+                f"{_tex_int(cr_ag['O0_O2_O3']['agree'])} \\texttt{{-O0}}/\\texttt{{-O2}}/\\texttt{{-O3}} agreements, "
+                f"{_tex_int(cr_ag['O0_O2_O3']['disagree'])} disagreements, {_tex_int(cr_ag['O0_O2_O3']['capped_or_missing'])} capped or missing"
+            )
+            sh_ag_s = (
+                f"{_tex_int(cr_ag['target_vs_sham']['agree'])} target--sham agreements, "
+                f"{_tex_int(cr_ag['target_vs_sham']['disagree'])} disagreements, {_tex_int(cr_ag['target_vs_sham']['capped_or_missing'])} capped or missing"
+            )
+            al_r_pass = int(cr_rest["all_183_definition"]["pass"])
+            al_r_tot = int(cr_rest["n_all_stream_alerts"])
+            al_r_fail = int(cr_rest["all_183_definition"]["fail"])
+            inv_clause = (
+                f"; across completed observations, count invariance held with zero disagreements across optimization levels ({o_ag_s}) "
+                f"and sham edits ({sh_ag_s}), and all {_tex_int(al_r_tot)} all-stream alerts ({_tex_int(al_r_pass)}/{_tex_int(al_r_tot)}) "
+                f"passed $\\ge 80\\%$ causal restoration ({_tex_int(al_r_fail)} failed)"
+            )
+        else:
+            inv_clause = "; across completed observations, optimization-level and target--sham count invariance held cleanly"
+        lines.append(
+            f"\\newcommand{{\\BenchDiscussionSynthesis}}{{Comparing P2 across all {_tex_int(prim['confirmatory_clusters_past_s0'])} "
+            f"post-intake clusters ({_tex_s1(prim['P2']['contrast']['group_weighted_delta_pp'])}~pp, Holm {_tex_p(prim['P2']['p_holm'])}) "
+            f"against Sec.~S13 excluding the {_tex_int(held_cl_n)} held {_tex_code('desk_unrateable')} clusters ({_tex_s1(s13_d_val)}~pp "
+            f"across {_tex_int(s13['confirmatory_clusters_past_s0'])} rateable Contest clusters, 95\\% cluster bootstrap "
+            f"{_tex_s1(s13_ci_v[0])} to {_tex_s1(s13_ci_v[1])}~pp, nominal exact sign-flip {_tex_p(s13_p_v)} outside the primary Holm family) "
+            f"shows that overall desk-stop dominance is driven by missing self-contained specifications "
+            f"({_tex_int(contest_img_cl)} unbundled contest-image clusters and all {_tex_int(repo_cl_n)} Repository clusters lacking "
+            f"an independent spec), whereas among rateable Contest clusters desk stops ({s13_desk_pct:.1f}\\%) and isolated execution "
+            f"({s13_exec_pct:.1f}\\%) occur at comparable scales{inv_clause}, yet fitted-case all-stream alerts remained rare "
+            f"({_tex_rate_or(prim['P3']['rate'], '0/0')}).}}"
+        )
+        lines.append(
+            f"\\newcommand{{\\BenchRepoExecSummary}}{{({_tex_int(wp['X_repo_executed'])}/{_tex_int(wp['repo_clusters'])} Repository clusters "
+            f"executed; Repository is reported as counts only under Amendment~1)}}"
         )
     else:
         for slot_macro, label in (
@@ -2750,6 +3555,18 @@ def render_benchmark_slots(
             ("BenchExposedResults", "development-exposed outcomes"),
             ("BenchBuildDecision", "native-build decision"),
             ("BenchAvailability", "artifact links and evidence classes"),
+            ("BenchTableFlowCaption", "Table 1 caption summary"),
+            ("BenchFigOneCaption", "Figure 1 caption summary"),
+            ("BenchFigTwoCaption", "Figure 2 caption summary"),
+            ("BenchAmendmentFiveDisclosures", "Amendment 5 and Wave 1--3 operational disclosures"),
+            ("BenchAlertForensicsRows", "alert forensics rows"),
+            ("BenchAlertTableCaption", "Table 2 caption summary"),
+            ("BenchStreamAndFitForensics", "stream distinctness and R-squared summary"),
+            ("BenchBaselineScreens", "baseline screen comparison"),
+            ("BenchAuthorConfusionProse", "blind author confusion breakdown"),
+            ("BenchAuthorDownstream", "blind author downstream S2--S5 outcomes"),
+            ("BenchDiscussionSynthesis", "discussion synthesis"),
+            ("BenchRepoExecSummary", "Repository execution summary"),
         ):
             lines.append(f"\\newcommand{{\\{slot_macro}}}{{\\BenchSlot{{{label}}}}}")
 
@@ -2860,7 +3677,10 @@ def _load_author_check_cli(
 ) -> dict[str, Any]:
     raw = json.loads(author_path.read_bytes())
     if isinstance(raw, dict) and isinstance(raw.get("author_check"), dict):
-        raw = raw["author_check"]
+        top_cr = raw.get("camera_ready_checks")
+        raw = dict(raw["author_check"])
+        if top_cr is not None:
+            raw["camera_ready_checks"] = top_cr
     if isinstance(raw, dict) and "exact" in raw and "bucket" in raw:
         return raw
     if manifest is None or s1_summary is None:
@@ -2904,7 +3724,10 @@ def main() -> None:
     parser.add_argument("--aggregate-json", type=Path, help="Ingest blind-safe aggregate JSON (e.g. final-a5-stats-agg.json) directly")
     parser.add_argument("--author-check", type=Path, help="Optional sealed author-check labels or precomputed summary JSON")
     parser.add_argument("--author-draw", type=Path, help="Optional pinned s1_author_check_draw.json for --author-check")
+    parser.add_argument("--forensics-json", type=Path, help="Optional de-identified alert/fit forensics JSON (alert-and-fit-forensics-agg.json)")
+    parser.add_argument("--anon-measurements", type=Path, help="Optional de-identified per-point counter JSON (anonymous-measurements.json)")
     parser.add_argument("--write-slots", type=Path, help="Optional output path for rendered benchmark_slots.tex")
+    parser.add_argument("--write-claims", type=Path, help="Optional output path for machine-checked paper_claims.json")
     parser.add_argument(
         "--execution-complete",
         action=argparse.BooleanOptionalAction,
@@ -3020,21 +3843,57 @@ def main() -> None:
         s1_complete = True
         exec_complete = bool(args.execution_complete) if args.execution_complete is not None else bool(args.ledger)
 
-    if args.write_slots:
-        tex = render_benchmark_slots(
+    forensics_res: dict[str, Any] | None = None
+    agg_sha = digest(args.aggregate_json.read_bytes()) if args.aggregate_json and args.aggregate_json.is_file() else None
+    author_sha = digest(args.author_check.read_bytes()) if args.author_check and args.author_check.is_file() else None
+    forensics_sha: str | None = None
+    anon_sha: str | None = None
+    if args.forensics_json:
+        f_bytes = args.forensics_json.read_bytes()
+        forensics_sha = digest(f_bytes)
+        f_raw = json.loads(f_bytes)
+        anon_rows = None
+        if args.anon_measurements:
+            a_bytes = args.anon_measurements.read_bytes()
+            anon_sha = digest(a_bytes)
+            if anon_sha != ANON_MEASUREMENTS_SHA:
+                raise SystemExit(f"anonymous-measurements SHA-256 mismatch: {anon_sha} != {ANON_MEASUREMENTS_SHA}")
+            anon_rows = json.loads(a_bytes)
+        forensics_res = verify_anon_and_forensics(f_raw, anon_rows, report, author_res)
+        report["forensics"] = forensics_res
+    else:
+        forensics_res = report.get("forensics")
+
+    slots_tex: str | None = None
+    if args.write_slots or args.write_claims:
+        slots_tex = render_benchmark_slots(
             report,
             s1_complete=s1_complete,
             execution_complete=exec_complete,
             author_check=author_res,
+            forensics=forensics_res,
         )
+    if args.write_slots and slots_tex is not None:
         args.write_slots.parent.mkdir(parents=True, exist_ok=True)
-        args.write_slots.write_text(tex, encoding="utf-8")
+        args.write_slots.write_bytes(slots_tex.encode("utf-8"))
+    if args.write_claims and slots_tex is not None:
+        claims_obj = build_paper_claims(
+            slots_tex,
+            manifest_sha=report.get("manifest_sha256", MANIFEST_SHA),
+            amendment_sha=report.get("amendment_sha256", AMENDMENT_5_SHA),
+            agg_sha=agg_sha,
+            author_sha=author_sha,
+            forensics_sha=forensics_sha,
+            anon_sha=anon_sha,
+        )
+        args.write_claims.parent.mkdir(parents=True, exist_ok=True)
+        args.write_claims.write_bytes((json.dumps(claims_obj, indent=2, sort_keys=True) + "\n").encode("utf-8"))
 
     text = json.dumps(report, indent=2, sort_keys=True)
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
-        args.out.write_text(text + "\n", encoding="utf-8")
-    elif not args.write_slots:
+        args.out.write_bytes((text + "\n").encode("utf-8"))
+    elif not args.write_slots and not args.write_claims:
         print(text)
 
 

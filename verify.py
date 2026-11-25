@@ -1,4 +1,4 @@
-"""Stdlib-only integrity, leak-audit, and deterministic replay verifier."""
+"""Stdlib-only integrity, leak-audit, claims-ledger, literal-guard, and replay verifier."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ from tempfile import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parent
 LEAK_RE = re.compile(r"\b(?:p\d{5}|s\d{9})\b")
+BANNED_PROSE_RE = re.compile(r"\b(?:registered|asymptotic(?:ally)?)\b|github\.com/(?!evalplus\b)", re.IGNORECASE)
 
 
 def check_sha256sums() -> int:
@@ -45,10 +46,93 @@ def check_quarantine_and_leaks() -> None:
             raise ValueError(f"Unredacted ID found in {path.relative_to(ROOT)}: {hits[:5]}")
 
 
-def check_replay_and_macros() -> None:
+def verify_tex_literals_and_banned_terms(tex_raw: str) -> None:
+    """Reject any unguarded empirical digit or banned overclaim term in manuscript body."""
+    if r"\begin{document}" not in tex_raw or r"\end{document}" not in tex_raw:
+        raise ValueError("manuscript TeX missing \\begin{document} or \\end{document}")
+    body = tex_raw.split(r"\begin{document}", 1)[1].split(r"\end{document}", 1)[0]
+    body = re.sub(r"(?<!\\)%[^\n]*", "", body)
+    body = re.sub(r"\\(?:cite|label|ref|bibliographystyle|bibliography)\{[^}]*\}", "", body)
+    body = re.sub(r"\\includegraphics(?:\[[^\]]*\])?\{[^}]*\}", "", body)
+    body = re.sub(r"(?m)^\\begin\{tabularx\}\{[^\n]*$", "", body)
+
+    banned_hits = BANNED_PROSE_RE.findall(body)
+    if banned_hits:
+        raise ValueError(f"Banned overclaim or non-anonymous term in manuscript body: {banned_hits[:5]}")
+
+    cleaned = body
+    for pat in (
+        r"\\(?:Bench|Grouped)[A-Za-z0-9]+",
+        r"\bDefects4J\b",
+        r"Gate~1",
+        r"Amendments?~[1-5](?:--[1-5])?",
+        r"Section~1[01]",
+        r"Stage~S[0-5]",
+        r"\bS(?:1[0-4]|[0-9])\b",
+        r"\bP[1-3]\b",
+        r"-O[023]",
+        r"\bc_[01]\b",
+        r"R\^2",
+        r"95\\%",
+        r"\b0\.05\b",
+    ):
+        cleaned = re.sub(pat, "", cleaned)
+
+    stray_digits = re.findall(r"\d+(?:[.,]\d+)?", cleaned)
+    if stray_digits:
+        raise ValueError(f"Unguarded numeric literal(s) in paired_mechanism.tex: {stray_digits[:10]}")
+
+
+def verify_paper_claims(claims: dict, slots_src: str, grouped_src: str, tex_src: str) -> int:
+    if claims.get("schema") != "eapg.expansion.paper_claims.v1":
+        raise ValueError(f"Invalid paper_claims.json schema: {claims.get('schema')!r}")
+    if claims.get("held_out_used") is not False:
+        raise ValueError("paper_claims.json must assert held_out_used=false")
+
+    entries = claims.get("claims")
+    if not isinstance(entries, list) or not entries or len(entries) != claims.get("claim_count"):
+        raise ValueError("paper_claims.json claim_count mismatch")
+
+    slot_defs = {
+        m.group(1): m.group(2)
+        for ln in slots_src.splitlines()
+        if (m := re.match(r"^\\newcommand\{\\(Bench[A-Za-z0-9]+)\}(?:\[\d+\])?\{(.*)\}$", ln.strip()))
+        and m.group(1) not in ("BenchSlot", "BenchCell")
+    }
+    grouped_defs = {
+        m.group(1): m.group(2)
+        for ln in grouped_src.splitlines()
+        if (m := re.match(r"^\\newcommand\{\\(Grouped[A-Za-z0-9]+)\}\{(.+)\}$", ln.strip()))
+    }
+    tex_clean = re.sub(r"(?<!\\)%[^\n]*", "", tex_src)
+    used_grouped = set(re.findall(r"\\(Grouped[A-Za-z0-9]+)", tex_clean))
+    expected_macros = set(slot_defs) | used_grouped
+
+    by_macro = {c["macro"]: c for c in entries}
+    if len(by_macro) != len(entries) or set(by_macro) != expected_macros:
+        missing = sorted(expected_macros - set(by_macro))
+        extra = sorted(set(by_macro) - expected_macros)
+        raise ValueError(f"paper_claims.json macro coverage mismatch: missing={missing}, extra={extra}")
+
+    for macro, item in by_macro.items():
+        if item.get("evidence_class") not in ("re-executable", "replay-only"):
+            raise ValueError(f"Disallowed or private-only evidence_class on {macro}: {item.get('evidence_class')!r}")
+        if not isinstance(item.get("instrument"), str) or not item["instrument"].strip():
+            raise ValueError(f"Missing instrument on {macro}")
+        srcs = item.get("source_sha256")
+        if not isinstance(srcs, list) or not srcs or not all(isinstance(s, str) and re.fullmatch(r"[0-9a-f]{64}", s) for s in srcs):
+            raise ValueError(f"Invalid source_sha256 list on {macro}")
+        exp_val = slot_defs[macro] if macro in slot_defs else grouped_defs[macro]
+        if item.get("rendered_tex") != exp_val:
+            raise ValueError(f"paper_claims.json rendered_tex mismatch on {macro}")
+    return len(entries)
+
+
+def check_replay_and_macros() -> int:
     with TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
         tmp_slots = tmp_dir / "benchmark_slots.tex"
+        tmp_claims = tmp_dir / "paper_claims.json"
         tmp_receipt = tmp_dir / "final_receipt.json"
         subprocess.run(
             [
@@ -59,8 +143,14 @@ def check_replay_and_macros() -> None:
                 str(ROOT / "data/final-a5-stats-agg.json"),
                 "--author-check",
                 str(ROOT / "data/author-check-50-agg.json"),
+                "--forensics-json",
+                str(ROOT / "data/alert-and-fit-forensics-agg.json"),
+                "--anon-measurements",
+                str(ROOT / "data/anonymous-measurements.json"),
                 "--write-slots",
                 str(tmp_slots),
+                "--write-claims",
+                str(tmp_claims),
                 "--out",
                 str(tmp_receipt),
             ],
@@ -71,13 +161,18 @@ def check_replay_and_macros() -> None:
         if got_slots != exp_slots:
             raise ValueError("Replayed benchmark_slots.tex differs from manuscript/benchmark_slots.tex")
 
+        got_claims = json.loads(tmp_claims.read_bytes())
+        exp_claims = json.loads((ROOT / "data/paper_claims.json").read_bytes())
+        if got_claims != exp_claims:
+            raise ValueError("Replayed paper_claims.json differs from data/paper_claims.json")
+
         got_receipt = json.loads(tmp_receipt.read_bytes())
         exp_receipt = json.loads((ROOT / "data/final_receipt.json").read_bytes())
         if got_receipt != exp_receipt:
             raise ValueError("Replayed final_receipt.json differs from data/final_receipt.json")
 
-    tex_src = (ROOT / "manuscript/paired_mechanism.tex").read_text(encoding="utf-8")
-    tex_src = re.sub(r"(?<!\\)%[^\n]*", "", tex_src)
+    tex_raw = (ROOT / "manuscript/paired_mechanism.tex").read_text(encoding="utf-8")
+    tex_src = re.sub(r"(?<!\\)%[^\n]*", "", tex_raw)
     slots_src = (ROOT / "manuscript/benchmark_slots.tex").read_text(encoding="utf-8")
     grouped_src = (ROOT / "manuscript/grouped_statistics_macros.tex").read_text(encoding="utf-8")
 
@@ -89,11 +184,17 @@ def check_replay_and_macros() -> None:
     def_bench = set(re.findall(r"\\newcommand\{\\(Bench[A-Za-z0-9]+)\}", slots_src))
     if used_bench - def_bench:
         raise ValueError(f"Missing Bench macros: {sorted(used_bench - def_bench)}")
+    orphan_bench = (def_bench - used_bench) - {"BenchSlot", "BenchCell"}
+    if orphan_bench:
+        raise ValueError(f"Orphan Bench macros: {sorted(orphan_bench)}")
 
     used_grouped = set(re.findall(r"\\(Grouped[A-Za-z0-9]+)", tex_src))
     def_grouped = set(re.findall(r"\\newcommand\{\\(Grouped[A-Za-z0-9]+)\}", grouped_src))
     if used_grouped - def_grouped:
         raise ValueError(f"Missing Grouped macros: {sorted(used_grouped - def_grouped)}")
+
+    verify_tex_literals_and_banned_terms(tex_raw)
+    return verify_paper_claims(exp_claims, slots_src, grouped_src, tex_raw)
 
 
 def build_figures() -> None:
@@ -132,7 +233,7 @@ def build_pdf() -> None:
         ):
             subprocess.run(cmd, cwd=tmp_dir, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         log = (tmp_dir / "paired_mechanism.log").read_text(encoding="utf-8", errors="ignore")
-        for needle in ("Overfull", "Undefined", "Warning"):
+        for needle in ("Overfull", "Underfull", "Undefined", "Warning"):
             if needle in log:
                 raise ValueError(f"LaTeX log contains {needle!r}")
 
@@ -145,14 +246,17 @@ def main(argv: list[str] | None = None) -> int:
 
     n_files = check_sha256sums()
     check_quarantine_and_leaks()
-    check_replay_and_macros()
-    msg = f"Verified {n_files} SHA256SUMS, held_out_used=false, 0 ID leaks, and exact replay/macros."
+    n_claims = check_replay_and_macros()
+    msg = (
+        f"Verified {n_files} SHA256SUMS, held_out_used=false, 0 ID leaks, "
+        f"{n_claims} guarded claims, 0 unguarded literals, and exact replay."
+    )
     if args.figures:
         build_figures()
         msg += " Figures OK."
     if args.pdf:
         build_pdf()
-        msg += " PDF compile OK (0 warnings/overfulls)."
+        msg += " PDF compile OK (0 warnings/overfulls/underfulls)."
     print(msg)
     return 0
 

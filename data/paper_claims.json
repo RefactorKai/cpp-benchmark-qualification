@@ -1,0 +1,1261 @@
+{
+  "amendment_sha256": "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+  "claim_count": 85,
+  "claims": [
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchPairs",
+      "rendered_tex": "1{,}000",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchPIE",
+      "rendered_tex": "728",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchVal",
+      "rendered_tex": "500",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchTrain",
+      "rendered_tex": "228",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchCodeNet",
+      "rendered_tex": "228",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchGitHub",
+      "rendered_tex": "44",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchContestPairs",
+      "rendered_tex": "956",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchGCC",
+      "rendered_tex": "15.2.0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchMinClusters",
+      "rendered_tex": "200",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchMinFits",
+      "rendered_tex": "30",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchMinSizes",
+      "rendered_tex": "4",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchMinSpan",
+      "rendered_tex": "8",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchMinSlope",
+      "rendered_tex": "0.50",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchMinRatio",
+      "rendered_tex": "1.50",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchRecovery",
+      "rendered_tex": "80\\%",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_and_protocol_constant",
+      "macro": "BenchAuthorSample",
+      "rendered_tex": "50",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFittedClusters",
+      "rendered_tex": "124",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchExecRate",
+      "rendered_tex": "149/476 = 31.3\\% (95\\% CP 27.2--35.7\\%)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchDeskContrast",
+      "rendered_tex": "+30.3~pp across 476 clusters (95\\% cluster bootstrap +22.1 to +38.4~pp, Holm $p = 6.78 \\times 10^{-12}$)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFitAlertRate",
+      "rendered_tex": "6/124 = 4.8\\% (95\\% CP 1.8--10.2\\%)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchIntakeAlertRate",
+      "rendered_tex": "6/476 = 1.3\\% (95\\% CP 0.5--2.7\\%)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchAbstractTakeaway",
+      "rendered_tex": "Across all confirmatory clusters, qualification stopped at desk screening more often than it reached isolated execution (P2 equal-cluster contrast +30.3~pp, Holm $p = 6.78 \\times 10^{-12}$). Hash-ordered execution yield lay above the fixed 147-pair 9.5\\% pilot anchor (Holm $p = 1.97 \\times 10^{-39}$, reflecting deferral removal rather than a population null). Among fitted clusters, all-stream alerts lay below the outcome-selected 30.8\\% pilot anchor (Holm $p = 2.53 \\times 10^{-12}$). All 33 post-intake Repository pairs were held \\texttt{desk\\_unrateable} (0 executed; all executed and fitted pairs are Contest pairs); excluding the 118 held \\texttt{desk\\_unrateable} clusters yields 149/358 = 41.6\\% (95\\% CP 36.5--46.9\\%) rateable Contest execution and attenuates P2 to +7.3~pp (95\\% cluster bootstrap $-2.8$ to +17.0~pp, nominal exact sign-flip $p = 0.165$). Stage-boundary rates (P1, P2, Sec.~S13) reflect one undisclosed-routing S1 workflow whose 50-pair blind author check showed low agreement (exact 26.0\\%, $\\kappa = 0.163$; bucket 48.0\\%, $\\kappa = 0.154$). (P1--P3 are \\emph{replay-only} under Amendment~3.)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchIntroTakeaway",
+      "rendered_tex": "that desk stops exceeded isolated execution across all confirmatory clusters (P2 +30.3~pp, Holm $p = 6.78 \\times 10^{-12}$), that execution yield lay above the 9.5\\% pilot anchor (Holm $p = 1.97 \\times 10^{-39}$), and that fitted-case alerts lay below the 30.8\\% pilot anchor (Holm $p = 2.53 \\times 10^{-12}$), while excluding held \\texttt{desk\\_unrateable} clusters attenuated P2 to +7.3~pp (nominal $p = 0.165$) (P1--P3 \\emph{replay-only} under Amendment~3)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchConclusionTakeaway",
+      "rendered_tex": "Qualification stops concentrated before isolated measurement (desk stops exceeded isolated execution by +30.3~pp, Holm $p = 6.78 \\times 10^{-12}$), while fitted-case alerts fell below the 30.8\\% reference (Holm $p = 2.53 \\times 10^{-12}$; diagnosing pilot outcome-selection distortion). All 33 post-intake Repository pairs were held \\texttt{desk\\_unrateable} (0 executed; all executed and fitted pairs are Contest pairs); excluding the 118 held \\texttt{desk\\_unrateable} clusters yields 149/358 = 41.6\\% (95\\% CP 36.5--46.9\\%) rateable Contest execution and attenuates P2 to +7.3~pp (95\\% cluster bootstrap $-2.8$ to +17.0~pp, nominal exact sign-flip $p = 0.165$). Stage-boundary rates (P1, P2, Sec.~S13) reflect one undisclosed-routing S1 workflow whose 50-pair blind author check showed low agreement (exact 26.0\\%, $\\kappa = 0.163$; bucket 48.0\\%, $\\kappa = 0.154$). (P1--P3 \\emph{replay-only} under Amendment~3.)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchDeskMethods",
+      "rendered_tex": "S1 labels were assigned across 96 frozen batches (844 desk-rateable pairs; 133 held as \\texttt{desk\\_unrateable}) on 2026-11-23 (04:09--10:09~UTC; 96 sealed valid batches across 102 attempts, 6 retried; workflow mode unlogged in \\texttt{batch\\_log.json}, and the 102 attempt session identifiers are retained in private custody \\texttt{batch\\_log.json} alongside \\texttt{primary\\_sealed.json}) by one Devin built-in agent workflow whose backend routing is not disclosed by the vendor (Amendments~1--4 for S1 labeling; Amendment~5 \\texttt{17de6626} for S2--S5 scope; P1--P3 \\emph{replay-only}).",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchModelAgreement",
+      "rendered_tex": "dropped under Amendment~2; no second model rated any pair",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchDeskReasons",
+      "rendered_tex": "across 844 rateable pairs: 387 pass, 411 \\texttt{desk\\_excluded}, 43 \\texttt{desk\\_blocked}, and 3 \\texttt{indeterminate} (Amendment~4), plus 133 held \\texttt{desk\\_unrateable} (100 Contest unbundled images, 33 Repository lacking independent specification); confirmatory representative rated stops: 160 contract, 11 source, 2 route, 2 \\texttt{indeterminate} (175 rated stops plus 118 held \\texttt{desk\\_unrateable} = 293 total)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_intake_and_quarantine_replay",
+      "macro": "BenchIntakeStops",
+      "rendered_tex": "23/1{,}000 pairs stopped at S0 (12 \\texttt{intake\\_duplicate}, 11 \\texttt{intake\\_unretrievable}), leaving 977 S0-pass pairs",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchGates",
+      "rendered_tex": "476 confirmatory clusters past S0 (P1/P2 $\\ge 200$ gate met; P3 $\\ge 30$ gate met with 124 fitted clusters; S13 without \\texttt{desk\\_unrateable}: 358 clusters)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "blind_single_author_s1_vs_primary_workflow",
+      "macro": "BenchAuthorCheck",
+      "rendered_tex": "descriptive blind check on 50 pairs (38 clusters; 0 unblinded): exact agreement 13/50 = 26.0\\% ($\\kappa = 0.163$, 95\\% cluster bootstrap [0.046, 0.277]), bucket agreement 24/50 = 48.0\\% ($\\kappa = 0.154$, 95\\% cluster bootstrap [$-0.031$, 0.326]); descriptive only",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348",
+        "70a52d37793ecadea5c927ce61b6f1d3b7c5174adc4ae342bf0f680dd775cc44",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_intake_and_quarantine_replay",
+      "macro": "BenchOverlap",
+      "rendered_tex": "500 development-exposed S0-pass pairs across 54 quarantined clusters (0 confirmatory overlaps with the archived development audit; all 500 quarantined pairs are Contest pairs, checked across PIE problem ID, CppPerf project, alias, and template hash with 0 Repository overlaps)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchRunStops",
+      "rendered_tex": "Sec.~S14 post-S1 \\texttt{fixture\\_stop} 32/183 = 17.5\\% (95\\% CP 12.3--23.8\\%) (19 contract, 4 route (4 \\texttt{original\\_compile\\_failure}), 9 source), Sec.~S3 Stage~S2 single-TU preprocessing stops 0/183 = 0.0\\% (95\\% CP 0.0--2.0\\%), 2 infrastructure failures, 0 confirmatory clusters and 204 quarantined pairs \\texttt{not\\_executed} at closure, Sec.~S4 oracle failures 17/149 = 11.4\\% (95\\% CP 6.8--17.6\\%), and 8 confirmatory \\texttt{insufficient\\_fit} clusters",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchTests",
+      "rendered_tex": "P1 vs.\\ 14/147 (unadjusted $p = 6.56 \\times 10^{-40}$, Holm $p = 1.97 \\times 10^{-39}$); P2 sign-flip (unadjusted $p = 6.78 \\times 10^{-12}$, Holm $p = 6.78 \\times 10^{-12}$); P3 vs.\\ 4/13 (unadjusted $p = 1.26 \\times 10^{-12}$, Holm $p = 2.53 \\times 10^{-12}$); exploratory nominal tests: S1 desk stops 293/476 = 61.6\\% (95\\% CP 57.0--65.9\\%) vs.\\ 103/147 ($p = 7.39 \\times 10^{-5}$), S2 alerts/selected vs.\\ 4/147 ($p = 0.048$), S3 preprocessing vs.\\ 12/26 ($p = 6.77 \\times 10^{-50}$), S4 oracle failures vs.\\ 1/14 ($p = 0.054$), and S5 fitted contrast $-90.3$~pp (95\\% bootstrap $-96.8$ to $-82.3$~pp, nominal $p = 4.42 \\times 10^{-28}$)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFrames",
+      "rendered_tex": "Contest (444 clusters past S0, $\\ge 30$ gate met): P1 149/444 = 33.6\\% (95\\% CP 29.2--38.2\\%), S1 desk stops 261/444 = 58.8\\% (95\\% CP 54.0--63.4\\%), P3 fitted alerts 6/124 = 4.8\\% (95\\% CP 1.8--10.2\\%); Repository (32 clusters / 33 pairs, counts only because all S0-pass pairs are held \\texttt{desk\\_unrateable}): 0 rated, 0 executed (Union equals Contest for all rated and executed outcomes)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFitSensitivity",
+      "rendered_tex": "S7 any-stream alerts 11/124 = 8.9\\% (95\\% CP 4.5--15.3\\%) (11/476 = 2.3\\% (95\\% CP 1.2--4.1\\%) of selected); S8 drop-largest refit: 123/124 admitted (1 range-limited, not negative), alerts among admitted 5/123 = 4.1\\% (95\\% CP 1.3--9.2\\%) (5 all-stream alerts retained, 1 failed after drop, 0 range-limited)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchVariantChecks",
+      "rendered_tex": "cap coverage (\\texttt{cpu\\_cap}: 28 events across 3 positions, \\texttt{tick\\_cap}: 72 events across 2 positions); -O0/-O2/-O3 stability and sham preservation enforced on all completed observations; restoration ($\\ge 80\\%$ recovery) across all 183 confirmatory S1 passes: 54 passed, 66 no excess, 18 failed, 45 unmeasured (among 124 admitted fits: 47 passed, 63 no measurable excess, 14 failed)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchPairSensitivity",
+      "rendered_tex": "S6 P1 without infrastructure failures 149/474 = 31.4\\% (95\\% CP 27.3--35.8\\%); S9 all-pair equal-cluster P1 31.3\\% (95\\% bootstrap 27.1--35.5\\%, pair-level 149/477 = 31.2\\% (95\\% CP 27.1--35.6\\%)) and P3 4.8\\% (95\\% bootstrap 1.6--8.9\\%, pair-level 6/124 = 4.8\\% (95\\% CP 1.8--10.2\\%)); S13 excluding \\texttt{desk\\_unrateable} (358 clusters): P1 149/358 = 41.6\\% (95\\% CP 36.5--46.9\\%), P2 +7.3~pp (95\\% cluster bootstrap $-2.8$ to +17.0~pp, nominal exact sign-flip $p = 0.165$; outside primary Holm family), P3 6/124 = 4.8\\% (95\\% CP 1.8--10.2\\%); protocol Section~11 sensitivity: exit-137 \\texttt{cpu\\_cap} (2 pairs: unpatched P1 147/476 = 30.9\\% (95\\% CP 26.8--35.2\\%), P2 +30.7~pp, P3 6/122 = 4.9\\% (95\\% CP 1.8--10.4\\%)); superseded \\texttt{alignment\\_boundary} (4 pairs: P1 145/476 = 30.5\\% (95\\% CP 26.4--34.8\\%), P2 +31.1~pp, S14 36/183 = 19.7\\% (95\\% CP 14.2--26.2\\%), S4 13/145 = 9.0\\% (95\\% CP 4.9--14.8\\%))",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchExposedResults",
+      "rendered_tex": "S12 quarantined stratum (500 S0-pass pairs across 54 clusters): cluster S1 desk stops 32/54 = 59.3\\% (95\\% CP 45.0--72.4\\%), pair S1 desk stops 296/500 = 59.2\\% (95\\% CP 54.7--63.5\\%), and 204 quarantined S1 passes recorded as \\texttt{not\\_executed} under Amendment~5 (cluster P1 0/54 = 0.0\\% (95\\% CP 0.0--6.6\\%), pair P1 0/500 = 0.0\\% (95\\% CP 0.0--0.7\\%))",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchBuildDecision",
+      "rendered_tex": "\\textbf{NO-GO (native build not triggered)} (P1 CP lower limit $E = 27.2\\%$ vs.\\ $15.5\\%$ anchor; Repository route+preprocessing stops $R = 0$, Repository executed $X = 0$ across 32 clusters---single-TU preprocessing was exercised only on Contest pairs because all 32 Repository clusters stopped as \\texttt{desk\\_unrateable})",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchAvailability",
+      "rendered_tex": "inputs are pinned to manifest \\texttt{5b432d82}, protocol \\texttt{8a969245}, hold list \\texttt{6bc97dea}, and Amendment~5 \\texttt{17de6626}; P1--P3 and all S1-dependent secondary and forensic rates (Sec.~S1--S14, Table~\\ref{tab:alerts}, and baseline screens) are \\emph{replay-only} (Amendment~3 undisclosed S1 workflow routing), identifier-free ordinal-indexed counter traces (\\texttt{data/\\allowbreak anonymous-\\allowbreak measurements.json}, \\texttt{c2ba8209}, joinable to the public manifest via frozen \\texttt{rank(row)} order), alert/screen forensics (\\texttt{data/\\allowbreak alert-\\allowbreak and-\\allowbreak fit-\\allowbreak forensics-\\allowbreak agg.json}, \\texttt{b8ea9b8c}), and \\texttt{data/\\allowbreak paper\\_\\allowbreak claims.json} support public statistical and per-point fit replay, Stages~S2--S5 Gate~1 runs conditional on fixed S1-pass fixtures are \\emph{re-executable} when private custody fixtures are present (no public C++ re-execution is possible without upstream source/oracle custody), and raw S1 prompts, responses, packets, session logs, source payloads, and individual author ballots remain non-public custody",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchTableFlowCaption",
+      "rendered_tex": "Terminal outcomes as pair counts, including development-exposed rows. S1 desk stops comprise \\texttt{desk\\_excluded}, \\texttt{desk\\_blocked}, held \\texttt{desk\\_unrateable} (100~Contest unbundled-image pairs and all 33~Repository pairs lacking independent specification), and terminal \\texttt{indeterminate} (3~Contest pairs under Amendment~4); pre-S3 \\texttt{fixture\\_stop} cases (Amendment~5) remain in post-S0 denominators as not executed in P1/S9 (keeping $\\text{desk stop}=0$ and $\\text{executed}=0$ in P2) and outside P3. A case appears in one disposition per applicable frame and once in the union. The confirmatory analysis excludes intake stops and reports the development-exposed stratum separately.",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFigOneCaption",
+      "rendered_tex": "Verified S1 qualification outcomes across all 977 S0-pass pairs (96/96 batches sealed; 844 rateable---including 3 terminal \\texttt{indeterminate} judgments under Amendment~4---plus 133 held \\texttt{desk\\_unrateable}). Panel~A shows shares per stratum; Panel~B shows the 590 total S1 stops split by confirmatory pairs ($n=294$, spanning 293 representative clusters) vs.\\ development-exposed quarantined pairs ($n=296$).",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFigTwoCaption",
+      "rendered_tex": "Confirmatory qualification rates and exact two-sided 95\\% Clopper--Pearson intervals versus the fixed 147-pair development anchors (diamonds). P1, P3, and all S1-dependent secondary rates (Sec.~S1, S2, S13) are \\emph{replay-only} under Amendment~3 because S1 labels derive from one vendor workflow with undisclosed routing; P3 satisfies its $\\ge 30$ confirmatory fitted-cluster gate ($n=124$).",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchAmendmentFiveDisclosures",
+      "rendered_tex": "Prior to confirmatory S3 execution, Amendment~5 (\\texttt{17de6626}, 2026-11-23) refined S2--S5 handling from disjoint development evidence (183/183 confirmatory S2 preprocessing passes under GCC~\\BenchGCC{} and 3/5 fixture-authoring stops in a 5-pair quarantined diagnostic): (i)~an S1 pass failing constructive fixture verification before S3 receives terminal \\texttt{fixture\\_stop} with a bucket, reason, and SHA-256-pinned proof, staying in post-S0 denominators as not executed in P1 and S9, keeping $\\text{desk stop}=0$ and $\\text{executed}=0$ in P2, remaining outside P3, and reporting as S14; and (ii)~confirmatory-only quota-gated execution runs the 183 confirmatory S1 passes in frozen hash order across waves (target $\\le 75\\%$, hard cap $80\\%$ weekly quota) while recording the 204 quarantined S12 passes and any unattempted confirmatory tail as \\texttt{not\\_executed}. Under protocol Section~11, Wave~1--3 operational disclosures are documented alongside sensitivity toggles: \\texttt{gate1\\_sandbox.py} enforces \\texttt{prlimit --cpu=8:8}, emitting \\texttt{SIGKILL} (exit~137) rather than \\texttt{SIGXCPU}; Wave~2's two 8\\,s CPU kills (\\texttt{oom\\_kill = 0}) halted at \\texttt{terminal = None} until \\texttt{expansion\\_run.py} was patched (\\texttt{04f1a1b2}; Wave~1 baseline \\texttt{1c926287} replayed identically with zero exit-137 rows) to record non-OOM exit~137/$-9$ at \\texttt{cpu.stat.usage\\_usec} $\\ge 8\\times 10^{6}$ as right-censored \\texttt{cpu\\_cap} and emit \\texttt{insufficient\\_fit} when $<4$ uncapped sizes remain. Both Wave~2 pairs re-executed to admissible \\texttt{no\\_alert} fits (20 and 4 \\texttt{cpu\\_cap} events; treating both as infrastructure failure yields P1 147/476 = 30.9\\% (95\\% CP 26.8--35.2\\%), P2 +30.7~pp, P3 6/122 = 4.9\\% (95\\% CP 1.8--10.4\\%)). Across all waves, \\texttt{cpu\\_cap} fired 28 times across 3 positions: 24 on those two Wave~2 pairs plus 4 on Wave~3 position~139 (\\texttt{no\\_alert}; rollback shifts P1 from 149 to 148 and leaves P3 at 6, bounding unpatched P1 at 146/476 = 30.7\\% (95\\% CP 26.6--35.0\\%) and P3 at 6/121 = 5.0\\% (95\\% CP 1.8--10.5\\%)). Five \\texttt{raw\\_terminal\\_null} runs were resolved via central overlay \\texttt{b598ea21} (3 in Wave~2, 2 in Wave~3): two Wave~2 pairs crashed only under UBSan (\\texttt{rc = 139}) from Gate~1's 8\\,MB \\texttt{RLIMIT\\_STACK} overhead and were classified as \\texttt{execution\\_infrastructure\\_failure} (as \\texttt{fixture\\_stop}: P1--P3 unchanged, Sec.~S14 34/183); one Wave~2 overlay pair (alongside one pre-overlay Wave~1 pair, forming a 2-pair \\texttt{stderr} sensitivity toggle) wrote timing to \\texttt{stderr} with oracle-matching \\texttt{stdout} and was recorded as \\texttt{fixture\\_stop} (counting both \\texttt{stderr} pairs as executed: P1 151/476 = 31.7\\% (95\\% CP 27.6--36.1\\%), P2 +29.8~pp, Sec.~S14 30/183); and two Wave~3 UB/assertion pairs (\\texttt{rc = 134}) were recorded as \\texttt{fixture\\_stop} (as infrastructure: P1--P3 unchanged, Sec.~S14 30/183). Wave~3 also logged one capped-quality sensitivity pair (P3 6/123 = 4.9\\% (95\\% CP 1.8--10.3\\%) if \\texttt{insufficient\\_fit}) and 6 SPEC-quoting \\texttt{alignment\\_boundary} stops (unverified by per-step timestamp). Coordinator audits restored 6 Wave~1 \\texttt{execution\\_oracle\\_failure} terminals from worker \\texttt{fixture\\_stop} proposals (plus 5 pre-run non-geometric ladder fixes) and rebuilt 4 Wave~2 precision-only \\texttt{alignment\\_boundary} stops that executed to \\texttt{execution\\_oracle\\_failure}, accounting for 10/17 (58.8\\%) of Sec.~S4 oracle failures; counting Wave~1's 6 restored failures as \\texttt{fixture\\_stop} yields P1 143/476 = 30.0\\% (95\\% CP 26.0--34.4\\%), P2 +31.5~pp (95\\% bootstrap +23.3 to +39.7~pp), Sec.~S4 11/143 = 7.7\\% (95\\% CP 3.9--13.3\\%), and Sec.~S14 38/183 = 20.8\\% (95\\% CP 15.1--27.4\\%) (143/183 = 78.1\\% (95\\% CP 71.4--83.9\\%) conditional yield), while treating all 10 coordinator-audited oracle failures jointly as \\texttt{fixture\\_stop} yields P1 139/476 = 29.2\\% (95\\% CP 25.2--33.5\\%), Sec.~S4 7/139 = 5.0\\% (95\\% CP 2.0--10.1\\%), and Sec.~S14 42/183 = 23.0\\% (95\\% CP 17.1--29.7\\%). Four S1 passes (4/183) stopped in \\texttt{fixture\\_stop} with \\texttt{original\\_compile\\_failure} despite passing Stage~S2 single-TU preprocessing (Sec.~S3 0/183 = 0.0\\% (95\\% CP 0.0--2.0\\%); 0/154 = 0.0\\%, $p = 4.25 \\times 10^{-42}$ across the 154 S1 passes entering \\texttt{expansion\\_run.py} after 29 pre-runner \\texttt{fixture\\_stop}s and before 3 overlay \\texttt{fixture\\_stop} reclassifications). Pre-analysis ledger \\texttt{59dcfaf3} and representative plan \\texttt{99c0b425} were SHA-256-locked before computing P1--P3.",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_recorded_gate1_trace_replay",
+      "macro": "BenchAlertForensicsRows",
+      "rendered_tex": "3 (CodeNet) & 32--1{,}024 (3/3) & 0.65--2.24 (0.061) & 193--1{,}119$\\times$ & 0.69--2.24 / 193--1{,}119$\\times$ & Flip / 0.99--1.04$\\times$ \\\\ 13 (CodeNet) & 50--1{,}600 (1/3) & 2.01 (1.000) & $2.56\\times 10^{6}\\times$ & 1.02 / 3{,}193$\\times$ & Retain / 2.00--3.69$\\times$ \\\\ 94 (PIE) & 250--8{,}000 (1/3) & 1.00 (1.000) & 4{,}000$\\times$ & 1.01 / 3{,}066--3{,}983$\\times$ & Retain / 0.79--1.48$\\times$ \\\\ 97 (PIE) & 1--32 (3/3) & 1.86--1.93 (0.946) & 394--413$\\times$ & 1.87--1.96 / 408--426$\\times$ & Retain / 1.10--1.15$\\times$ \\\\ 164 (PIE) & 625--20{,}000 (1/3) & 1.00 (1.000) & 20{,}001$\\times$ & 0.00 / 2.00$\\times$ (scoped) & Retain / 2.10--2.20$\\times$ \\\\ 175 (CodeNet) & 300--9{,}600 (3/3) & 0.99--1.05 (0.999) & 1{,}221--2{,}763$\\times$ & 0.99--1.04 / 611--1{,}382$\\times$ & Retain / 3.07--22.65$\\times$ \\\\",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_recorded_gate1_trace_replay",
+      "macro": "BenchAlertTableCaption",
+      "rendered_tex": "Ordinal-indexed forensics for all 6 confirmatory all-stream alerts (positions in frozen 1--183 confirmatory hash order; all 6/6 passed $\\ge 80\\%$ causal restoration). ``str.'' gives distinct $(n, T(n), Q(n))$ trajectories across the 3 streams. Positions~13 and~164 have constant reference $c_0$; Position~164 is strictly event-scoped ($c_0$ slope 1.00 vs.\\ combined $c_0{+}c_1$ slope 0.00 and $2.00\\times$ total-tick ratio because auxiliary $c_1$ performs identical linear work on both sides). Position~3 exhibits low log-linear fit quality ($R^2_{\\min} = 0.061$) and flips to \\texttt{no\\_alert} on drop-largest refit; under a descriptive post-hoc diagnostic filter requiring primary $c_0$, total-tick $c_0{+}c_1$, $R^2 \\ge 0.94$, drop-largest retention, and $\\ge 80\\%$ restoration simultaneously, 4/124 (3.2\\%) fits remain (Positions~13, 94, 97, and~175). Single-process \\texttt{plain} CPU ratios include $\\approx 15$--$22$\\,ms sandbox startup overhead, masking sub-millisecond workloads on Positions~3, 94, and~97.",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_recorded_gate1_trace_replay",
+      "macro": "BenchStreamAndFitForensics",
+      "rendered_tex": "Across all 124 admitted fits, 70/124 (56.5\\%) produced 3/3 distinct $(n, T(n), Q(n))$ stream trajectories, 9/124 (7.3\\%) produced 2/3, and 45/124 (36.3\\%) had input-value-invariant counts identical across all 3 streams (3/6 distinct vs.\\ 3/6 size-determined among alerts). Log-ratio $R^2$ across the 18 alerting streams had median 0.9999 (range 0.061--1.0000, with $R^2 \\ge 0.946$ on all 15 streams outside Position~3), whereas across all 372 fitted streams 171 had exact zero log-ratio variance and the remaining 201 had median $R^2 = 0.864$. Drop-largest refit admissibility held for both outcomes: 6/6 alerts (5 retained, 1 flipped) and 117/118 (99.2\\%) non-alerts (117 remained \\texttt{no\\_alert}, 0 flipped, 1 range-limited).",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_recorded_gate1_trace_replay",
+      "macro": "BenchBaselineScreens",
+      "rendered_tex": "Evaluating alternative baseline screens on the same 124 admitted fits quantifies each safeguard's selectivity: (i)~a largest-size ratio-only screen ($T/Q \\ge 1.50$ on all streams, no slope cutoff) alerts on 32/124 = 25.8\\% (95\\% CP 18.4--34.4\\%), admitting 26 non-alerts failing the all-stream slope floor (12 flat $|\\text{slope}| \\le 0.05$ constant-factor ratios, 6 positive sub-0.50 slopes, 5 negative-slope precomputation cases whose ratio shrinks with $n$, and 3 stream-selective Sec.~S7 cases; $5.3\\times$ over-alerting); (ii)~a slope-only screen ($\\ge 0.50$, no ratio floor) yields 7/124 = 5.6\\% (95\\% CP 2.3--11.3\\%) (1 sub-$1.50\\times$ case); (iii)~requiring dual-cutoff growth on combined primary-plus-auxiliary total ticks ($c_0{+}c_1$) yields 5/124 = 4.0\\% (95\\% CP 1.3--9.2\\%) (5 of 6 primary alerts retained, 0 additional alerts, filtering event-scoped Position~164); and (iv)~naive single-process \\texttt{plain} CPU-time screens (\\texttt{cpu.stat.usage\\_usec} at $\\ge 10$\\,ms) yield 0/124 = 0.0\\% (95\\% CP 0.0--2.9\\%) under the 4-size dual rule (process-startup overhead flattens small-$n$ slopes) and 17/124 = 13.7\\% (95\\% CP 8.2--21.0\\%) under largest-size CPU ratio $\\ge 1.50$ (recovering 3/6 primary alerts---Positions~13, 164, and~175---while flagging 14 non-alerts failing the all-stream logical-slope screen). Under a descriptive post-hoc diagnostic filter combining total-tick growth, drop-largest retention, $R^2 \\ge 0.94$, and $\\ge 80\\%$ restoration, 4/124 = 3.2\\% (95\\% CP 0.9--8.1\\%) remain (Positions~13, 94, 97, and~175).",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "blind_single_author_s1_vs_primary_workflow",
+      "macro": "BenchAuthorConfusionProse",
+      "rendered_tex": "Across the three non-empty primary buckets, the primary rater's 22 \\texttt{pass} decisions split under blind author review into 3 \\texttt{pass}, 12 \\texttt{contract} stops, and 7 \\texttt{source} stops; its 26 \\texttt{contract} stops split into 19 \\texttt{contract}, 3 \\texttt{pass}, and 4 \\texttt{source}; and both \\texttt{source} stops agreed (2/2). Disagreement stemmed predominantly from stricter author screening on contract and source eligibility rather than arbitrary noise, alongside the 32/183 = 17.5\\% (95\\% CP 12.3--23.8\\%) constructive pre-S3 \\texttt{fixture\\_stop} rate.",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348",
+        "70a52d37793ecadea5c927ce61b6f1d3b7c5174adc4ae342bf0f680dd775cc44",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "blind_single_author_s1_vs_primary_workflow",
+      "macro": "BenchAuthorDownstream",
+      "rendered_tex": "Stratifying the 50-pair blind draw by cohort (20 confirmatory, 30 quarantined) reveals both directions of the S1 disagreement: of the 9 confirmatory pairs rated \\texttt{pass} by primary S1 (all 9 cluster representatives), the 1 author-\\texttt{pass} pair executed to \\texttt{no\\_alert}, all 3 author-\\texttt{contract}-stop pairs executed to \\texttt{no\\_alert}, and the 5 author-\\texttt{source}-stop pairs ended at 1 \\texttt{fixture\\_stop}, 1 \\texttt{insufficient\\_fit}, and 3 \\texttt{no\\_alert}---so 7/8 (87.5\\%) author-rejected S1 passes constructively cleared fixture authoring, optimization/sham invariance, and Gate~1 execution with 0/8 false growth alerts, whereas 3/26 (11.5\\%) sampled workflow \\texttt{contract} stops were rated \\texttt{pass} by the blind author and remain unexecuted in P1/P2/Sec.~S13.",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348",
+        "70a52d37793ecadea5c927ce61b6f1d3b7c5174adc4ae342bf0f680dd775cc44",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchDiscussionSynthesis",
+      "rendered_tex": "Comparing P2 across all 476 post-intake clusters (+30.3~pp, Holm $p = 6.78 \\times 10^{-12}$) against Sec.~S13 excluding the 118 held \\texttt{desk\\_unrateable} clusters (+7.3~pp across 358 rateable Contest clusters, 95\\% cluster bootstrap $-2.8$ to +17.0~pp, nominal exact sign-flip $p = 0.165$ outside the primary Holm family) shows that overall desk-stop dominance is driven by missing self-contained specifications (86 unbundled contest-image clusters and all 32 Repository clusters lacking an independent spec), whereas among rateable Contest clusters desk stops (48.9\\%) and isolated execution (41.6\\%) occur at comparable scales; across completed observations, count invariance held with zero disagreements across optimization levels (9{,}794 \\texttt{-O0}/\\texttt{-O2}/\\texttt{-O3} agreements, 0 disagreements, 1{,}294 capped or missing) and sham edits (7{,}349 target--sham agreements, 0 disagreements, 967 capped or missing), and all 6 all-stream alerts (6/6) passed $\\ge 80\\%$ causal restoration (0 failed), yet fitted-case all-stream alerts remained rare (6/124 = 4.8\\% (95\\% CP 1.8--10.2\\%)).",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchRepoExecSummary",
+      "rendered_tex": "(0/32 Repository clusters executed; Repository is reported as counts only under Amendment~1)",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_intake_and_quarantine_replay",
+      "macro": "BenchFlowIntakeC",
+      "rendered_tex": "12",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_intake_and_quarantine_replay",
+      "macro": "BenchFlowIntakeR",
+      "rendered_tex": "11",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "re-executable",
+      "instrument": "frozen_manifest_intake_and_quarantine_replay",
+      "macro": "BenchFlowIntakeU",
+      "rendered_tex": "23",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowDeskC",
+      "rendered_tex": "557",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowDeskR",
+      "rendered_tex": "33",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowDeskU",
+      "rendered_tex": "590",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowFixtureC",
+      "rendered_tex": "32",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowFixtureR",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowFixtureU",
+      "rendered_tex": "32",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowPrepC",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowPrepR",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowPrepU",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowInfraC",
+      "rendered_tex": "2",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowInfraR",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowInfraU",
+      "rendered_tex": "2",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowUnrunC",
+      "rendered_tex": "204",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowUnrunR",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowUnrunU",
+      "rendered_tex": "204",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowOracleC",
+      "rendered_tex": "17",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowOracleR",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowOracleU",
+      "rendered_tex": "17",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowNoFitC",
+      "rendered_tex": "8",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowNoFitR",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowNoFitU",
+      "rendered_tex": "8",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowNoAlertC",
+      "rendered_tex": "118",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowNoAlertR",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowNoAlertU",
+      "rendered_tex": "118",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowAlertC",
+      "rendered_tex": "6",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowAlertR",
+      "rendered_tex": "0",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "single_workflow_devin_s1_plus_deterministic_gate1",
+      "macro": "BenchFlowAlertU",
+      "rendered_tex": "6",
+      "source_sha256": [
+        "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+        "6bc97deac805d67528e1939481c75745f51cf7350c0d3ee757598eb55c5dad01",
+        "17de6626bb871cc30f80040bd63f123da8c0b4498231ff63b607045b36fdb469",
+        "9eebab8d5be1e181ffd7f5628ade47b225ae1405fffae7e45578d5c83ccf8f33",
+        "c2ba8209b5401ef79c69ee14b33e662064bbf33eca72fa5c1ce29a9be58ad230",
+        "b8ea9b8c258566350502bb26f58faf751146b4d1d259d5f3f827bb0f00edffb8",
+        "4f84a8ef2c1343bd640ab057d6c59f2f2bcb616ccc54262879af012849b98348"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "archived_pilot_deterministic_specificity_replay",
+      "macro": "GroupedQuadraticFalse",
+      "rendered_tex": "5/5 = 100.0\\%",
+      "source_sha256": [
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "archived_pilot_deterministic_specificity_replay",
+      "macro": "GroupedLinearFalse",
+      "rendered_tex": "0/5 = 0.0\\%",
+      "source_sha256": [
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e"
+      ]
+    },
+    {
+      "evidence_class": "replay-only",
+      "instrument": "archived_pilot_deterministic_specificity_replay",
+      "macro": "GroupedAppropriateFalse",
+      "rendered_tex": "10/10 = 100.0\\%",
+      "source_sha256": [
+        "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e"
+      ]
+    }
+  ],
+  "held_out_used": false,
+  "manifest_sha256": "5b432d827f324c073eb7ed14b4df4b5d18f5eb2a90c4d97d358405a800d27346",
+  "protocol_sha256": "8a9692457cdba6d9b2860717b8bc254dae47dc48eebe7baacabb17a82007953e",
+  "schema": "eapg.expansion.paper_claims.v1"
+}

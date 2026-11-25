@@ -917,3 +917,62 @@ def test_ingest_live_final_a5_stats_agg():
         body = "\n".join(slots.splitlines()[21:])
         assert r"\BenchSlot" not in body
         assert r"\BenchCell" not in body
+
+
+def test_forensics_anon_replay_claims_and_literal_guard():
+    """Verify full per-point anonymous-measurements replay, paper_claims.json, and literal guard."""
+    repo_root = Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(repo_root))
+    import verify as vf
+
+    agg_p = repo_root / "data/final-a5-stats-agg.json"
+    auth_p = repo_root / "data/author-check-50-agg.json"
+    for_p = repo_root / "data/alert-and-fit-forensics-agg.json"
+    anon_p = repo_root / "data/anonymous-measurements.json"
+    assert for_p.is_file() and anon_p.is_file()
+
+    rep = ea.analyze_aggregate(json.loads(agg_p.read_bytes()))
+    auth = ea._load_author_check_cli(auth_p, draw_path=None, manifest=None, s1_summary=None)
+    forensics = ea.verify_anon_and_forensics(
+        json.loads(for_p.read_bytes()),
+        json.loads(anon_p.read_bytes()),
+        rep,
+        auth,
+    )
+    assert forensics["verified_from_anon_measurements"] is True
+    assert len(forensics["six_alerts"]) == 6
+    assert forensics["fitted_124_forensics"]["baseline_screens_124"]["B3_total_ticks_c0_plus_c1_dual"]["alerts"] == 5
+    assert forensics["b1_fp_decomposition"] == {
+        "flat_constant_factor": 12,
+        "negative_slope_precomp": 5,
+        "positive_subthreshold": 6,
+        "s7_stream_selective": 3,
+    }
+
+    slots_tex = ea.render_benchmark_slots(
+        rep, s1_complete=True, execution_complete=True, author_check=auth, forensics=forensics
+    )
+    claims = ea.build_paper_claims(
+        slots_tex,
+        agg_sha=ea.digest(agg_p.read_bytes()),
+        author_sha=ea.digest(auth_p.read_bytes()),
+        forensics_sha=ea.digest(for_p.read_bytes()),
+        anon_sha=ea.digest(anon_p.read_bytes()),
+    )
+    claims_by_macro = {c["macro"]: c for c in claims["claims"]}
+    for m_name in ("BenchAlertForensicsRows", "BenchAlertTableCaption", "BenchStreamAndFitForensics", "BenchBaselineScreens"):
+        assert claims_by_macro[m_name]["evidence_class"] == "replay-only"
+    assert claims_by_macro["BenchIntakeStops"]["evidence_class"] == "re-executable"
+    tex_raw = (repo_root / "manuscript/paired_mechanism.tex").read_text(encoding="utf-8")
+    grouped_src = (repo_root / "manuscript/grouped_statistics_macros.tex").read_text(encoding="utf-8")
+    assert vf.verify_paper_claims(claims, slots_tex, grouped_src, tex_raw) == claims["claim_count"]
+    vf.verify_tex_literals_and_banned_terms(tex_raw)
+
+    # Injecting a raw empirical digit or banned term must fail closed
+    tampered_digit = tex_raw.replace(r"\BenchFittedClusters{} fits", "124 fits")
+    with pytest.raises(ValueError, match="Unguarded numeric literal"):
+        vf.verify_tex_literals_and_banned_terms(tampered_digit)
+
+    tampered_banned = tex_raw.replace("frozen protocol", "registered protocol")
+    with pytest.raises(ValueError, match="Banned overclaim"):
+        vf.verify_tex_literals_and_banned_terms(tampered_banned)
