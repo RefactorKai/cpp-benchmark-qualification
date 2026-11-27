@@ -207,7 +207,7 @@ def plot_pipeline_funnel(receipt: dict[str, Any], out_prefix: Path) -> None:
 
         k_str = f"\u2212{abs(conf_bin_k):.3f}" if conf_bin_k < 0 else f"{conf_bin_k:.3f}"
         zones = [
-            (-0.04, 4.70, "#EBF8FF", "#2B6CB0", "1. PUBLICLY RE-EXECUTABLE\n(S0 intake & clustering)", 6.1),
+            (-0.04, 4.70, "#EBF8FF", "#2B6CB0", "1. PUBLIC MANIFEST\n(Intake & cluster counts)", 6.1),
             (4.84, 7.24, "#FFFBEB", "#975A16", f"2. REPLAY-ONLY\nSingle-LLM\n(\u03ba = {k_str})", 5.8),
             (7.38, 14.62, "#F0FFF4", "#22543D", f"3. OFFLINE GATE 1 \u2192 CONDITIONAL REPLAY\n(bwrap + GCC 15.2.0; 4 variants \u00d7 5 modes; {anon_pin})", 6.1),
         ]
